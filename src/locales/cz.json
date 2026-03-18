@@ -1,0 +1,104 @@
+{
+  "nav": {
+    "jobs": "Práce",
+    "calculator": "Kalkulačka",
+    "about": "O nás",
+    "login": "Přihlásit se",
+    "my_journey": "Moje cesta"
+  },
+  "hero": {
+    "title_main": "Digitálně. Férově.",
+    "title_sub": "Tvoje nová práce v Nizozemsku.",
+    "description": "Prohlédni si nabídky a zjisti přesně, kolik ti zbude na účtu. Bez překvapení.",
+    "cta": "Zobrazit výpočet mzdy →",
+    "jobs_active": "Aktuální nabídky",
+    "jobs_live": "Živě",
+    "cta_title": "Vyber si nabídku",
+    "cta_desc": "Klikni na libovolnou práci vlevo a ihned uvidíš přesný výpočet tvé čisté výplaty – včetně ubytování, pojištění a ET Regeling.",
+    "cta_feature1": "ET Regeling (daňová úleva) zahrnut",
+    "cta_feature2": "Náklady na ubytování odečteny",
+    "cta_feature3": "Přesčasy i směnové příplatky",
+    "cta_feature4": "Zorgtoeslag (příspěvek státu) +32€"
+  },
+  "roadmap": {
+    "title": "Roadmapa k nástupu",
+    "step1": "Vyber si práci",
+    "step1_desc": "Vyberte si pozici v NL",
+    "step2": "Ověření totožnosti",
+    "step2_desc": "Nutné pro pracovní smlouvu v NL. Bezpečné a šifrované.",
+    "step3": "Cesta do NL",
+    "step3_desc": "Nahrajte údaje o příjezdu",
+    "action_scan": "Spustit skener",
+    "action_guide": "Přejít do průvodce",
+    "not_ready": "Nejsi připraven na návštěvu úřadu!",
+    "ready": "Všechny dokumenty jsou v pořádku.",
+    "welcome": "Ahoj",
+    "welcome_sub": "sleduj svůj postup k novému začátku.",
+    "welcome_journey": "do NL.",
+    "my_nav": "Moje navigace",
+    "my_nav_sub": "Všechny důležité adresy pro tvůj příjezd.",
+    "my_nav_btn": "Detailní mapa",
+    "help_title": "Potřebujete pomoc?",
+    "help_desc": "Váš koordinátor je vám k dispozici 24/7. Pokud si nevíte rady s doklady nebo cestou, zavolejte nám.",
+    "help_btn": "Kontaktovat podporu",
+    "info_title": "Užitečné info",
+    "info_desc": "Nezapomeňte, že pro získání BSN čísla musíte mít originál rodného listu v mezinárodním formátu."
+  },
+  "about": {
+    "title": "Přinášíme férovost do práce v Holandsku.",
+    "description": "GoNL není jen další pracovní portál. Jsme digitální most mezi vámi a nejlepšími nizozemskými zaměstnavateli. Naším cílem je naprostá transparentnost – od prvního kliknutí v kalkulačce až po podpis smlouvy přímo v aplikaci.",
+    "feature1_title": "Žádné skryté poplatky",
+    "feature1_desc": "To, co vidíte v kalkulačce, je to, co dostanete na účet. Žádné překvapení při výplatě.",
+    "feature2_title": "Digitální Onboarding",
+    "feature2_desc": "Vše vyřídíte z mobilu. Od ověření identity až po nahrání letenky."
+  },
+  "footer": {
+    "description": "Moderní platforma pro nábor lidí z České a Slovenské republiky do Nizozemska. Transparentně, digitálně a bez zbytečných papírů.",
+    "app": "Aplikace",
+    "partners": "Partneři",
+    "collaboration": "Spolupráce",
+    "rights": "© 2026 GoNL Enterprise B.V. Všechna práva vyhrazena.",
+    "partner_login": "Partner Login",
+    "privacy": "Zásady ochrany osobních údajů",
+    "terms": "Podmínky použití"
+  },
+  "guide": {
+    "title": "Průvodce cestou",
+    "subtitle": "Vše pro tvůj hladký příjezd do Nizozemska na jednom místě.",
+    "prep_title": "Příprava na úřad",
+    "insurance_title": "Tvoje pojistka",
+    "why_upload_title": "Proč to nahrávat?",
+    "why_upload_desc": "Jakmile nahraješ jízdenku, agentura automaticky dostane upozornění a připraví ti bydlení i pracovní smlouvu. Tímto krokem potvrzuješ svůj odjezd.",
+    "travel": {
+      "title": "Moje cíle",
+      "housing": "Dům (Ubytování)",
+      "work": "Práce (Místo výkonu)",
+      "rni": "Nejbližší RNI Úřad",
+      "nav_here": "Navigovat sem",
+      "nav_work": "Trasa do práce",
+      "nav_bsn": "Kde vyřídím BSN"
+    },
+    "docs": {
+      "title": "BSN Dokumentace",
+      "subtitle": "Před návštěvou úřadu v NL musíš mít vše připraveno.",
+      "not_ready": "Nejsi připraven na návštěvu úřadu! Zkontroluj své doklady.",
+      "ready": "Všechny dokumenty jsou v pořádku. Jsi připraven na cestu.",
+      "items": {
+        "passport": { "title": "Cestovní pas / Občanka", "sub": "Nesmí být prasklá ani propadlá" },
+        "birth": { "title": "Rodný list", "sub": "Mezinárodní formát (pokud vyžadován)" },
+        "housing": { "title": "Smlouva o ubytování", "sub": "Automaticky generováno k podpisu" }
+      }
+    },
+    "arrival": {
+      "title": "Travel Tracker",
+      "upload_label": "Nahrát jízdenku / Letenku",
+      "upload_placeholder": "Přetáhni soubor nebo klikni pro výběr",
+      "date_label": "Datum příjezdu",
+      "time_label": "Čas příjezdu",
+      "submit_btn": "Potvrdit příjezd do NL",
+      "loading": "Ukládám...",
+      "success_title": "Cesta potvrzena!",
+      "success_desc": "Agentura již o tvém příjezdu ví a připravuje klíče od bydlení."
+    }
+  }
+}
