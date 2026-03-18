@@ -10,7 +10,15 @@
     "title_main": "Digital Recruitment Portal.",
     "title_sub": "Efficient. Transparent.",
     "description": "Browse jobs and see exactly how much you'll earn. No surprises.",
-    "cta": "See Salary Calculation →"
+    "cta": "See Salary Calculation →",
+    "jobs_active": "Active Jobs",
+    "jobs_live": "Live",
+    "cta_title": "Choose a Position",
+    "cta_desc": "Click on any job listing to see a precise calculation of your net salary – including housing, insurance, and ET Regeling.",
+    "cta_feature1": "ET Regeling (tax relief) included",
+    "cta_feature2": "Housing costs deducted",
+    "cta_feature3": "Overtime and shift bonuses",
+    "cta_feature4": "Zorgtoeslag (government subsidy) +32€"
   },
   "roadmap": {
     "title": "Onboarding Roadmap",
@@ -23,7 +31,18 @@
     "action_scan": "Start Scanner",
     "action_guide": "Go to Guide",
     "not_ready": "You are not ready for the appointment!",
-    "ready": "All documents are ready."
+    "ready": "All documents are ready.",
+    "welcome": "Hello",
+    "welcome_sub": "track your progress toward a new beginning.",
+    "welcome_journey": "to NL.",
+    "my_nav": "My Navigation",
+    "my_nav_sub": "All important addresses for your arrival.",
+    "my_nav_btn": "Detailed Map",
+    "help_title": "Need Help?",
+    "help_desc": "Your coordinator is available 24/7. If you're unsure about documents or travel, give us a call.",
+    "help_btn": "Contact Support",
+    "info_title": "Useful Info",
+    "info_desc": "Don't forget that to obtain a BSN number, you must have an original birth certificate in an international format."
   },
   "about": {
     "title": "Bringing fairness to work in the Netherlands.",
@@ -38,6 +57,58 @@
     "app": "App",
     "partners": "Partners",
     "collaboration": "Collaboration",
-    "rights": "© 2026 GoNL Enterprise B.V. All rights reserved."
+    "rights": "© 2026 GoNL Enterprise B.V. All rights reserved.",
+    "partner_login": "Partner Login",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
+  },
+  "guide": {
+    "title": "Journey Guide",
+    "subtitle": "Everything you need for a smooth arrival and start in the Netherlands.",
+    "travel": {
+      "title": "Travel & Locations",
+      "rotterdam": {
+        "title": "Office Rotterdam (BSN)",
+        "sub": "BSN Appointment & Documents"
+      },
+      "zaandam": {
+        "title": "Accommodation Zaandam",
+        "sub": "Your new home"
+      },
+      "get_directions": "Get Directions"
+    },
+    "docs": {
+      "title": "Document Checklist",
+      "subtitle": "Ensure you have all physical documents for the BSN appointment.",
+      "items": {
+        "passport": {
+          "title": "ID Card or Passport",
+          "sub": "Must be valid and original"
+        },
+        "birth_cert": {
+          "title": "Birth Certificate",
+          "sub": "International format (multilingual)"
+        },
+        "contract": {
+          "title": "Labor Contract",
+          "sub": "Prepared by GoNL"
+        }
+      },
+      "status": {
+        "uploaded": "Digital copy verified",
+        "missing": "Missing digital copy"
+      }
+    },
+    "arrival": {
+      "title": "Confirm Arrival",
+      "success": "Arrival information received. Your coordinator will contact you shortly.",
+      "form": {
+        "date": "Projected Arrival Date",
+        "time": "Estimated Time",
+        "ticket": "Upload Ticket (PDF/Image)",
+        "ticket_placeholder": "Select file...",
+        "submit": "Confirm Arrival Details"
+      }
+    }
   }
 }

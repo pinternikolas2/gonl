@@ -60,14 +60,18 @@ export default function Header({ onLoginClick }) {
         <div className="flex items-center gap-6">
           
           {/* Language Switcher */}
-          <div className="hidden sm:flex items-center gap-2 bg-slate-50 p-1 rounded-xl border border-slate-100">
+          <div className="hidden sm:flex items-center gap-1.5 bg-slate-50 p-1 rounded-xl border border-slate-100">
             {['cz', 'sk', 'en'].map(lang => (
               <button
                 key={lang}
                 onClick={() => setLanguage(lang)}
-                className={`px-2 py-1 rounded-lg text-[10px] font-black uppercase transition-all ${language === lang ? 'bg-white text-orange-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                className={`
+                  px-2.5 py-1.5 rounded-lg text-[10px] font-black transition-all flex items-center gap-1.5
+                  ${language === lang ? 'bg-white text-orange-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}
+                `}
               >
-                {lang}
+                <span>{lang === 'cz' ? '🇨🇿' : lang === 'sk' ? '🇸🇰' : '🇬🇧'}</span>
+                <span className="uppercase">{lang}</span>
               </button>
             ))}
           </div>
@@ -113,14 +117,20 @@ export default function Header({ onLoginClick }) {
             className="md:hidden bg-white border-t border-slate-100 overflow-hidden"
           >
             <div className="flex flex-col p-6 gap-4">
-              <div className="flex gap-4 mb-4 pb-4 border-b border-slate-50">
+              <div className="grid grid-cols-3 gap-3 mb-4 pb-4 border-b border-slate-50">
                 {['cz', 'sk', 'en'].map(lang => (
                   <button
                     key={lang}
                     onClick={() => { setLanguage(lang); setIsMenuOpen(false); }}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold uppercase ${language === lang ? 'bg-orange-600 text-white' : 'bg-slate-50 text-slate-500'}`}
+                    className={`
+                      flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all gap-2
+                      ${language === lang 
+                        ? 'border-orange-500 bg-orange-50 text-orange-600' 
+                        : 'border-slate-50 bg-slate-50 text-slate-500'}
+                    `}
                   >
-                    {lang === 'cz' ? 'Česky' : lang === 'sk' ? 'Slovensky' : 'English'}
+                    <span className="text-2xl">{lang === 'cz' ? '🇨🇿' : lang === 'sk' ? '🇸🇰' : '🇬🇧'}</span>
+                    <span className="text-xs font-bold uppercase">{lang}</span>
                   </button>
                 ))}
               </div>
