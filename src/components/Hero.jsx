@@ -63,6 +63,18 @@ export default function Hero() {
     navigate('/dashboard');
   };
 
+  const handleJobSelect = (job) => {
+    setSelectedJob(job);
+    if (window.innerWidth < 1024) {
+      setTimeout(() => {
+        const calculator = document.getElementById('calculator');
+        if (calculator) {
+          calculator.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-6">
       {/* ─── Hero Headline ─── */}
@@ -105,7 +117,7 @@ export default function Hero() {
               >
                 <JobCard
                   job={job}
-                  onClick={(j) => setSelectedJob(j)}
+                  onClick={handleJobSelect}
                 />
               </motion.div>
             ))}

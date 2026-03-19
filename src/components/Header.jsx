@@ -13,14 +13,26 @@ export default function Header({ onLoginClick }) {
   const isLandingPage = location.pathname === '/';
 
   const scrollToSection = (id) => {
+    const wasMenuOpen = isMenuOpen;
     setIsMenuOpen(false);
+
     if (!isLandingPage) {
       navigate('/', { state: { scrollTo: id } });
       return;
     }
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+
+    const scrollPoint = () => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
+
+    if (wasMenuOpen) {
+      // Delay scroll to allow menu animation to progress/finish
+      setTimeout(scrollPoint, 300);
+    } else {
+      scrollPoint();
     }
   };
 
