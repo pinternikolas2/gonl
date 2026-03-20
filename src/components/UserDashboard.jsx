@@ -69,25 +69,25 @@ export default function UserDashboard() {
     },
     {
       id: 2,
-      title: t('roadmap.step2'),
-      description: profile.is_id_verified ? t('roadmap.step2_desc') : t('roadmap.step2_desc'),
-      status: profile.is_id_verified ? 'completed' : (profile.assigned_job ? 'active' : 'pending'),
-      icon: <ShieldCheck size={20} />,
-      action: () => setShowScanner(true)
+      title: t('roadmap.step_cv'),
+      description: profile.is_cv_uploaded ? t('roadmap.step_cv_desc') : t('roadmap.step_cv_desc'),
+      status: profile.is_cv_uploaded ? 'completed' : (profile.assigned_job ? 'active' : 'pending'),
+      icon: <FileText size={20} />,
+      action: () => setShowCVUpload(true)
     },
     {
       id: 3,
-      title: t('roadmap.step_cv'),
-      description: profile.is_cv_uploaded ? t('roadmap.step_cv_desc') : t('roadmap.step_cv_desc'),
-      status: profile.is_cv_uploaded ? 'completed' : (profile.is_id_verified ? 'active' : 'pending'),
-      icon: <FileText size={20} />,
-      action: () => setShowCVUpload(true)
+      title: t('roadmap.step2'),
+      description: profile.is_id_verified ? t('roadmap.step2_desc') : t('roadmap.step2_desc'),
+      status: profile.is_id_verified ? 'completed' : (profile.is_cv_uploaded ? 'active' : 'pending'),
+      icon: <ShieldCheck size={20} />,
+      action: () => setShowScanner(true)
     },
     {
       id: 4,
       title: t('roadmap.step3'),
       description: profile.is_ticket_uploaded ? t('roadmap.step3_desc') : t('roadmap.step3_desc'),
-      status: profile.is_ticket_uploaded ? 'completed' : (profile.is_cv_uploaded ? 'active' : 'pending'),
+      status: profile.is_ticket_uploaded ? 'completed' : (profile.is_id_verified ? 'active' : 'pending'),
       icon: <Plane size={20} />,
       action: () => navigate('/guide')
     }
@@ -166,7 +166,7 @@ export default function UserDashboard() {
                               onClick={step.action}
                               className="bg-orange-600 text-white px-6 py-3 rounded-2xl font-bold text-sm flex items-center gap-2 hover:bg-orange-500 transition-all shadow-lg shadow-orange-100"
                             >
-                              {step.id === 1 ? t('nav.jobs') : step.id === 2 ? t('roadmap.action_scan') : t('roadmap.action_guide')} 
+                              {step.id === 1 ? t('nav.jobs') : step.id === 2 ? t('roadmap.step_cv') : step.id === 3 ? t('roadmap.action_scan') : t('roadmap.action_guide')} 
                               <ChevronRight size={16} />
                             </button>
                           )}
