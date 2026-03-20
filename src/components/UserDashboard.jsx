@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import DocumentScanner from './DocumentScanner';
+import CVForm from './CVForm';
 import { useTranslation } from '../context/LanguageContext';
 import { uploadResume } from '../lib/supabase';
 
@@ -36,7 +37,9 @@ export default function UserDashboard() {
   });
 
   const [showScanner, setShowScanner] = useState(false);
+  const [showCVChoice, setShowCVChoice] = useState(false);
   const [showCVUpload, setShowCVUpload] = useState(false);
+  const [showCVForm, setShowCVForm] = useState(false);
   const [cvLoading, setCvLoading] = useState(false);
 
   // Sync profile to session for demo persistence
@@ -73,7 +76,7 @@ export default function UserDashboard() {
       description: profile.is_cv_uploaded ? t('roadmap.step_cv_desc') : t('roadmap.step_cv_desc'),
       status: profile.is_cv_uploaded ? 'completed' : (profile.assigned_job ? 'active' : 'pending'),
       icon: <FileText size={20} />,
-      action: () => setShowCVUpload(true)
+      action: () => setShowCVChoice(true)
     },
     {
       id: 3,
@@ -296,6 +299,77 @@ export default function UserDashboard() {
               </div>
             </motion.div>
           </motion.div>
+        )}
+
+        {showCVChoice && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[70] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center px-4"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="bg-white w-full max-w-md rounded-[32px] p-8 shadow-2xl relative"
+            >
+              <button 
+                onClick={() => setShowCVChoice(false)}
+                className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-900"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="text-center mb-10">
+                <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-100 shadow-sm">
+                  <FileText className="text-orange-600" size={32} />
+                </div>
+                <h3 className="text-2xl font-black text-slate-900">{t('roadmap.cv_choice_title')}</h3>
+                <p className="text-slate-500 font-medium text-sm mt-2">{t('roadmap.step_cv_desc')}</p>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4">
+                <button 
+                  onClick={() => { setShowCVChoice(false); setShowCVUpload(true); }}
+                  className="w-full flex items-center gap-4 p-6 rounded-[24px] bg-slate-50 hover:bg-orange-50 transition-all border border-slate-100 hover:border-orange-200 group text-left"
+                >
+                  <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:text-orange-600 transition-colors">
+                    <Upload size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-900">{t('roadmap.cv_choice_upload')}</h4>
+                    <p className="text-xs text-slate-400 font-medium">PDF, DOCX (max 5MB)</p>
+                  </div>
+                </button>
+
+                <button 
+                  onClick={() => { setShowCVChoice(false); setShowCVForm(true); }}
+                  className="w-full flex items-center gap-4 p-6 rounded-[24px] bg-slate-50 hover:bg-orange-50 transition-all border border-slate-100 hover:border-orange-200 group text-left"
+                >
+                  <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:text-orange-600 transition-colors">
+                    <FileText size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-900">{t('roadmap.cv_choice_create')}</h4>
+                    <p className="text-xs text-slate-400 font-medium">{t('cv_form.title')}</p>
+                  </div>
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {showCVForm && (
+          <div className="fixed inset-0 z-[70] bg-white flex flex-col pt-20 overflow-y-auto">
+            <CVForm 
+              profile={profile}
+              onBack={() => setShowCVForm(false)}
+              onComplete={(url) => {
+                setProfile(prev => ({ ...prev, is_cv_uploaded: true, cv_url: url }));
+                setShowCVForm(false);
+              }}
+            />
+          </div>
         )}
       </AnimatePresence>
 

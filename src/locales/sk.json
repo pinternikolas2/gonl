@@ -29,7 +29,10 @@
     "step3": "Cesta do NL",
     "step3_desc": "Nahrajte údaje o príchode",
     "step_cv": "Životopis (CV)",
-    "step_cv_desc": "Nahrajte svoj životopis pre zamestnávateľov",
+    "step_cv_desc": "Nahrajte alebo si vytvorte životopis",
+    "cv_choice_title": "Ako chcete nahrať životopis?",
+    "cv_choice_upload": "Mám vlastné CV",
+    "cv_choice_create": "Nemám CV, vytvoriť online",
     "action_scan": "Spustiť skener",
     "action_guide": "Prejsť do sprievodcu",
     "not_ready": "Nie si pripravený na návštevu úradu!",
@@ -80,7 +83,7 @@
       "rni": "Najbližší RNI Úrad",
       "nav_here": "Navigovať sem",
       "nav_work": "Trasa do práce",
-      "nav_bsn": "Kde vybavím BSN"
+      "final_btn": "Späť na hlavnú stránku"
     },
     "docs": {
       "title": "BSN Dokumentácia",
@@ -104,5 +107,26 @@
       "success_title": "Cesta potvrdená!",
       "success_desc": "Agentúra už o tvojom príchode vie a pripravuje kľúče od bývania."
     }
+  },
+  "cv_form": {
+    "title": "Online Generátor Životopisu",
+    "personal": "Osobné údaje",
+    "work": "Pracovné skúsenosti",
+    "skills": "Zručnosti & Jazyky",
+    "add_work": "Pridať firmu",
+    "generate": "Vygenerovať a uložiť",
+    "first_name": "Meno",
+    "last_name": "Priezvisko",
+    "phone": "Telefón",
+    "email": "E-mail",
+    "birth_date": "Dátum narodenia",
+    "city": "Bydlisko (Mesto)",
+    "pos": "Názov pozície",
+    "comp": "Názov firmy",
+    "period": "Obdobie (Od-Do)",
+    "desc": "Krátky popis činnosti",
+    "english_level": "Úroveň angličtiny",
+    "driving_license": "Vodičský preukaz",
+    "other_skills": "Ďalšie zručnosti (VZV, Zváračák, atď.)"
   }
 }

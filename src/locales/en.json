@@ -29,7 +29,10 @@
     "step3": "Travel to NL",
     "step3_desc": "Upload arrival details",
     "step_cv": "Resume (CV)",
-    "step_cv_desc": "Upload your resume for employers",
+    "step_cv_desc": "Upload or create your resume",
+    "cv_choice_title": "How do you want to provide your CV?",
+    "cv_choice_upload": "I have my own CV",
+    "cv_choice_create": "I don't have one, create online",
     "action_scan": "Start Scanner",
     "action_guide": "Go to Guide",
     "not_ready": "You are not ready for the appointment!",
@@ -77,7 +80,8 @@
       },
       "zaandam": {
         "title": "Accommodation Zaandam",
-        "sub": "Your new home"
+        "sub": "Your new home",
+        "final_btn": "Back to Home"
       },
       "get_directions": "Get Directions"
     },
@@ -114,5 +118,26 @@
         "submit": "Confirm Arrival Details"
       }
     }
+  },
+  "cv_form": {
+    "title": "Online Resume Generator",
+    "personal": "Personal Information",
+    "work": "Work Experience",
+    "skills": "Skills & Languages",
+    "add_work": "Add Company",
+    "generate": "Generate & Save",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "phone": "Phone",
+    "email": "Email",
+    "birth_date": "Date of Birth",
+    "city": "City",
+    "pos": "Position Title",
+    "comp": "Company Name",
+    "period": "Period (From-To)",
+    "desc": "Brief activity description",
+    "english_level": "English Level",
+    "driving_license": "Driving License",
+    "other_skills": "Additional Skills (VZV, Welder, etc.)"
   }
 }

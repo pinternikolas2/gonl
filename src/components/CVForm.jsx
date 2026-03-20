@@ -1,0 +1,456 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  User, 
+  Briefcase, 
+  Plus, 
+  Trash2, 
+  ChevronRight, 
+  ChevronLeft, 
+  Save, 
+  X,
+  Languages,
+  Car
+} from 'lucide-react';
+import { jsPDF } from 'jspdf';
+import { useTranslation } from '../context/LanguageContext';
+import { uploadResume } from '../lib/supabase';
+
+export default function CVForm({ profile, onBack, onComplete }) {
+  const { t } = useTranslation();
+  const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const [formData, setFormData] = useState(() => {
+    const nameParts = (profile?.name || '').split(' ');
+    return {
+      firstName: nameParts[0] || '',
+      lastName: nameParts.slice(1).join(' ') || '',
+      email: profile?.email || '',
+      phone: profile?.phone || '',
+      birthDate: '',
+      city: '',
+      experiences: [
+        { id: Date.now(), position: '', company: '', period: '', description: '' }
+      ],
+      englishLevel: 'B1',
+      drivingLicense: [],
+      otherSkills: ''
+    };
+  });
+
+  const handleAddExperience = () => {
+    setFormData(prev => ({
+      ...prev,
+      experiences: [...prev.experiences, { id: Date.now(), position: '', company: '', period: '', description: '' }]
+    }));
+  };
+
+  const handleRemoveExperience = (id) => {
+    setFormData(prev => ({
+      ...prev,
+      experiences: prev.experiences.filter(exp => exp.id !== id)
+    }));
+  };
+
+  const handleExperienceChange = (id, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      experiences: prev.experiences.map(exp => exp.id === id ? { ...exp, [field]: value } : exp)
+    }));
+  };
+
+  const handleLicenseToggle = (type) => {
+    setFormData(prev => ({
+      ...prev,
+      drivingLicense: prev.drivingLicense.includes(type)
+        ? prev.drivingLicense.filter(t => t !== type)
+        : [...prev.drivingLicense, type]
+    }));
+  };
+
+  const generatePDF = async () => {
+    setLoading(true);
+    try {
+      const doc = new jsPDF();
+      const margin = 20;
+      let y = 30;
+
+      // Header
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(24);
+      doc.setTextColor(15, 23, 42); // slate-900
+      doc.text(`${formData.firstName} ${formData.lastName}`, margin, y);
+      
+      y += 10;
+      doc.setFontSize(14);
+      doc.setTextColor(249, 115, 22); // orange-500
+      doc.text("Curriculum Vitae", margin, y);
+
+      y += 15;
+      doc.setDrawColor(226, 232, 240); // slate-200
+      doc.line(margin, y, 190, y);
+
+      // Personal Information
+      y += 15;
+      doc.setFontSize(12);
+      doc.setTextColor(71, 85, 105); // slate-500
+      doc.text("Personal Information", margin, y);
+
+      y += 10;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(30, 41, 59); // slate-800
+      doc.text(`Email: ${formData.email}`, margin, y);
+      doc.text(`Phone: ${formData.phone}`, margin + 80, y); y += 6;
+      doc.text(`Date of Birth: ${formData.birthDate}`, margin, y);
+      doc.text(`Address: ${formData.city}`, margin + 80, y);
+
+      // Professional Experience
+      y += 15;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.setTextColor(71, 85, 105);
+      doc.text("Professional Experience", margin, y);
+      
+      formData.experiences.forEach(exp => {
+        y += 10;
+        if (y > 260) { doc.addPage(); y = 20; }
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(11);
+        doc.setTextColor(30, 41, 59);
+        doc.text(exp.position, margin, y);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(71, 85, 105);
+        doc.text(exp.period, 190, y, { align: "right" });
+        
+        y += 5;
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(249, 115, 22);
+        doc.text(exp.company, margin, y);
+        
+        y += 6;
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(30, 41, 59);
+        const splitDesc = doc.splitTextToSize(exp.description, 170);
+        doc.text(splitDesc, margin, y);
+        y += (splitDesc.length * 5);
+      });
+
+      // Skills & Languages
+      y += 15;
+      if (y > 250) { doc.addPage(); y = 20; }
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.setTextColor(71, 85, 105);
+      doc.text("Skills & Languages", margin, y);
+
+      y += 10;
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(30, 41, 59);
+      doc.setFontSize(10);
+      doc.text(`English Level: ${formData.englishLevel}`, margin, y);
+      y += 6;
+      doc.text(`Driving License: ${formData.drivingLicense.join(', ') || 'No license'}`, margin, y);
+      y += 8;
+      doc.text("Other Skills:", margin, y);
+      y += 6;
+      const otherSplit = doc.splitTextToSize(formData.otherSkills, 170);
+      doc.text(otherSplit, margin, y);
+
+      // Footer
+      doc.setFontSize(8);
+      doc.setTextColor(148, 163, 184);
+      doc.text("Generated by GoNL.app Smart Recruitment Technology", 105, 285, { align: "center" });
+
+      const pdfBlob = doc.output('blob');
+      const pdfFile = new File([pdfBlob], `CV_${formData.firstName}_${formData.lastName}_GoNL.pdf`, { type: 'application/pdf' });
+      
+      const publicUrl = await uploadResume(pdfFile, `gen_${Date.now()}`);
+      onComplete(publicUrl);
+    } catch (err) {
+      console.error(err);
+      alert('Chyba při generování PDF');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex-1 bg-slate-50 relative pb-20 overflow-y-auto">
+      {/* Header Bar */}
+      <div className="fixed top-0 left-0 right-0 h-20 bg-white border-b border-slate-100 flex items-center justify-between px-6 z-50">
+        <button onClick={onBack} className="p-2 text-slate-400 hover:text-slate-900 transition-colors">
+          <X size={24} />
+        </button>
+        <h2 className="text-lg font-black text-slate-900 tracking-tight">{t('cv_form.title')}</h2>
+        <div className="w-10" />
+      </div>
+
+      <div className="max-w-3xl mx-auto px-6 pt-12">
+        {/* Progress */}
+        <div className="flex gap-4 mb-12">
+          {[1, 2, 3].map(i => (
+            <div key={i} className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${step >= i ? 'bg-orange-500' : 'bg-slate-200'}`} />
+          ))}
+        </div>
+
+        <AnimatePresence mode="wait">
+          {step === 1 && (
+            <motion.div 
+              key="step1"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-8"
+            >
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-12 bg-orange-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-orange-200">
+                  <User size={24} />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black text-slate-900">{t('cv_form.personal')}</h3>
+                  <p className="text-slate-500 text-sm font-medium">{t('roadmap.welcome_sub')}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">{t('cv_form.first_name')}</label>
+                  <input 
+                    type="text" 
+                    value={formData.firstName}
+                    onChange={e => setFormData({...formData, firstName: e.target.value})}
+                    className="w-full bg-white border border-slate-200 rounded-2xl px-5 py-4 text-base font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">{t('cv_form.last_name')}</label>
+                  <input 
+                    type="text" 
+                    value={formData.lastName}
+                    onChange={e => setFormData({...formData, lastName: e.target.value})}
+                    className="w-full bg-white border border-slate-200 rounded-2xl px-5 py-4 text-base font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">{t('cv_form.email')}</label>
+                  <input 
+                    type="email" 
+                    value={formData.email}
+                    onChange={e => setFormData({...formData, email: e.target.value})}
+                    className="w-full bg-white border border-slate-200 rounded-2xl px-5 py-4 text-base font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">{t('cv_form.phone')}</label>
+                  <input 
+                    type="tel" 
+                    value={formData.phone}
+                    onChange={e => setFormData({...formData, phone: e.target.value})}
+                    className="w-full bg-white border border-slate-200 rounded-2xl px-5 py-4 text-base font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">{t('cv_form.birth_date')}</label>
+                  <input 
+                    type="date" 
+                    value={formData.birthDate}
+                    onChange={e => setFormData({...formData, birthDate: e.target.value})}
+                    className="w-full bg-white border border-slate-200 rounded-2xl px-5 py-4 text-base font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">{t('cv_form.city')}</label>
+                  <input 
+                    type="text" 
+                    value={formData.city}
+                    onChange={e => setFormData({...formData, city: e.target.value})}
+                    className="w-full bg-white border border-slate-200 rounded-2xl px-5 py-4 text-base font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-8">
+                <button 
+                  onClick={() => setStep(2)}
+                  className="bg-slate-900 text-white px-10 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-all"
+                >
+                  Pokračovat <ChevronRight size={18} />
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {step === 2 && (
+            <motion.div 
+              key="step2"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-8"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-orange-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-orange-200">
+                  <Briefcase size={24} />
+                </div>
+                <h3 className="text-2xl font-black text-slate-900">{t('cv_form.work')}</h3>
+              </div>
+
+              {formData.experiences.map((exp, index) => (
+                <div key={exp.id} className="bg-white rounded-[28px] border border-slate-100 p-8 shadow-sm relative group">
+                  <button 
+                    onClick={() => handleRemoveExperience(exp.id)}
+                    className="absolute top-6 right-6 p-2 text-slate-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="md:col-span-2 text-xs font-bold text-orange-500 uppercase"># {index + 1} Zkušenost</div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-400 uppercase mb-2">{t('cv_form.pos')}</label>
+                      <input 
+                        type="text" 
+                        value={exp.position}
+                        onChange={e => handleExperienceChange(exp.id, 'position', e.target.value)}
+                        className="w-full bg-slate-50 border-none rounded-2xl px-5 py-3.5 text-base font-bold focus:ring-2 focus:ring-orange-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-400 uppercase mb-2">{t('cv_form.comp')}</label>
+                      <input 
+                        type="text" 
+                        value={exp.company}
+                        onChange={e => handleExperienceChange(exp.id, 'company', e.target.value)}
+                        className="w-full bg-slate-50 border-none rounded-2xl px-5 py-3.5 text-base font-bold focus:ring-2 focus:ring-orange-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-400 uppercase mb-2">{t('cv_form.period')}</label>
+                      <input 
+                        type="text" 
+                        value={exp.period}
+                        placeholder="2020 - 2023"
+                        onChange={e => handleExperienceChange(exp.id, 'period', e.target.value)}
+                        className="w-full bg-slate-50 border-none rounded-2xl px-5 py-3.5 text-base font-bold focus:ring-2 focus:ring-orange-500"
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-xs font-bold text-slate-400 uppercase mb-2">{t('cv_form.desc')}</label>
+                      <textarea 
+                        rows="3"
+                        value={exp.description}
+                        onChange={e => handleExperienceChange(exp.id, 'description', e.target.value)}
+                        className="w-full bg-slate-50 border-none rounded-2xl px-5 py-3.5 text-base font-bold focus:ring-2 focus:ring-orange-500"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              <button 
+                onClick={handleAddExperience}
+                className="w-full py-6 rounded-[28px] border-2 border-dashed border-slate-200 text-slate-400 font-bold hover:border-orange-500 hover:text-orange-500 transition-all flex items-center justify-center gap-2"
+              >
+                <Plus size={20} /> {t('cv_form.add_work')}
+              </button>
+
+              <div className="flex justify-between pt-8">
+                <button onClick={() => setStep(1)} className="text-slate-500 font-bold flex items-center gap-2 hover:text-slate-900 transition-colors">
+                  <ChevronLeft size={18} /> Zpět
+                </button>
+                <button 
+                  onClick={() => setStep(3)}
+                  className="bg-slate-900 text-white px-10 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-all"
+                >
+                  Pokračovat <ChevronRight size={18} />
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {step === 3 && (
+            <motion.div 
+              key="step3"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-8"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-orange-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-orange-200">
+                  <Languages size={24} />
+                </div>
+                <h3 className="text-2xl font-black text-slate-900">{t('cv_form.skills')}</h3>
+              </div>
+
+              <div className="bg-white rounded-[28px] border border-slate-100 p-8 shadow-sm space-y-8">
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 px-1">{t('cv_form.english_level')}</label>
+                  <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
+                    {['A1', 'A2', 'B1', 'B2', 'C1'].map(lvl => (
+                      <button 
+                        key={lvl}
+                        onClick={() => setFormData({...formData, englishLevel: lvl})}
+                        className={`py-3 rounded-xl font-bold transition-all ${formData.englishLevel === lvl ? 'bg-orange-600 text-white shadow-lg shadow-orange-200' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}
+                      >
+                        {lvl}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 px-1">{t('cv_form.driving_license')}</label>
+                  <div className="flex flex-wrap gap-3">
+                    {['B', 'C', 'C+E'].map(type => (
+                      <button 
+                        key={type}
+                        onClick={() => handleLicenseToggle(type)}
+                        className={`px-6 py-3 rounded-xl font-bold border transition-all flex items-center gap-2 ${formData.drivingLicense.includes(type) ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-500 border-slate-200 hover:border-slate-400'}`}
+                      >
+                        <Car size={16} /> {type}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">{t('cv_form.other_skills')}</label>
+                  <textarea 
+                    rows="3"
+                    value={formData.otherSkills}
+                    onChange={e => setFormData({...formData, otherSkills: e.target.value})}
+                    placeholder="VZV, Svářečák, Práce ve výškách..."
+                    className="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-base font-bold focus:ring-2 focus:ring-orange-500"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-between pt-8">
+                <button onClick={() => setStep(2)} className="text-slate-500 font-bold flex items-center gap-2 hover:text-slate-900 transition-colors">
+                  <ChevronLeft size={18} /> Zpět
+                </button>
+                <button 
+                  onClick={generatePDF}
+                  disabled={loading}
+                  className="bg-orange-600 text-white px-12 py-4 rounded-2xl font-black text-base flex items-center gap-2 hover:bg-orange-500 transition-all shadow-xl shadow-orange-200 disabled:opacity-40"
+                >
+                  {loading ? (
+                    <motion.div 
+                      animate={{ rotate: 360 }} 
+                      transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} 
+                      className="w-5 h-5 border-2 border-white border-t-transparent rounded-full" 
+                    />
+                  ) : <Save size={20} />}
+                  {t('cv_form.generate')}
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
