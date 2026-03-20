@@ -170,7 +170,7 @@ export default function CVForm({ profile, onBack, onComplete }) {
       onComplete(publicUrl);
     } catch (err) {
       console.error(err);
-      alert('Chyba při generování PDF');
+      alert(t('cv_form.error_pdf'));
     } finally {
       setLoading(false);
     }
@@ -276,7 +276,7 @@ export default function CVForm({ profile, onBack, onComplete }) {
                   onClick={() => setStep(2)}
                   className="bg-slate-900 text-white px-10 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-all"
                 >
-                  Pokračovat <ChevronRight size={18} />
+                  {t('cv_form.btn_continue')} <ChevronRight size={18} />
                 </button>
               </div>
             </motion.div>
@@ -307,7 +307,7 @@ export default function CVForm({ profile, onBack, onComplete }) {
                   </button>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="md:col-span-2 text-xs font-bold text-orange-500 uppercase"># {index + 1} Zkušenost</div>
+                    <div className="md:col-span-2 text-xs font-bold text-orange-500 uppercase"># {index + 1} {t('cv_form.exp_label')}</div>
                     <div>
                       <label className="block text-xs font-bold text-slate-400 uppercase mb-2">{t('cv_form.pos')}</label>
                       <input 
@@ -358,13 +358,13 @@ export default function CVForm({ profile, onBack, onComplete }) {
 
               <div className="flex justify-between pt-8">
                 <button onClick={() => setStep(1)} className="text-slate-500 font-bold flex items-center gap-2 hover:text-slate-900 transition-colors">
-                  <ChevronLeft size={18} /> Zpět
+                  <ChevronLeft size={18} /> {t('cv_form.btn_back')}
                 </button>
                 <button 
                   onClick={() => setStep(3)}
                   className="bg-slate-900 text-white px-10 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-all"
                 >
-                  Pokračovat <ChevronRight size={18} />
+                  {t('cv_form.btn_continue')} <ChevronRight size={18} />
                 </button>
               </div>
             </motion.div>
@@ -422,7 +422,7 @@ export default function CVForm({ profile, onBack, onComplete }) {
                     rows="3"
                     value={formData.otherSkills}
                     onChange={e => setFormData({...formData, otherSkills: e.target.value})}
-                    placeholder="VZV, Svářečák, Práce ve výškách..."
+                    placeholder={t('cv_form.other_skills_placeholder')}
                     className="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 text-base font-bold focus:ring-2 focus:ring-orange-500"
                   />
                 </div>
@@ -430,7 +430,7 @@ export default function CVForm({ profile, onBack, onComplete }) {
 
               <div className="flex justify-between pt-8">
                 <button onClick={() => setStep(2)} className="text-slate-500 font-bold flex items-center gap-2 hover:text-slate-900 transition-colors">
-                  <ChevronLeft size={18} /> Zpět
+                  <ChevronLeft size={18} /> {t('cv_form.btn_back')}
                 </button>
                 <button 
                   onClick={generatePDF}

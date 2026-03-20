@@ -19,11 +19,11 @@ export default function AddJobModal({ isOpen, onClose, onSave }) {
 
   const validate = () => {
     const newErr = {};
-    if (!form.title.trim()) newErr.title = 'Zadejte název pozice';
-    if (!form.company_name.trim()) newErr.company_name = 'Zadejte název firmy';
-    if (!form.location_city.trim()) newErr.location_city = 'Zadejte město';
+    if (!form.title.trim()) newErr.title = 'Enter position title';
+    if (!form.company_name.trim()) newErr.company_name = 'Enter company name';
+    if (!form.location_city.trim()) newErr.location_city = 'Enter city';
     if (!form.hourly_brutto || isNaN(form.hourly_brutto) || form.hourly_brutto <= 0)
-      newErr.hourly_brutto = 'Zadejte platnou hodinovou mzdu';
+      newErr.hourly_brutto = 'Enter a valid hourly wage';
     return newErr;
   };
 
@@ -98,8 +98,8 @@ export default function AddJobModal({ isOpen, onClose, onSave }) {
                   <Plus className="text-white" size={20} />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-slate-900">Přidat pracovní nabídku</h2>
-                  <p className="text-xs text-slate-500">Nabídka bude okamžitě viditelná kandídátům</p>
+                  <h2 className="text-lg font-bold text-slate-900">Add Job Posting</h2>
+                  <p className="text-xs text-slate-500">The posting will be immediately visible to candidates</p>
                 </div>
               </div>
               <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-200 transition-colors">
@@ -110,25 +110,25 @@ export default function AddJobModal({ isOpen, onClose, onSave }) {
             {/* Form body */}
             <form onSubmit={handleSubmit} className="flex-1 overflow-auto p-6 space-y-5">
               <div className="grid grid-cols-2 gap-4">
-                <Field label="Název pozice" name="title" placeholder="Skladník - Order Picker" />
-                <Field label="Firma" name="company_name" placeholder="Albert Heijn" />
+                <Field label="Position Title" name="title" placeholder="Warehouse - Order Picker" />
+                <Field label="Company" name="company_name" placeholder="Albert Heijn" />
               </div>
               
-              <Field label="Město / Lokace" name="location_city" placeholder="Zaandam, Noord-Holland" />
+              <Field label="City / Location" name="location_city" placeholder="Zaandam, Noord-Holland" />
               
               <div className="grid grid-cols-3 gap-4">
-                <Field label="Hodinová mzda (€)" name="hourly_brutto" type="number" step="0.01" placeholder="14.50" />
-                <Field label="Ubytování / týden (€)" name="housing_cost_weekly" type="number" step="1" placeholder="135" />
+                <Field label="Hourly Wage (€)" name="hourly_brutto" type="number" step="0.01" placeholder="14.50" />
+                <Field label="Housing / week (€)" name="housing_cost_weekly" type="number" step="1" placeholder="135" />
                 <div>
                   <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                    Příplatek za směny
+                    Shift Allowance
                   </label>
                   <select
                     value={form.shift_allowance}
                     onChange={(e) => handleChange('shift_allowance', parseFloat(e.target.value))}
                     className="w-full bg-slate-50 rounded-xl px-4 py-3 text-sm font-medium border border-slate-200 transition-all outline-none focus:ring-2 focus:ring-orange-500"
                   >
-                    <option value={1.0}>Žádný (1.0×)</option>
+                    <option value={1.0}>None (1.0×)</option>
                     <option value={1.10}>+10% (1.10×)</option>
                     <option value={1.15}>+15% (1.15×)</option>
                     <option value={1.25}>+25% (1.25×)</option>
@@ -138,12 +138,12 @@ export default function AddJobModal({ isOpen, onClose, onSave }) {
               
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                  Popis práce
+                  Job Description
                 </label>
                 <textarea
                   value={form.description}
                   onChange={(e) => handleChange('description', e.target.value)}
-                  placeholder="Popište náplň práce, požadavky, výhody..."
+                  placeholder="Describe the job duties, requirements, benefits..."
                   rows={4}
                   className="w-full bg-slate-50 rounded-xl px-4 py-3 text-sm font-medium border border-slate-200 transition-all outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white resize-none"
                 />
@@ -153,7 +153,7 @@ export default function AddJobModal({ isOpen, onClose, onSave }) {
             {/* Footer */}
             <div className="p-6 border-t border-slate-100 flex gap-3">
               <button type="button" onClick={onClose} className="flex-1 bg-slate-100 text-slate-700 py-3 rounded-xl font-bold hover:bg-slate-200 transition-colors">
-                Zrušit
+                Cancel
               </button>
               <button
                 onClick={handleSubmit}
@@ -161,11 +161,11 @@ export default function AddJobModal({ isOpen, onClose, onSave }) {
                 className="flex-1 bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors disabled:opacity-70 flex items-center justify-center gap-2"
               >
                 {saved ? (
-                  <><CheckCircle2 size={18} className="text-emerald-400" /> Uloženo!</>
+                  <><CheckCircle2 size={18} className="text-emerald-400" /> Saved!</>
                 ) : isSubmitting ? (
                   <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} className="w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
                 ) : (
-                  <><Plus size={18} /> Přidat nabídku</>
+                  <><Plus size={18} /> Add Job</>
                 )}
               </button>
             </div>

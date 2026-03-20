@@ -33,6 +33,9 @@
     "cv_choice_title": "Jak chcete nahrát životopis?",
     "cv_choice_upload": "Mám vlastní CV",
     "cv_choice_create": "Nemám CV, vytvořit online",
+    "cv_uploading": "Nahrávám...",
+    "cv_select_file": "Vyberte soubor PDF nebo DOCX",
+    "cv_max_size": "Maximální velikost 5MB",
     "action_scan": "Spustit skener",
     "action_guide": "Přejít do průvodce",
     "not_ready": "Nejsi připraven na návštěvu úřadu!",
@@ -69,7 +72,12 @@
     "desc": "Krátký popis činnosti",
     "english_level": "Úroveň angličtiny",
     "driving_license": "Řidičský průkaz",
-    "other_skills": "Další dovednosti (VZV, Svářečák, atd.)"
+    "other_skills": "Další dovednosti (VZV, Svářečák, atd.)",
+    "other_skills_placeholder": "VZV, Svářečák, Práce ve výškách...",
+    "btn_continue": "Pokračovat",
+    "btn_back": "Zpět",
+    "exp_label": "Zkušenost",
+    "error_pdf": "Chyba při generování PDF"
   },
   "about": {
     "title": "Přinášíme férovost do práce v Holandsku.",

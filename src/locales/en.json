@@ -33,6 +33,9 @@
     "cv_choice_title": "How do you want to provide your CV?",
     "cv_choice_upload": "I have my own CV",
     "cv_choice_create": "I don't have one, create online",
+    "cv_uploading": "Uploading...",
+    "cv_select_file": "Select PDF or DOCX file",
+    "cv_max_size": "Maximum size 5MB",
     "action_scan": "Start Scanner",
     "action_guide": "Go to Guide",
     "not_ready": "You are not ready for the appointment!",
@@ -138,6 +141,11 @@
     "desc": "Brief activity description",
     "english_level": "English Level",
     "driving_license": "Driving License",
-    "other_skills": "Additional Skills (VZV, Welder, etc.)"
+    "other_skills": "Additional Skills (VZV, Welder, etc.)",
+    "other_skills_placeholder": "VZV, Welder, Construction White Card...",
+    "btn_continue": "Continue",
+    "btn_back": "Back",
+    "exp_label": "Experience",
+    "error_pdf": "Error generating PDF"
   }
 }

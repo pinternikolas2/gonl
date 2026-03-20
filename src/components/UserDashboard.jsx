@@ -291,9 +291,9 @@ export default function UserDashboard() {
                     />
                     <Upload className="mx-auto mb-4 text-orange-600" size={32} />
                     <p className="text-sm font-bold text-slate-700">
-                      {cvLoading ? 'Nahrávám...' : 'Vyberte soubor PDF nebo DOCX'}
+                      {cvLoading ? t('roadmap.cv_uploading') : t('roadmap.cv_select_file')}
                     </p>
-                    <p className="text-xs text-slate-400 mt-2">Maximální velikost 5MB</p>
+                    <p className="text-xs text-slate-400 mt-2">{t('roadmap.cv_max_size')}</p>
                   </div>
                 </label>
               </div>

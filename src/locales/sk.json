@@ -32,7 +32,10 @@
     "step_cv_desc": "Nahrajte alebo si vytvorte životopis",
     "cv_choice_title": "Ako chcete nahrať životopis?",
     "cv_choice_upload": "Mám vlastné CV",
-    "cv_choice_create": "Nemám CV, vytvoriť online",
+    "cv_choice_create": "Nemám CV, vytvořit online",
+    "cv_uploading": "Nahrávam...",
+    "cv_select_file": "Vyberte súbor PDF alebo DOCX",
+    "cv_max_size": "Maximálna veľkosť 5MB",
     "action_scan": "Spustiť skener",
     "action_guide": "Prejsť do sprievodcu",
     "not_ready": "Nie si pripravený na návštevu úradu!",
@@ -127,6 +130,11 @@
     "desc": "Krátky popis činnosti",
     "english_level": "Úroveň angličtiny",
     "driving_license": "Vodičský preukaz",
-    "other_skills": "Ďalšie zručnosti (VZV, Zváračák, atď.)"
+    "other_skills": "Ďalšie zručnosti (VZV, Zváračák, atď.)",
+    "other_skills_placeholder": "VZV, Zváračák, Práce vo výškach...",
+    "btn_continue": "Pokračovať",
+    "btn_back": "Späť",
+    "exp_label": "Skúsenosť",
+    "error_pdf": "Chyba pri generovaní PDF"
   }
 }

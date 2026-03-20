@@ -29,7 +29,7 @@ export default function PartnerLoginPage() {
           onClick={() => navigate('/')}
           className="flex items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors mb-8 font-medium text-sm"
         >
-          <ArrowLeft size={16} /> Zpět na úvod
+          <ArrowLeft size={16} /> Back to Home
         </button>
 
         <div className="text-center mb-10">
@@ -37,7 +37,7 @@ export default function PartnerLoginPage() {
             <Building2 className="text-white" size={32} />
           </div>
           <h1 className="text-3xl font-black tracking-tight text-slate-900">Partner Login</h1>
-          <p className="text-sm text-slate-500 mt-2 font-medium">Přístup pro náborové agentury</p>
+          <p className="text-sm text-slate-500 mt-2 font-medium">Partner & Agency Access</p>
         </div>
 
         <div className="bg-white rounded-[28px] shadow-xl shadow-slate-200/50 border border-slate-100 p-8">
@@ -58,7 +58,7 @@ export default function PartnerLoginPage() {
             </div>
             
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Heslo</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Password</label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                 <input
@@ -81,7 +81,7 @@ export default function PartnerLoginPage() {
 
             <div className="flex justify-end">
               <button type="button" className="text-xs text-orange-600 font-semibold hover:underline">
-                Zapomenuté heslo?
+                Forgot Password?
               </button>
             </div>
 
@@ -97,14 +97,14 @@ export default function PartnerLoginPage() {
                   className="w-5 h-5 border-2 border-white border-t-transparent rounded-full" 
                 />
               ) : (
-                <>Přihlásit se <ChevronRight size={18}/></>
+                <>Sign In <ChevronRight size={18}/></>
               )}
             </button>
           </form>
 
           <p className="text-xs text-center text-slate-400 mt-6 leading-relaxed">
-            Nemáte vytvořený partnerský účet?<br/>
-            <a href="mailto:info@gonl.app" className="text-orange-600 font-semibold hover:underline">Kontaktujte náš obchodní tým →</a>
+            Don't have a partner account?<br/>
+            <a href="mailto:info@gonl.app" className="text-orange-600 font-semibold hover:underline">Contact our sales team →</a>
           </p>
         </div>
 
