@@ -89,7 +89,7 @@ export default function PartnersPage() {
                   <span className="text-orange-500">Candidate Scoring.</span>
                 </h2>
                 <p className="text-slate-400 text-lg font-medium mb-8">
-                  We don't just send resumes. We provide a comprehensive data profile of every candidate before they even board the plane.
+                  We don't just send resumes. We provide a comprehensive data profile of every candidate. All candidates come with a standardized English CV, ready for your clients.
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 text-orange-500 font-bold">

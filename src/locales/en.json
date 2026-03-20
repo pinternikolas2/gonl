@@ -28,6 +28,8 @@
     "step2_desc": "Required for NL employment contract. Safe and encrypted.",
     "step3": "Travel to NL",
     "step3_desc": "Upload arrival details",
+    "step_cv": "Resume (CV)",
+    "step_cv_desc": "Upload your resume for employers",
     "action_scan": "Start Scanner",
     "action_guide": "Go to Guide",
     "not_ready": "You are not ready for the appointment!",
