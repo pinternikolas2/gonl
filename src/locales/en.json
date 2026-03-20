@@ -53,14 +53,16 @@
     "feature2_desc": "Handle everything from your mobile. From identity verification to uploading your ticket."
   },
   "footer": {
-    "description": "Modern platform for recruiting people from the Czech and Slovak Republics to the Netherlands. Transparently, digitally, and without unnecessary paperwork.",
-    "app": "App",
-    "partners": "Partners",
-    "collaboration": "Collaboration",
-    "rights": "© 2026 GoNL Enterprise B.V. All rights reserved.",
-    "partner_login": "Partner Login",
-    "privacy": "Privacy Policy",
-    "terms": "Terms of Use"
+    "candidates": "Candidates",
+    "jobs": "Current Jobs",
+    "calc": "Salary Calculator",
+    "faq": "FAQ",
+    "agencies": "For Agencies",
+    "become_partner": "Become a Partner",
+    "portal": "Agency Portal",
+    "contact": "Contact",
+    "tech": "Powered by GoNL technology. 🇳🇱 Based in Amsterdam.",
+    "rights": "© 2026 GoNL Enterprise B.V. All rights reserved."
   },
   "guide": {
     "title": "Journey Guide",

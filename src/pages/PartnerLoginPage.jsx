@@ -104,7 +104,7 @@ export default function PartnerLoginPage() {
 
           <p className="text-xs text-center text-slate-400 mt-6 leading-relaxed">
             Nemáte vytvořený partnerský účet?<br/>
-            <a href="mailto:partners@gonl.app" className="text-orange-600 font-semibold hover:underline">Kontaktujte náš obchodní tým →</a>
+            <a href="mailto:info@gonl.app" className="text-orange-600 font-semibold hover:underline">Kontaktujte náš obchodní tým →</a>
           </p>
         </div>
 

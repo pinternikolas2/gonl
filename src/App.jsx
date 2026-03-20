@@ -8,6 +8,7 @@ import JobPage from './pages/JobPage';
 import JobsListPage from './pages/JobsListPage';
 import ProfilePage from './pages/ProfilePage';
 import GuidePage from './pages/GuidePage';
+import PartnersPage from './pages/PartnersPage';
 import BottomNav from './components/BottomNav';
 import { LanguageProvider } from './context/LanguageContext';
 
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/partner-login" element={<PartnerLoginPage />} />
           <Route path="/jobs" element={<JobsListPage />} />
           <Route path="/jobs/:id" element={<JobPage />} />
+          <Route path="/partners" element={<PartnersPage />} />
 
           {/* Candidate / Private */}
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />

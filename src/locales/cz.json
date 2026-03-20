@@ -53,14 +53,16 @@
     "feature2_desc": "Vše vyřídíte z mobilu. Od ověření identity až po nahrání letenky."
   },
   "footer": {
-    "description": "Moderní platforma pro nábor lidí z České a Slovenské republiky do Nizozemska. Transparentně, digitálně a bez zbytečných papírů.",
-    "app": "Aplikace",
-    "partners": "Partneři",
-    "collaboration": "Spolupráce",
-    "rights": "© 2026 GoNL Enterprise B.V. Všechna práva vyhrazena.",
-    "partner_login": "Partner Login",
-    "privacy": "Zásady ochrany osobních údajů",
-    "terms": "Podmínky použití"
+    "candidates": "Uchazeči",
+    "jobs": "Aktuální práce",
+    "calc": "Kalkulačka mzdy",
+    "faq": "Časté dotazy",
+    "agencies": "For Agencies",
+    "become_partner": "Become a Partner",
+    "portal": "Agency Portal",
+    "contact": "Kontakt",
+    "tech": "Powered by GoNL technology. 🇳🇱 Based in Amsterdam.",
+    "rights": "© 2026 GoNL Enterprise B.V. Všechna práva vyhrazena."
   },
   "guide": {
     "title": "Průvodce cestou",

@@ -53,14 +53,16 @@
     "feature2_desc": "Všetko vybavíte z mobilu. Od overenia identity až po nahranie letenky."
   },
   "footer": {
-    "description": "Moderná platforma pre nábor ľudí z Českej a Slovenskej republiky do Holandska. Transparentne, digitálne a bez zbytočných papierov.",
-    "app": "Aplikácia",
-    "partners": "Partneri",
-    "collaboration": "Spolupráca",
-    "rights": "© 2026 GoNL Enterprise B.V. Všetky práva vyhradené.",
-    "partner_login": "Login pre partnerov",
-    "privacy": "Zásady ochrany osobných údajov",
-    "terms": "Podmienky používania"
+    "candidates": "Uchádzači",
+    "jobs": "Aktuálne ponuky",
+    "calc": "Kalkulačka mzdy",
+    "faq": "Časté otázky",
+    "agencies": "For Agencies",
+    "become_partner": "Become a Partner",
+    "portal": "Agency Portal",
+    "contact": "Kontakt",
+    "tech": "Powered by GoNL technology. 🇳🇱 Based in Amsterdam.",
+    "rights": "© 2026 GoNL Enterprise B.V. Všetky práva vyhradené."
   },
   "guide": {
     "title": "Sprievodca cestou",
