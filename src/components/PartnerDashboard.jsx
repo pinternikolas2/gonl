@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, FileCheck, Plane, Search, Download, X, Eye, CheckCircle2, FileText, Video, Building2, Plus } from 'lucide-react';
+import { Users, FileCheck, Plane, Search, Download, X, Eye, CheckCircle2, FileText, Video, Building2, Plus, Settings } from 'lucide-react';
 import AddJobModal from './AddJobModal';
 
 // Mock candidates
@@ -18,6 +18,7 @@ const mockCandidates = [
     photoUrl: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?auto=format&fit=crop&q=80&w=200&h=200',
     idPhotoUrl: 'https://images.unsplash.com/photo-1621252178972-e1d1377b5d19?auto=format&fit=crop&q=80&w=600&h=400',
     hasVideo: true,
+    cvUrl: 'https://example.com/cv1.pdf',
   },
   {
     id: 'C1046',
@@ -32,6 +33,7 @@ const mockCandidates = [
     photoUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200&h=200',
     idPhotoUrl: 'https://images.unsplash.com/photo-1621252178972-e1d1377b5d19?auto=format&fit=crop&q=80&w=600&h=400',
     hasVideo: false,
+    cvUrl: 'https://example.com/cv2.pdf',
   },
   {
     id: 'C1047',
@@ -46,6 +48,7 @@ const mockCandidates = [
     photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200&h=200',
     idPhotoUrl: 'https://images.unsplash.com/photo-1621252178972-e1d1377b5d19?auto=format&fit=crop&q=80&w=600&h=400',
     hasVideo: true,
+    cvUrl: 'https://example.com/cv3.pdf',
   }
 ];
 
@@ -119,6 +122,14 @@ export default function PartnerDashboard() {
           >
             <Plus size={16} /> Add Job
           </button>
+          
+          <button 
+            onClick={() => alert('Settings Panel Opening...')}
+            className="p-2 text-slate-400 hover:text-slate-900 transition-colors"
+          >
+            <Settings size={20} />
+          </button>
+
           <div className="h-8 w-px bg-slate-200"></div>
           <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden">
              <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=100&h=100" alt="Agent" className="w-full h-full object-cover" />
@@ -212,6 +223,14 @@ export default function PartnerDashboard() {
                         >
                           Detail
                         </button>
+                        <a 
+                          href={c.cvUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm mr-2 inline-flex items-center gap-1.5"
+                        >
+                          <FileText size={14} /> Resume
+                        </a>
                         <button 
                           onClick={() => handleApprove(c.id)}
                           disabled={c.status === 'active'}
@@ -339,6 +358,17 @@ export default function PartnerDashboard() {
                     </button>
                   </div>
                 )}
+
+                <div>
+                  <a 
+                    href={selectedCandidate.cvUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full flex items-center justify-center gap-2 bg-slate-50 text-slate-700 py-3 rounded-xl hover:bg-slate-100 transition-colors border border-slate-200"
+                  >
+                    <FileText size={18} /> <span className="font-bold text-sm">View Full Resume</span>
+                  </a>
+                </div>
 
               </div>
 
