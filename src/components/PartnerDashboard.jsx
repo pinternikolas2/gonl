@@ -98,7 +98,8 @@ export default function PartnerDashboard() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       
-      {/* Top Navbar / Header pro Partnery */      <header className="bg-white border-b border-slate-200 px-4 md:px-8 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 z-10 sticky top-0">
+      {/* Top Navbar / Header pro Partnery */}
+      <header className="bg-white border-b border-slate-200 px-4 md:px-8 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 z-10 sticky top-0">
         <div className="flex items-center gap-4">
           <div className="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center shrink-0">
             <Building2 className="text-white" size={20} />
