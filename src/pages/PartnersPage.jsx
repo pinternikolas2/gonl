@@ -89,10 +89,10 @@ export default function PartnersPage() {
               className="flex flex-col sm:flex-row items-center justify-center gap-4"
             >
               <a 
-                href="mailto:info@gonl.app"
+                href="mailto:info@gonl.app?subject=Partnership%20Inquiry%20-%20%5BAgency%20Name%5D"
                 className="w-full sm:w-auto px-10 py-5 bg-slate-900 text-white rounded-2xl font-black text-lg hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 flex items-center justify-center gap-3 active:scale-95 group"
               >
-                Partner with us <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                Become a Partner <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </a>
               <div className="text-slate-400 font-bold text-sm tracking-widest uppercase flex items-center gap-2">
                 <Terminal size={16} /> Fast Onboarding
@@ -314,10 +314,10 @@ export default function PartnersPage() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <a 
-                href="mailto:info@gonl.app"
+                href="mailto:info@gonl.app?subject=Partnership%20Inquiry%20-%20%5BAgency%20Name%5D"
                 className="w-full sm:w-auto px-12 py-6 bg-slate-900 text-white rounded-[24px] font-black text-xl hover:bg-slate-800 transition-all shadow-2xl flex items-center justify-center gap-3 active:scale-95"
               >
-                <Mail size={24} /> Partner with us
+                <Mail size={24} /> Become a Partner
               </a>
             </div>
             <p className="mt-8 text-slate-400 font-bold text-xs uppercase tracking-widest">Expect a response within 24 hours.</p>
