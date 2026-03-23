@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, FileCheck, Plane, Search, Download, X, Eye, CheckCircle2, FileText, Video, Building2, Plus, Settings } from 'lucide-react';
 import AddJobModal from './AddJobModal';
+import { useTranslation } from '../context/LanguageContext';
 
 // Mock candidates
 const mockCandidates = [
@@ -53,6 +54,7 @@ const mockCandidates = [
 ];
 
 export default function PartnerDashboard() {
+  const { t } = useTranslation();
   const [candidates, setCandidates] = useState(mockCandidates);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCandidate, setSelectedCandidate] = useState(null);
@@ -65,19 +67,18 @@ export default function PartnerDashboard() {
   const activeCount = candidates.filter(c => c.status === 'active').length;
 
   const handleApprove = (id) => {
-    setCandidates(prev => prev.map(c => c.id === id ? { ...c, status: 'active', departureDate: 'Dnes' } : c));
+    setCandidates(prev => prev.map(c => c.id === id ? { ...c, status: 'active', departureDate: t('partner.detail.today') } : c));
     if (selectedCandidate && selectedCandidate.id === id) {
-      setSelectedCandidate(prev => ({ ...prev, status: 'active', departureDate: 'Today' }));
+      setSelectedCandidate(prev => ({ ...prev, status: 'active', departureDate: t('partner.detail.today') }));
     }
-    alert('Candidate approved for start and notified.');
   };
 
   const handleExport = () => {
-    alert('Exporting candidate list to a sleek PDF with GoNL logo...');
+    alert(t('partner.dashboard.export_alert'));
   };
 
   const generatePDFPack = () => {
-    alert(`Generating "PDF Pack" (Profile, ID, BSN) for ${selectedCandidate.name}.`);
+    alert(`${t('partner.detail.pdf_pack_alert')} ${selectedCandidate.name}.`);
   };
 
   const getStatusPill = (status) => {
@@ -97,48 +98,51 @@ export default function PartnerDashboard() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       
-      {/* Top Navbar / Header pro Partnery */}
-      <header className="bg-white border-b border-slate-200 px-8 py-4 flex items-center justify-between z-10 sticky top-0">
+      {/* Top Navbar / Header pro Partnery */      <header className="bg-white border-b border-slate-200 px-4 md:px-8 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 z-10 sticky top-0">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center shrink-0">
             <Building2 className="text-white" size={20} />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-slate-900 leading-tight">Partner Dashboard</h1>
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-widest">Albert Heijn Zaandam</p>
+            <h1 className="text-base md:text-lg font-bold text-slate-900 leading-tight">{t('partner.dashboard.title')}</h1>
+            <p className="text-[10px] md:text-xs font-medium text-slate-500 uppercase tracking-widest">{t('partner.dashboard.subtitle')}</p>
           </div>
         </div>
         
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={handleExport}
-            className="flex items-center gap-2 text-sm font-semibold text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 px-4 py-2 rounded-lg transition-colors shadow-sm"
-          >
-            <Download size={16} /> Export (CSV/PDF)
-          </button>
-          <button 
-            onClick={() => setShowAddJob(true)}
-            className="flex items-center gap-2 text-sm font-bold text-white bg-orange-600 hover:bg-orange-500 px-4 py-2 rounded-lg transition-colors shadow-sm shadow-orange-200"
-          >
-            <Plus size={16} /> Add Job
-          </button>
+        <div className="flex items-center gap-2 md:gap-4 w-full sm:w-auto justify-between sm:justify-end">
+          <div className="flex items-center gap-2 md:gap-4">
+            <button 
+              onClick={handleExport}
+              className="flex items-center gap-2 text-sm font-semibold text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 px-3 md:px-4 py-2 rounded-lg transition-colors shadow-sm"
+            >
+              <Download size={16} /> <span className="hidden md:inline">{t('partner.dashboard.export')}</span>
+            </button>
+            <button 
+              onClick={() => setShowAddJob(true)}
+              className="flex items-center gap-2 text-sm font-bold text-white bg-orange-600 hover:bg-orange-500 px-3 md:px-4 py-2 rounded-lg transition-colors shadow-sm shadow-orange-200"
+            >
+              <Plus size={16} /> <span className="hidden md:inline">{t('partner.dashboard.add_job')}</span>
+            </button>
+          </div>
           
-          <button 
-            onClick={() => alert('Settings Panel Opening...')}
-            className="p-2 text-slate-400 hover:text-slate-900 transition-colors"
-          >
-            <Settings size={20} />
-          </button>
-
-          <div className="h-8 w-px bg-slate-200"></div>
-          <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden">
-             <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=100&h=100" alt="Agent" className="w-full h-full object-cover" />
+          <div className="flex items-center gap-2 md:gap-4">
+            <button 
+              onClick={() => alert(t('partner.dashboard.settings_alert'))}
+              className="p-2 text-slate-400 hover:text-slate-900 transition-colors"
+            >
+              <Settings size={20} />
+            </button>
+            <div className="h-8 w-px bg-slate-200 hidden sm:block"></div>
+            <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden shrink-0">
+               <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=100&h=100" alt="Agent" className="w-full h-full object-cover" />
+            </div>
           </div>
         </div>
       </header>
+>
 
       {/* Main Content */}
-      <main className="flex-1 p-8 max-w-[1400px] mx-auto w-full">
+      <main className="flex-1 p-4 md:p-8 max-w-[1400px] mx-auto w-full">
         
         {/* Stats Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -147,7 +151,7 @@ export default function PartnerDashboard() {
                <Users size={24} />
              </div>
               <div>
-                <p className="text-sm font-semibold text-slate-500">Candidates Available (Ready-to-Go)</p>
+                <p className="text-sm font-semibold text-slate-500">{t('partner.dashboard.stats_available')}</p>
                 <h3 className="text-3xl font-black text-slate-900">{readyCount}</h3>
               </div>
           </div>
@@ -157,7 +161,7 @@ export default function PartnerDashboard() {
                <FileCheck size={24} />
              </div>
               <div>
-                <p className="text-sm font-semibold text-slate-500">Waiting for BSN</p>
+                <p className="text-sm font-semibold text-slate-500">{t('partner.dashboard.stats_waiting')}</p>
                 <h3 className="text-3xl font-black text-slate-900">{waitingBsnCount}</h3>
               </div>
           </div>
@@ -167,7 +171,7 @@ export default function PartnerDashboard() {
                <Plane size={24} />
              </div>
               <div>
-                <p className="text-sm font-semibold text-slate-500">Active in NL</p>
+                <p className="text-sm font-semibold text-slate-500">{t('partner.dashboard.stats_active')}</p>
                 <h3 className="text-3xl font-black text-slate-900">{activeCount}</h3>
               </div>
           </div>
@@ -176,30 +180,31 @@ export default function PartnerDashboard() {
         {/* Pipeline Table Section */}
         <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px]">
           
-          <div className="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
-            <h2 className="text-lg font-bold text-slate-900">Candidate Pipeline</h2>
-            <div className="relative">
+          <div className="p-4 border-b border-slate-200 bg-slate-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <h2 className="text-lg font-bold text-slate-900">{t('partner.dashboard.pipeline_title')}</h2>
+            <div className="relative w-full sm:w-auto">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
               <input 
                 type="text" 
-                placeholder="Search candidate..." 
+                placeholder={t('partner.dashboard.search_placeholder')} 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 w-64 transition-all"
+                className="pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 w-full sm:w-64 transition-all"
               />
             </div>
           </div>
 
-          <div className="flex-1 overflow-auto">
-            <table className="w-full text-left border-collapse">
-              <thead className="bg-slate-50 sticky top-0 z-10 shadow-sm">
-                <tr>
-                    <th className="py-3 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider">Candidate</th>
-                    <th className="py-3 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider">Position</th>
-                    <th className="py-3 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider">Age / Language</th>
-                    <th className="py-3 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider">BSN Date</th>
-                    <th className="py-3 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-                    <th className="py-3 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-auto">
+              <table className="w-full text-left border-collapse">
+                <thead className="bg-slate-50 sticky top-0 z-10 shadow-sm">
+                  <tr>
+                    <th className="py-3 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider">{t('partner.table.candidate')}</th>
+                    <th className="py-3 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider">{t('partner.table.position')}</th>
+                    <th className="py-3 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider">{t('partner.table.age_lang')}</th>
+                    <th className="py-3 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider">{t('partner.table.bsn_date')}</th>
+                    <th className="py-3 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider">{t('partner.table.status')}</th>
+                    <th className="py-3 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">{t('partner.table.actions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -213,40 +218,96 @@ export default function PartnerDashboard() {
                          </div>
                       </td>
                       <td className="py-4 px-6 text-sm font-medium text-slate-700">{c.jobTarget}</td>
-                      <td className="py-4 px-6 text-sm text-slate-600">{c.age} years / <span className="font-semibold text-slate-900">{c.language}</span></td>
+                      <td className="py-4 px-6 text-sm text-slate-600">{c.age} {t('partner.detail.years')} / <span className="font-semibold text-slate-900">{c.language}</span></td>
                       <td className="py-4 px-6 text-sm text-slate-600 font-medium">{c.bsnDate}</td>
                       <td className="py-4 px-6">{getStatusPill(c.status)}</td>
                       <td className="py-4 px-6 text-right">
-                        <button 
-                          onClick={() => { setSelectedCandidate(c); setIsPhotoBlurred(true); }}
-                          className="text-sm font-semibold text-slate-600 hover:text-orange-600 transition-colors bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm mr-2"
-                        >
-                          Detail
-                        </button>
-                        <a 
-                          href={c.cvUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm mr-2 inline-flex items-center gap-1.5"
-                        >
-                          <FileText size={14} /> Resume
-                        </a>
-                        <button 
-                          onClick={() => handleApprove(c.id)}
-                          disabled={c.status === 'active'}
-                          className="text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800 transition-colors px-3 py-1.5 rounded-lg shadow-sm disabled:opacity-50"
-                        >
-                          {c.status === 'active' ? 'Approved' : 'Approve'}
-                        </button>
+                        <div className="flex justify-end gap-2">
+                          <button 
+                            onClick={() => { setSelectedCandidate(c); setIsPhotoBlurred(true); }}
+                            className="text-sm font-semibold text-slate-600 hover:text-orange-600 transition-colors bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm"
+                          >
+                            {t('partner.table.detail')}
+                          </button>
+                          <a 
+                            href={c.cvUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm inline-flex items-center gap-1.5"
+                          >
+                            <FileText size={14} /> {t('partner.table.resume')}
+                          </a>
+                          <button 
+                            onClick={() => handleApprove(c.id)}
+                            disabled={c.status === 'active'}
+                            className="text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800 transition-colors px-3 py-1.5 rounded-lg shadow-sm disabled:opacity-50"
+                          >
+                            {c.status === 'active' ? t('partner.table.approved') : t('partner.table.approve')}
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden flex-1 overflow-auto p-4 space-y-4 bg-slate-50/50">
+              {filteredCandidates.map(c => (
+                <div key={c.id} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <img src={c.photoUrl} alt={c.name} className="w-12 h-12 rounded-full object-cover bg-slate-200" />
+                      <div>
+                        <span className="block font-bold text-slate-900">{c.name}</span>
+                        <span className="block text-xs text-slate-500 font-medium">ID: {c.id}</span>
+                      </div>
+                    </div>
+                    {getStatusPill(c.status)}
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3 pb-2">
+                    <div>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">{t('partner.table.position')}</p>
+                      <p className="text-sm font-semibold text-slate-700 leading-tight">{c.jobTarget}</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">{t('partner.table.age_lang')}</p>
+                      <p className="text-sm text-slate-600">{c.age} {t('partner.detail.years')} / <span className="font-semibold text-slate-900">{c.language}</span></p>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-slate-100 flex flex-wrap gap-2">
+                    <button 
+                      onClick={() => { setSelectedCandidate(c); setIsPhotoBlurred(true); }}
+                      className="flex-1 text-sm font-bold text-slate-700 bg-slate-50 py-2.5 rounded-lg border border-slate-200 active:bg-slate-100 transition-colors"
+                    >
+                      {t('partner.table.detail')}
+                    </button>
+                    <a 
+                      href={c.cvUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center justify-center gap-1.5 px-4 text-sm font-bold text-slate-700 bg-slate-50 py-2.5 rounded-lg border border-slate-200 active:bg-slate-100 transition-colors"
+                    >
+                      <FileText size={16} />
+                    </a>
+                    <button 
+                      onClick={() => handleApprove(c.id)}
+                      disabled={c.status === 'active'}
+                      className="w-full text-sm font-bold text-white bg-slate-900 py-2.5 rounded-lg active:bg-slate-800 disabled:opacity-50 transition-colors"
+                    >
+                      {c.status === 'active' ? t('partner.table.approved') : t('partner.table.approve')}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
             
             {filteredCandidates.length === 0 && (
               <div className="p-12 text-center text-slate-500">
-                No candidates found.
+                {t('partner.dashboard.no_candidates')}
               </div>
             )}
           </div>
@@ -270,7 +331,7 @@ export default function PartnerDashboard() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 bottom-0 w-[500px] bg-white z-50 shadow-2xl flex flex-col border-l border-slate-200"
+              className="fixed top-0 right-0 bottom-0 w-full sm:w-[500px] bg-white z-50 shadow-2xl flex flex-col border-l border-slate-200"
             >
               {/* Drawer Header */}
               <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50 sticky top-0 z-10">
@@ -292,12 +353,12 @@ export default function PartnerDashboard() {
                 {/* Status bar */}
                 <div className="flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
                   <div className="flex-1">
-                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1">Record Status</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1">{t('partner.detail.record_status')}</p>
                     {getStatusPill(selectedCandidate.status)}
                   </div>
                   <div className="w-px h-10 bg-slate-200"></div>
                   <div className="flex-1 text-center">
-                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1">Position</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1">{t('partner.table.position')}</p>
                     <p className="text-sm font-bold text-slate-900">{selectedCandidate.jobTarget}</p>
                   </div>
                 </div>
@@ -305,7 +366,7 @@ export default function PartnerDashboard() {
                 {/* Secure Documents */}
                 <div>
                   <h3 className="text-sm font-bold text-slate-900 uppercase tracking-widest mb-3 flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-emerald-500" /> Verified Documents
+                    <CheckCircle2 size={16} className="text-emerald-500" /> {t('partner.detail.secure_docs')}
                   </h3>
                   
                   {/* ID Card Wrapper */}
@@ -322,30 +383,30 @@ export default function PartnerDashboard() {
                           onClick={() => setIsPhotoBlurred(false)}
                           className="bg-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center gap-2 hover:bg-slate-50 transition-colors"
                         >
-                          <Eye size={16} /> Show Document
+                          <Eye size={16} /> {t('partner.detail.show_doc')}
                         </button>
-                        <p className="text-xs text-slate-600 font-medium mt-2 bg-white/80 px-2 py-1 rounded">For verification purposes only</p>
+                        <p className="text-xs text-slate-600 font-medium mt-2 bg-white/80 px-2 py-1 rounded">{t('partner.detail.verification_only')}</p>
                       </div>
                     )}
                   </div>
                 </div>
 
                 {/* Candidate Info */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                    <p className="text-xs font-semibold text-slate-500 uppercase mb-1">Age</p>
-                    <p className="font-bold text-slate-900">{selectedCandidate.age} years</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase mb-1">{t('partner.detail.age')}</p>
+                    <p className="font-bold text-slate-900">{selectedCandidate.age} {t('partner.detail.years')}</p>
                   </div>
                   <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                    <p className="text-xs font-semibold text-slate-500 uppercase mb-1">Language</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase mb-1">{t('partner.detail.language')}</p>
                     <p className="font-bold text-slate-900">{selectedCandidate.language}</p>
                   </div>
                   <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                    <p className="text-xs font-semibold text-slate-500 uppercase mb-1">BSN Date</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase mb-1">{t('partner.table.bsn_date')}</p>
                     <p className="font-bold text-slate-900">{selectedCandidate.bsnDate}</p>
                   </div>
                   <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                    <p className="text-xs font-semibold text-slate-500 uppercase mb-1">Departure</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase mb-1">{t('partner.detail.departure')}</p>
                     <p className="font-bold text-slate-900">{selectedCandidate.departureDate}</p>
                   </div>
                 </div>
@@ -354,7 +415,7 @@ export default function PartnerDashboard() {
                 {selectedCandidate.hasVideo && (
                   <div>
                     <button className="w-full flex items-center justify-center gap-2 bg-orange-50 text-orange-700 py-3 rounded-xl hover:bg-orange-100 transition-colors border border-orange-200">
-                      <Video size={18} /> <span className="font-bold text-sm">Play Video-CV</span>
+                      <Video size={18} /> <span className="font-bold text-sm">{t('partner.detail.play_video')}</span>
                     </button>
                   </div>
                 )}
@@ -366,7 +427,7 @@ export default function PartnerDashboard() {
                     rel="noreferrer"
                     className="w-full flex items-center justify-center gap-2 bg-slate-50 text-slate-700 py-3 rounded-xl hover:bg-slate-100 transition-colors border border-slate-200"
                   >
-                    <FileText size={18} /> <span className="font-bold text-sm">View Full Resume</span>
+                    <FileText size={18} /> <span className="font-bold text-sm">{t('partner.detail.view_resume')}</span>
                   </a>
                 </div>
 
@@ -378,14 +439,14 @@ export default function PartnerDashboard() {
                   onClick={generatePDFPack}
                   className="w-full flex items-center justify-center gap-2 bg-slate-100 text-slate-700 py-3 rounded-xl border border-slate-200 hover:bg-slate-200 transition-colors font-bold text-sm"
                 >
-                  <FileText size={18} /> Generate PDF Pack
+                  <FileText size={18} /> {t('partner.detail.generate_pdf_pack')}
                 </button>
                 <button 
                   onClick={() => handleApprove(selectedCandidate.id)}
                   disabled={selectedCandidate.status === 'active'}
                   className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold text-sm hover:bg-slate-800 transition-colors disabled:opacity-50"
                 >
-                  {selectedCandidate.status === 'active' ? 'Approved for Join' : 'Approve for Join'}
+                  {selectedCandidate.status === 'active' ? t('partner.detail.approved_for_join') : t('partner.detail.approve_for_join')}
                 </button>
               </div>
 

@@ -136,5 +136,73 @@
     "btn_back": "Späť",
     "exp_label": "Skúsenosť",
     "error_pdf": "Chyba pri generovaní PDF"
+  },
+  "partner": {
+    "dashboard": {
+      "title": "Portál pre partnerov",
+      "subtitle": "Albert Heijn Zaandam",
+      "export": "Exportovať (CSV/PDF)",
+      "add_job": "Pridať prácu",
+      "stats_available": "Kandidáti k dispozícii",
+      "stats_waiting": "Čaká na BSN",
+      "stats_active": "Aktivní v NL",
+      "pipeline_title": "Pipeline kandidátov",
+      "search_placeholder": "Hľadať kandidáta...",
+      "no_candidates": "Nenašli sa žiadni kandidáti.",
+      "export_alert": "Exportujem zoznam kandidátov do elegantného PDF s logom GoNL...",
+      "settings_alert": "Otváram panel nastavení..."
+    },
+    "table": {
+      "candidate": "Kandidát",
+      "position": "Pozícia",
+      "age_lang": "Vek / Jazyk",
+      "bsn_date": "Termín BSN",
+      "status": "Stav",
+      "actions": "Akcie",
+      "detail": "Detail",
+      "resume": "Životopis",
+      "approve": "Schváliť",
+      "approved": "Schválené"
+    },
+    "detail": {
+      "secure_docs": "Overené dokumenty",
+      "show_doc": "Zobraziť dokument",
+      "play_video": "Prehrať Video-CV",
+      "view_resume": "Zobraziť životopis",
+      "generate_pdf_pack": "Generovať PDF Pack",
+      "approve_for_join": "Schváliť k nástupu",
+      "approved_for_join": "Schválené k nástupu",
+      "age": "Vek",
+      "language": "Jazyk",
+      "departure": "Odchod",
+      "record_status": "Stav záznamu",
+      "years": "rokov",
+      "today": "Dnes",
+      "verification_only": "Iba na účely overenia",
+      "pdf_pack_alert": "Generujem PDF Pack (Profil, ID, BSN) pre"
+    },
+    "add_job": {
+      "modal_title": "Pridať pracovnú ponuku",
+      "modal_subtitle": "Okamžite viditeľné pre všetkých zodpovedajúcich kandidátov",
+      "title_label": "Názov pozície",
+      "title_placeholder": "Skladník - Order Picker",
+      "company_label": "Firma",
+      "company_placeholder": "Albert Heijn",
+      "location_label": "Mesto / Lokalita",
+      "location_placeholder": "Zaandam, Noord-Holland",
+      "hourly_label": "Hodinová mzda (€)",
+      "housing_label": "Ubytovanie / týždeň (€)",
+      "shift_label": "Zmenový príplatok",
+      "shift_none": "Žiadny (1.0×)",
+      "description_label": "Popis práce",
+      "description_placeholder": "Popíšte požiadavky, zmeny a benefity...",
+      "cancel": "Zrušiť",
+      "submit": "Pridať prácu",
+      "saved": "Uložené!",
+      "error_title": "Zadajte názov pozície",
+      "error_company": "Zadajte názov firmy",
+      "error_location": "Zadajte mesto",
+      "error_hourly": "Zadajte platnú hodinovú mzdu"
+    }
   }
 }

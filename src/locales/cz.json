@@ -137,5 +137,73 @@
       "success_title": "Cesta potvrzena!",
       "success_desc": "Agentura již o tvém příjezdu ví a připravuje klíče od bydlení."
     }
+  },
+  "partner": {
+    "dashboard": {
+      "title": "Portál pro partnery",
+      "subtitle": "Albert Heijn Zaandam",
+      "export": "Exportovat (CSV/PDF)",
+      "add_job": "Přidat práci",
+      "stats_available": "Kandidáti k dispozici",
+      "stats_waiting": "Čeká na BSN",
+      "stats_active": "Aktivní v NL",
+      "pipeline_title": "Pipeline kandidátů",
+      "search_placeholder": "Hledat kandidáta...",
+      "no_candidates": "Nenalezeni žádní kandidáti.",
+      "export_alert": "Exportuji seznam kandidátů do elegantního PDF s logem GoNL...",
+      "settings_alert": "Otevírám panel nastavení..."
+    },
+    "table": {
+      "candidate": "Kandidát",
+      "position": "Pozice",
+      "age_lang": "Věk / Jazyk",
+      "bsn_date": "Termín BSN",
+      "status": "Stav",
+      "actions": "Akce",
+      "detail": "Detail",
+      "resume": "Životopis",
+      "approve": "Schválit",
+      "approved": "Schváleno"
+    },
+    "detail": {
+      "secure_docs": "Ověřené dokumenty",
+      "show_doc": "Zobrazit dokument",
+      "play_video": "Přehrát Video-CV",
+      "view_resume": "Zobrazit životopis",
+      "generate_pdf_pack": "Generovat PDF Pack",
+      "approve_for_join": "Schválit k nástupu",
+      "approved_for_join": "Schváleno k nástupu",
+      "age": "Věk",
+      "language": "Jazyk",
+      "departure": "Odjezd",
+      "record_status": "Stav záznamu",
+      "years": "let",
+      "today": "Dnes",
+      "verification_only": "Pouze pro účely ověření",
+      "pdf_pack_alert": "Generuji PDF Pack (Profil, ID, BSN) pro"
+    },
+    "add_job": {
+      "modal_title": "Přidat pracovní nabídku",
+      "modal_subtitle": "Okamžitě viditelné pro všechny odpovídající kandidáty",
+      "title_label": "Název pozice",
+      "title_placeholder": "Skladník - Order Picker",
+      "company_label": "Firma",
+      "company_placeholder": "Albert Heijn",
+      "location_label": "Město / Lokalita",
+      "location_placeholder": "Zaandam, Noord-Holland",
+      "hourly_label": "Hodinová mzda (€)",
+      "housing_label": "Ubytování / týden (€)",
+      "shift_label": "Směnový příplatek",
+      "shift_none": "Žádný (1.0×)",
+      "description_label": "Popis práce",
+      "description_placeholder": "Popište požadavky, směny a benefity...",
+      "cancel": "Zrušit",
+      "submit": "Přidat práci",
+      "saved": "Uloženo!",
+      "error_title": "Zadejte název pozice",
+      "error_company": "Zadejte název firmy",
+      "error_location": "Zadejte město",
+      "error_hourly": "Zadejte platnou hodinovou mzdu"
+    }
   }
 }

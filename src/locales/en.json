@@ -147,5 +147,73 @@
     "btn_back": "Back",
     "exp_label": "Experience",
     "error_pdf": "Error generating PDF"
+  },
+  "partner": {
+    "dashboard": {
+      "title": "Partner Dashboard",
+      "subtitle": "Albert Heijn Zaandam",
+      "export": "Export (CSV/PDF)",
+      "add_job": "Add Job",
+      "stats_available": "Candidates Available (Ready-to-Go)",
+      "stats_waiting": "Waiting for BSN",
+      "stats_active": "Active in NL",
+      "pipeline_title": "Candidate Pipeline",
+      "search_placeholder": "Search candidate...",
+      "no_candidates": "No candidates found.",
+      "export_alert": "Exporting candidate list to a sleek PDF with GoNL logo...",
+      "settings_alert": "Settings Panel Opening..."
+    },
+    "table": {
+      "candidate": "Candidate",
+      "position": "Position",
+      "age_lang": "Age / Language",
+      "bsn_date": "BSN Date",
+      "status": "Status",
+      "actions": "Actions",
+      "detail": "Detail",
+      "resume": "Resume",
+      "approve": "Approve",
+      "approved": "Approved"
+    },
+    "detail": {
+      "secure_docs": "Verified Documents",
+      "show_doc": "Show Document",
+      "play_video": "Play Video-CV",
+      "view_resume": "View Full Resume",
+      "generate_pdf_pack": "Generate PDF Pack",
+      "approve_for_join": "Approve for Join",
+      "approved_for_join": "Approved for Join",
+      "age": "Age",
+      "language": "Language",
+      "departure": "Departure",
+      "record_status": "Record Status",
+      "years": "years",
+      "today": "Today",
+      "verification_only": "For verification purposes only",
+      "pdf_pack_alert": "Generating PDF Pack (Profile, ID, BSN) for"
+    },
+    "add_job": {
+      "modal_title": "Add Job Posting",
+      "modal_subtitle": "Instantly visible to all matching candidates",
+      "title_label": "Position Title",
+      "title_placeholder": "Warehouse - Order Picker",
+      "company_label": "Company",
+      "company_placeholder": "Albert Heijn",
+      "location_label": "City / Location",
+      "location_placeholder": "Zaandam, Noord-Holland",
+      "hourly_label": "Hourly Wage (€)",
+      "housing_label": "Housing / week (€)",
+      "shift_label": "Shift Allowance",
+      "shift_none": "None (1.0×)",
+      "description_label": "Job Description",
+      "description_placeholder": "Describe role requirements, shifts, and benefits...",
+      "cancel": "Cancel",
+      "submit": "Add Job",
+      "saved": "Saved!",
+      "error_title": "Enter position title",
+      "error_company": "Enter company name",
+      "error_location": "Enter city",
+      "error_hourly": "Enter a valid hourly wage"
+    }
   }
 }
