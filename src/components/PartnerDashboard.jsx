@@ -140,7 +140,6 @@ export default function PartnerDashboard() {
           </div>
         </div>
       </header>
->
 
       {/* Main Content */}
       <main className="flex-1 p-4 md:p-8 max-w-[1400px] mx-auto w-full">
@@ -312,9 +311,7 @@ export default function PartnerDashboard() {
               </div>
             )}
           </div>
-          
-        </div>
-      </main>
+        </main>
 
       {/* Candidate Detail Side-Panel (Drawer) */}
       <AnimatePresence>
