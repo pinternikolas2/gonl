@@ -145,9 +145,9 @@ export default function PartnerDashboard() {
       <main className="flex-1 p-4 md:p-8 max-w-[1400px] mx-auto w-full">
         
         {/* Stats Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-center gap-4">
-             <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
+          <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-200 shadow-sm flex items-center gap-3 md:gap-4">
+             <div className="w-10 h-10 md:w-12 md:h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
                <Users size={24} />
              </div>
               <div>
@@ -156,29 +156,29 @@ export default function PartnerDashboard() {
               </div>
           </div>
           
-          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-center gap-4">
-             <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
+          <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-200 shadow-sm flex items-center gap-3 md:gap-4">
+             <div className="w-10 h-10 md:w-12 md:h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600 shrink-0">
                <FileCheck size={24} />
              </div>
               <div>
-                <p className="text-sm font-semibold text-slate-500">{t('partner.dashboard.stats_waiting')}</p>
-                <h3 className="text-3xl font-black text-slate-900">{waitingBsnCount}</h3>
+                <p className="text-xs md:text-sm font-semibold text-slate-500">{t('partner.dashboard.stats_waiting')}</p>
+                <h3 className="text-2xl md:text-3xl font-black text-slate-900">{waitingBsnCount}</h3>
               </div>
           </div>
           
-          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-center gap-4">
-             <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+          <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-200 shadow-sm flex items-center gap-3 md:gap-4">
+             <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 shrink-0">
                <Plane size={24} />
              </div>
               <div>
-                <p className="text-sm font-semibold text-slate-500">{t('partner.dashboard.stats_active')}</p>
-                <h3 className="text-3xl font-black text-slate-900">{activeCount}</h3>
+                <p className="text-xs md:text-sm font-semibold text-slate-500">{t('partner.dashboard.stats_active')}</p>
+                <h3 className="text-2xl md:text-3xl font-black text-slate-900">{activeCount}</h3>
               </div>
           </div>
         </div>
 
         {/* Pipeline Table Section */}
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px]">
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col min-h-[500px] md:h-[600px]">
           
           <div className="p-4 border-b border-slate-200 bg-slate-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h2 className="text-lg font-bold text-slate-900">{t('partner.dashboard.pipeline_title')}</h2>
@@ -267,14 +267,14 @@ export default function PartnerDashboard() {
                     {getStatusPill(c.status)}
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-3 pb-2">
+                  <div className="flex flex-col sm:grid sm:grid-cols-2 gap-3 pb-2">
                     <div>
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">{t('partner.table.position')}</p>
                       <p className="text-sm font-semibold text-slate-700 leading-tight">{c.jobTarget}</p>
                     </div>
                     <div>
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">{t('partner.table.age_lang')}</p>
-                      <p className="text-sm text-slate-600">{c.age} {t('partner.detail.years')} / <span className="font-semibold text-slate-900">{c.language}</span></p>
+                      <p className="text-sm text-slate-600 font-medium">{c.age} {t('partner.detail.years')} / <span className="font-bold text-slate-900">{c.language}</span></p>
                     </div>
                   </div>
 
@@ -334,10 +334,10 @@ export default function PartnerDashboard() {
               className="fixed top-0 right-0 bottom-0 w-full sm:w-[500px] bg-white z-50 shadow-2xl flex flex-col border-l border-slate-200"
             >
               {/* Drawer Header */}
-              <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50 sticky top-0 z-10">
-                <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <div className="px-4 md:px-6 py-3 md:py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50 sticky top-0 z-20">
+                <h2 className="text-lg md:text-xl font-bold text-slate-900 flex items-center gap-2 truncate pr-2">
                   <UserAvatar url={selectedCandidate.photoUrl} />
-                  {selectedCandidate.name}
+                  <span className="truncate">{selectedCandidate.name}</span>
                 </h2>
                 <button 
                   onClick={() => setSelectedCandidate(null)}
