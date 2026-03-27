@@ -13,11 +13,13 @@ import {
   Navigation,
   FileText,
   Upload,
-  X
+  X,
+  CheckCircle2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import DocumentScanner from './DocumentScanner';
 import CVForm from './CVForm';
+import BSNUpload from './BSNUpload';
 import { useTranslation } from '../context/LanguageContext';
 import { uploadResume } from '../lib/supabase';
 
@@ -40,6 +42,7 @@ export default function UserDashboard() {
   const [showCVChoice, setShowCVChoice] = useState(false);
   const [showCVUpload, setShowCVUpload] = useState(false);
   const [showCVForm, setShowCVForm] = useState(false);
+  const [showBSNUpload, setShowBSNUpload] = useState(false);
   const [cvLoading, setCvLoading] = useState(false);
 
   // Sync profile to session for demo persistence
@@ -53,12 +56,28 @@ export default function UserDashboard() {
     if (appliedJob && !profile.assigned_job) {
       setProfile(prev => ({ ...prev, assigned_job: JSON.parse(appliedJob) }));
       sessionStorage.removeItem('gonl_applied_job');
+      // Auto-open next step (CV Choice)
+      if (!profile.is_cv_uploaded) {
+        setShowCVChoice(true);
+      }
     }
   }, [profile.assigned_job]);
 
   const handleScanComplete = () => {
     setProfile(prev => ({ ...prev, is_id_verified: true }));
     setShowScanner(false);
+    // Auto-open next step
+    setTimeout(() => {
+      if (profile.current_location === 'Netherlands' && profile.has_bsn) {
+        setShowBSNUpload(true);
+      } else {
+        navigate('/guide');
+      }
+    }, 500);
+  };
+
+  const handleBSNComplete = () => {
+    setProfile(prev => ({ ...prev, is_bsn_uploaded: true }));
   };
 
   const steps = [
@@ -86,7 +105,14 @@ export default function UserDashboard() {
       icon: <ShieldCheck size={20} />,
       action: () => setShowScanner(true)
     },
-    {
+    (profile.current_location === 'Netherlands' && profile.has_bsn) ? {
+      id: 4,
+      title: t('roadmap.step_bsn'),
+      description: profile.is_bsn_uploaded ? t('roadmap.step_bsn_desc') : t('roadmap.step_bsn_desc'),
+      status: profile.is_bsn_uploaded ? 'completed' : (profile.is_id_verified ? 'active' : 'pending'),
+      icon: <FileText size={20} />,
+      action: () => setShowBSNUpload(true)
+    } : {
       id: 4,
       title: t('roadmap.step3'),
       description: profile.is_ticket_uploaded ? t('roadmap.step3_desc') : t('roadmap.step3_desc'),
@@ -105,6 +131,8 @@ export default function UserDashboard() {
       const publicUrl = await uploadResume(file, 'user_preview');
       setProfile(prev => ({ ...prev, is_cv_uploaded: true, cv_url: publicUrl }));
       setShowCVUpload(false);
+      // Auto-open next step (Scanner)
+      setTimeout(() => setShowScanner(true), 500);
     } catch (err) {
       console.error(err);
       alert('Chyba při nahrávání CV');
@@ -169,7 +197,7 @@ export default function UserDashboard() {
                               onClick={step.action}
                               className="bg-orange-600 text-white px-6 py-3 rounded-2xl font-bold text-sm flex items-center gap-2 hover:bg-orange-500 transition-all shadow-lg shadow-orange-100"
                             >
-                              {step.id === 1 ? t('nav.jobs') : step.id === 2 ? t('roadmap.step_cv') : step.id === 3 ? t('roadmap.action_scan') : t('roadmap.action_guide')} 
+                              {step.id === 1 ? t('nav.jobs') : step.id === 2 ? t('roadmap.step_cv') : step.id === 3 ? t('roadmap.action_scan') : step.id === 4 && step.title === t('roadmap.step_bsn') ? t('roadmap.step_bsn') : t('roadmap.action_guide')} 
                               <ChevronRight size={16} />
                             </button>
                           )}
@@ -367,8 +395,33 @@ export default function UserDashboard() {
               onComplete={(url) => {
                 setProfile(prev => ({ ...prev, is_cv_uploaded: true, cv_url: url }));
                 setShowCVForm(false);
+                // Auto-open next step (Scanner)
+                setTimeout(() => setShowScanner(true), 500);
               }}
             />
+          </div>
+        )}
+
+        {showBSNUpload && (
+          <div className="fixed inset-0 z-[70] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center px-4">
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="bg-white w-full max-w-lg rounded-[32px] p-2 overflow-hidden relative"
+            >
+              <button 
+                onClick={() => setShowBSNUpload(false)}
+                className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-900 z-10"
+              >
+                <X size={20} />
+              </button>
+              <BSNUpload 
+                onComplete={() => {
+                  handleBSNComplete();
+                  setTimeout(() => setShowBSNUpload(false), 2000);
+                }} 
+              />
+            </motion.div>
           </div>
         )}
       </AnimatePresence>

@@ -1,12 +1,23 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { User, Phone, ShieldCheck, MapPin, FileText, LogOut, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { User, Phone, ShieldCheck, MapPin, FileText, LogOut, ChevronRight, CheckCircle2, Globe, Check } from 'lucide-react';
+import { useTranslation } from '../context/LanguageContext';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const user = JSON.parse(sessionStorage.getItem('gonl_user') || '{}');
   const role = sessionStorage.getItem('gonl_role');
+  const [profile, setProfile] = React.useState(() => 
+    JSON.parse(sessionStorage.getItem('gonl_user_profile') || '{}')
+  );
+
+  const updateProfile = (updates) => {
+    const newProfile = { ...profile, ...updates };
+    setProfile(newProfile);
+    sessionStorage.setItem('gonl_user_profile', JSON.stringify(newProfile));
+  };
 
   const handleLogout = () => {
     sessionStorage.clear();
@@ -65,6 +76,60 @@ export default function ProfilePage() {
             <MenuItem icon={<User size={18}/>} label="Osobní údaje" sublabel="Jméno, adresa, kontakt" onClick={() => {}} />
             <MenuItem icon={<Phone size={18}/>} label="Telefonní číslo" sublabel={user.phone || '—'} onClick={() => {}} />
             <MenuItem icon={<ShieldCheck size={18}/>} label="Doklady" sublabel="Občanský průkaz, BSN" onClick={() => {}} />
+            
+            {/* Location Selection */}
+            <div className="px-4 py-4 flex flex-col gap-3">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-100 text-slate-600">
+                  <Globe size={18}/>
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-sm text-slate-900">{t('profile.location')}</p>
+                  <p className="text-xs text-slate-400 font-medium mt-0.5">{profile.current_location === 'Netherlands' ? t('profile.loc_nl') : t('profile.loc_other')}</p>
+                </div>
+              </div>
+              <div className="flex gap-2 pl-14">
+                <button 
+                  onClick={() => updateProfile({ current_location: 'Netherlands' })}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${profile.current_location === 'Netherlands' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200'}`}
+                >
+                  {t('profile.loc_nl')}
+                </button>
+                <button 
+                  onClick={() => updateProfile({ current_location: 'Other' })}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${profile.current_location !== 'Netherlands' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200'}`}
+                >
+                   {t('profile.loc_other')}
+                </button>
+              </div>
+            </div>
+
+            {/* BSN Selection */}
+            <div className="px-4 py-4 flex flex-col gap-3">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-100 text-slate-600">
+                  <ShieldCheck size={18}/>
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-sm text-slate-900">{t('profile.has_bsn')}</p>
+                  <p className="text-xs text-slate-400 font-medium mt-0.5">{profile.has_bsn ? t('profile.yes') : t('profile.no')}</p>
+                </div>
+              </div>
+              <div className="flex gap-2 pl-14">
+                <button 
+                  onClick={() => updateProfile({ has_bsn: true })}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${profile.has_bsn ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-600 border-slate-200'}`}
+                >
+                  {t('profile.yes')}
+                </button>
+                <button 
+                  onClick={() => updateProfile({ has_bsn: false })}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${!profile.has_bsn ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200'}`}
+                >
+                   {t('profile.no')}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 

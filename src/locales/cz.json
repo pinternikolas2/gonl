@@ -51,7 +51,9 @@
     "help_desc": "Váš koordinátor je vám k dispozici 24/7. Pokud si nevíte rady s doklady nebo cestou, zavolejte nám.",
     "help_btn": "Kontaktovat podporu",
     "info_title": "Užitečné info",
-    "info_desc": "Nezapomeňte, že pro získání BSN čísla musíte mít originál rodného listu v mezinárodním formátu."
+    "info_desc": "Nezapomeňte, že pro získání BSN čísla musíte mít originál rodného listu v mezinárodním formátu.",
+    "step_bsn": "Dokument BSN",
+    "step_bsn_desc": "Nahrajte potvrzení o BSN"
   },
   "cv_form": {
     "title": "Online Generátor Životopisu",
@@ -135,7 +137,9 @@
       "submit_btn": "Potvrdit příjezd do NL",
       "loading": "Ukládám...",
       "success_title": "Cesta potvrzena!",
-      "success_desc": "Agentura již o tvém příjezdu ví a připravuje klíče od bydlení."
+      "success_desc": "Agentura již o tvém příjezdu ví a připravuje klíče od bydlení.",
+      "bsn_document": "Nahrát BSN Dokument (PDF/Obrázek)",
+      "bsn_placeholder": "Vyberte dokument BSN..."
     }
   },
   "partner": {
@@ -151,7 +155,8 @@
       "search_placeholder": "Hledat kandidáta...",
       "no_candidates": "Nenalezeni žádní kandidáti.",
       "export_alert": "Exportuji seznam kandidátů do elegantního PDF s logem GoNL...",
-      "settings_alert": "Otevírám panel nastavení..."
+      "settings_alert": "Otevírám panel nastavení...",
+      "filter_nl": "K dispozici v NL"
     },
     "table": {
       "candidate": "Kandidát",
@@ -180,7 +185,8 @@
       "years": "let",
       "today": "Dnes",
       "verification_only": "Pouze pro účely ověření",
-      "pdf_pack_alert": "Generuji PDF Pack (Profil, ID, BSN) pro"
+      "pdf_pack_alert": "Generuji PDF Pack (Profil, ID, BSN) pro",
+      "fast_track_msg": "Tento kandidát je již v NL a má platné BSN – Připraven k okamžitému nástupu."
     },
     "add_job": {
       "modal_title": "Přidat pracovní nabídku",
@@ -205,5 +211,13 @@
       "error_location": "Zadejte město",
       "error_hourly": "Zadejte platnou hodinovou mzdu"
     }
+  },
+  "profile": {
+    "location": "Aktuální poloha",
+    "has_bsn": "Má BSN",
+    "loc_nl": "Nizozemsko",
+    "loc_other": "Ostatní / Zahraničí",
+    "yes": "Ano",
+    "no": "Ne"
   }
 }

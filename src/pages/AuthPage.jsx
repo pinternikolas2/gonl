@@ -31,6 +31,9 @@ export default function AuthPage() {
       phone,
       is_id_verified: false,
       is_ticket_uploaded: false,
+      is_bsn_uploaded: false,
+      current_location: 'Other',
+      has_bsn: false,
       assigned_job: null,
     };
     

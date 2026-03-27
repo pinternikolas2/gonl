@@ -50,6 +50,8 @@ const mockCandidates = [
     idPhotoUrl: 'https://images.unsplash.com/photo-1621252178972-e1d1377b5d19?auto=format&fit=crop&q=80&w=600&h=400',
     hasVideo: true,
     cvUrl: 'https://example.com/cv3.pdf',
+    current_location: 'Netherlands',
+    has_bsn: true,
   }
 ];
 
@@ -57,6 +59,7 @@ export default function PartnerDashboard() {
   const { t } = useTranslation();
   const [candidates, setCandidates] = useState(mockCandidates);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterNL, setFilterNL] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [isPhotoBlurred, setIsPhotoBlurred] = useState(true);
   const [showAddJob, setShowAddJob] = useState(false);
@@ -91,9 +94,16 @@ export default function PartnerDashboard() {
   };
 
   const filteredCandidates = candidates.filter(c => 
-    c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    c.jobTarget.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+    (c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    c.jobTarget.toLowerCase().includes(searchQuery.toLowerCase())) &&
+    (!filterNL || (c.current_location === 'Netherlands' && c.has_bsn))
+  ).sort((a, b) => {
+    const aFastTrack = a.current_location === 'Netherlands' && a.has_bsn;
+    const bFastTrack = b.current_location === 'Netherlands' && b.has_bsn;
+    if (aFastTrack && !bFastTrack) return -1;
+    if (!aFastTrack && bFastTrack) return 1;
+    return 0;
+  });
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
@@ -192,6 +202,12 @@ export default function PartnerDashboard() {
                 className="pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 w-full sm:w-64 transition-all"
               />
             </div>
+            <button 
+              onClick={() => setFilterNL(!filterNL)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all border ${filterNL ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
+            >
+              <CheckCircle2 size={16} /> {t('partner.dashboard.filter_nl')}
+            </button>
           </div>
 
             {/* Desktop Table View */}
@@ -213,7 +229,12 @@ export default function PartnerDashboard() {
                       <td className="py-4 px-6 flex items-center gap-3">
                          <img src={c.photoUrl} alt={c.name} className="w-10 h-10 rounded-full object-cover bg-slate-200" />
                          <div>
-                           <span className="block font-bold text-slate-900">{c.name}</span>
+                           <div className="flex items-center gap-2">
+                             <span className="block font-bold text-slate-900">{c.name}</span>
+                             {c.current_location === 'Netherlands' && c.has_bsn && (
+                               <span className="bg-emerald-100 text-emerald-700 text-[10px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter border border-emerald-200">BSN</span>
+                             )}
+                           </div>
                            <span className="block text-xs text-slate-500 font-medium">ID: {c.id}</span>
                          </div>
                       </td>
@@ -260,7 +281,12 @@ export default function PartnerDashboard() {
                     <div className="flex items-center gap-3">
                       <img src={c.photoUrl} alt={c.name} className="w-12 h-12 rounded-full object-cover bg-slate-200" />
                       <div>
-                        <span className="block font-bold text-slate-900">{c.name}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="block font-bold text-slate-900">{c.name}</span>
+                          {c.current_location === 'Netherlands' && c.has_bsn && (
+                            <span className="bg-emerald-100 text-emerald-700 text-[10px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter border border-emerald-200">BSN</span>
+                          )}
+                        </div>
                         <span className="block text-xs text-slate-500 font-medium">ID: {c.id}</span>
                       </div>
                     </div>
@@ -360,6 +386,18 @@ export default function PartnerDashboard() {
                     <p className="text-sm font-bold text-slate-900">{selectedCandidate.jobTarget}</p>
                   </div>
                 </div>
+
+                {/* Fast Track Badge in Detail */}
+                {selectedCandidate.current_location === 'Netherlands' && selectedCandidate.has_bsn && (
+                  <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-xl flex items-center gap-3">
+                    <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 shrink-0">
+                      <CheckCircle2 size={24} />
+                    </div>
+                    <p className="text-sm font-bold text-emerald-800 leading-snug">
+                       {t('partner.detail.fast_track_msg')}
+                    </p>
+                  </div>
+                )}
 
                 {/* Secure Documents */}
                 <div>

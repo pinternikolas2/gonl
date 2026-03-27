@@ -50,7 +50,9 @@
     "help_desc": "Váš koordinátor je vám k dispozícii 24/7. Ak si neviete rady s dokladmi alebo cestou, zavolajte nám.",
     "help_btn": "Kontaktovať podporu",
     "info_title": "Užitočné info",
-    "info_desc": "Nezabudnite, že pre získanie BSN čísla musíte mať originál rodného listu v medzinárodnom formáte."
+    "info_desc": "Nezabudnite, že pre získanie BSN čísla musíte mať originál rodného listu v medzinárodnom formáte.",
+    "step_bsn": "Dokument BSN",
+    "step_bsn_desc": "Nahrajte potvrdenie o BSN"
   },
   "about": {
     "title": "Prinášame férovosť do práce v Holandsku.",
@@ -108,7 +110,9 @@
       "submit_btn": "Potvrdiť príchod do NL",
       "loading": "Ukladám...",
       "success_title": "Cesta potvrdená!",
-      "success_desc": "Agentúra už o tvojom príchode vie a pripravuje kľúče od bývania."
+      "success_desc": "Agentúra už o tvojom príchode vie a pripravuje kľúče od bývania.",
+      "bsn_document": "Nahrať BSN Dokument (PDF/Obrázok)",
+      "bsn_placeholder": "Vyberte dokument BSN..."
     }
   },
   "cv_form": {
@@ -150,7 +154,8 @@
       "search_placeholder": "Hľadať kandidáta...",
       "no_candidates": "Nenašli sa žiadni kandidáti.",
       "export_alert": "Exportujem zoznam kandidátov do elegantného PDF s logom GoNL...",
-      "settings_alert": "Otváram panel nastavení..."
+      "settings_alert": "Otváram panel nastavení...",
+      "filter_nl": "K dispozícii v NL"
     },
     "table": {
       "candidate": "Kandidát",
@@ -179,7 +184,8 @@
       "years": "rokov",
       "today": "Dnes",
       "verification_only": "Iba na účely overenia",
-      "pdf_pack_alert": "Generujem PDF Pack (Profil, ID, BSN) pre"
+      "pdf_pack_alert": "Generujem PDF Pack (Profil, ID, BSN) pre",
+      "fast_track_msg": "Tento kandidát je už v NL a má platné BSN – Pripravený k okamžitému nástupu."
     },
     "add_job": {
       "modal_title": "Pridať pracovnú ponuku",
@@ -204,5 +210,13 @@
       "error_location": "Zadajte mesto",
       "error_hourly": "Zadajte platnú hodinovú mzdu"
     }
+  },
+  "profile": {
+    "location": "Aktuálna poloha",
+    "has_bsn": "Má BSN",
+    "loc_nl": "Holandsko",
+    "loc_other": "Ostatné / Zahraničie",
+    "yes": "Áno",
+    "no": "Nie"
   }
 }

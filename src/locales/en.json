@@ -50,7 +50,9 @@
     "help_desc": "Your coordinator is available 24/7. If you're unsure about documents or travel, give us a call.",
     "help_btn": "Contact Support",
     "info_title": "Useful Info",
-    "info_desc": "Don't forget that to obtain a BSN number, you must have an original birth certificate in an international format."
+    "info_desc": "Don't forget that to obtain a BSN number, you must have an original birth certificate in an international format.",
+    "step_bsn": "BSN Document",
+    "step_bsn_desc": "Upload your BSN confirmation"
   },
   "about": {
     "title": "Bringing fairness to work in the Netherlands.",
@@ -118,7 +120,9 @@
         "time": "Estimated Time",
         "ticket": "Upload Ticket (PDF/Image)",
         "ticket_placeholder": "Select file...",
-        "submit": "Confirm Arrival Details"
+        "submit": "Confirm Arrival Details",
+        "bsn_document": "Upload BSN Document (PDF/Image)",
+        "bsn_placeholder": "Select BSN document..."
       }
     }
   },
@@ -161,7 +165,8 @@
       "search_placeholder": "Search candidate...",
       "no_candidates": "No candidates found.",
       "export_alert": "Exporting candidate list to a sleek PDF with GoNL logo...",
-      "settings_alert": "Settings Panel Opening..."
+      "settings_alert": "Settings Panel Opening...",
+      "filter_nl": "Available in NL"
     },
     "table": {
       "candidate": "Candidate",
@@ -190,7 +195,8 @@
       "years": "years",
       "today": "Today",
       "verification_only": "For verification purposes only",
-      "pdf_pack_alert": "Generating PDF Pack (Profile, ID, BSN) for"
+      "pdf_pack_alert": "Generating PDF Pack (Profile, ID, BSN) for",
+      "fast_track_msg": "This candidate is already in NL and holds a valid BSN – Ready for immediate start."
     },
     "add_job": {
       "modal_title": "Add Job Posting",
@@ -215,5 +221,13 @@
       "error_location": "Enter city",
       "error_hourly": "Enter a valid hourly wage"
     }
+  },
+  "profile": {
+    "location": "Current Location",
+    "has_bsn": "Has BSN",
+    "loc_nl": "Netherlands",
+    "loc_other": "Other / Abroad",
+    "yes": "Yes",
+    "no": "No"
   }
 }
