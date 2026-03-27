@@ -98,13 +98,9 @@
           "title": "ID Card or Passport",
           "sub": "Must be valid and original"
         },
-        "birth_cert": {
-          "title": "Birth Certificate",
-          "sub": "International format (multilingual)"
-        },
-        "contract": {
-          "title": "Labor Contract",
-          "sub": "Prepared by GoNL"
+        "housing": {
+          "title": "Housing Contract",
+          "sub": "Automatically generated for signature"
         }
       },
       "status": {

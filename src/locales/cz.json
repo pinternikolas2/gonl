@@ -124,7 +124,6 @@
       "ready": "Všechny dokumenty jsou v pořádku. Jsi připraven na cestu.",
       "items": {
         "passport": { "title": "Cestovní pas / Občanka", "sub": "Nesmí být prasklá ani propadlá" },
-        "birth": { "title": "Rodný list", "sub": "Mezinárodní formát (pokud vyžadován)" },
         "housing": { "title": "Smlouva o ubytování", "sub": "Automaticky generováno k podpisu" }
       }
     },

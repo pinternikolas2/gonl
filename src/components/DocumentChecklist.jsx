@@ -7,7 +7,6 @@ export default function DocumentChecklist() {
   const { t } = useTranslation();
   const [items, setItems] = useState([
     { id: 'passport', icon: <User size={18}/>, checked: false },
-    { id: 'birth', icon: <FileText size={18}/>, checked: false },
     { id: 'housing', icon: <Home size={18}/>, checked: false },
   ]);
 
