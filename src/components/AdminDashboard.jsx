@@ -37,7 +37,13 @@ const initialCandidates = [
     id: 'C1048', name: 'Karel Muller', status: 'ready',
     location: 'Czech Republic', partnerId: 'P2',
     idVerified: true, ticketUploaded: true,
-    photoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100&h=100'
+    photoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100&h=100',
+    bsnAppointment: {
+      qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=BSN-C1048-XYZ',
+      date: '2026-04-12',
+      time: '14:30',
+      address: 'Rijndatalaan 2, 2404 BG Alphen aan den Rijn'
+    }
   }
 ];
 
@@ -450,11 +456,65 @@ function CandidateModal({ candidate, onClose, onVerify }) {
            <button className="bg-slate-800 hover:bg-slate-700 text-white px-6 py-4 rounded-2xl font-black uppercase tracking-widest text-xs flex items-center gap-2 transition-all">
              <UserPlus size={18} /> Update CRM data
            </button>
-           <button className="bg-slate-800 hover:bg-slate-700 text-white px-6 py-4 rounded-2xl font-black uppercase tracking-widest text-xs flex items-center gap-2 transition-all">
-             <BarChart3 size={18} /> View Analytics
-           </button>
-        </div>
-      </motion.div>
+            <button className="bg-slate-800 hover:bg-slate-700 text-white px-6 py-4 rounded-2xl font-black uppercase tracking-widest text-xs flex items-center gap-2 transition-all">
+              <BarChart3 size={18} /> View Analytics
+            </button>
+         </div>
+
+         {/* BSN Appointment Section (New) */}
+         <div className="p-8 border-t border-slate-800 space-y-6">
+            <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+              <Building2 size={16} className="text-orange-500" /> BSN Appointment Scheduling
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">QR Code Link / Image URL</label>
+                  <input 
+                    type="text" 
+                    placeholder="https://..." 
+                    defaultValue={candidate.bsnAppointment?.qrUrl}
+                    className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-sm font-bold text-white focus:border-orange-500 outline-none" 
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Date</label>
+                    <input 
+                      type="date" 
+                      defaultValue={candidate.bsnAppointment?.date}
+                      className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-sm font-bold text-white focus:border-orange-500 outline-none" 
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Time</label>
+                    <input 
+                      type="time" 
+                      defaultValue={candidate.bsnAppointment?.time}
+                      className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-sm font-bold text-white focus:border-orange-500 outline-none" 
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Office Address (for Maps)</label>
+                  <textarea 
+                    rows={4}
+                    placeholder="Ulica, Číslo, PSČ, Mesto"
+                    defaultValue={candidate.bsnAppointment?.address || 'Rijndatalaan 2, 2404 BG Alphen aan den Rijn'}
+                    className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-sm font-bold text-white focus:border-orange-500 outline-none resize-none"
+                  />
+                </div>
+                <button className="w-full py-4 bg-orange-600 hover:bg-orange-500 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-lg active:scale-95">
+                  Confirm & Send to Candidate
+                </button>
+              </div>
+            </div>
+         </div>
+       </motion.div>
     </div>
   );
 }

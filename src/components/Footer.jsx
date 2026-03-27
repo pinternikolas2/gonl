@@ -18,7 +18,7 @@ export default function Footer() {
   return (
     <footer className="bg-white border-t border-slate-100 pt-16 pb-24">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 mb-16">
           
           {/* Column 1: Candidates */}
           <div>
@@ -82,7 +82,7 @@ export default function Footer() {
         <div className="pt-8 border-t border-slate-50 flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-widest">
           <p>{t('footer.rights')}</p>
           <div className="flex gap-8">
-            <button className="hover:text-slate-600 transition-colors">Privacy</button>
+            <button onClick={() => navigate('/faq')} className="hover:text-slate-600 transition-colors">Privacy Policy</button>
             <button className="hover:text-slate-600 transition-colors">Terms</button>
           </div>
         </div>

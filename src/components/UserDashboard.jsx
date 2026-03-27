@@ -108,8 +108,8 @@ export default function UserDashboard() {
     (profile.current_location === 'Netherlands' && profile.has_bsn) ? {
       id: 4,
       title: t('roadmap.step_bsn'),
-      description: profile.is_bsn_uploaded ? t('roadmap.step_bsn_desc') : t('roadmap.step_bsn_desc'),
-      status: profile.is_bsn_uploaded ? 'completed' : (profile.is_id_verified ? 'active' : 'pending'),
+      description: profile.bsn_appointment ? `${t('roadmap.step_bsn_desc')} (Termín: ${profile.bsn_appointment.date})` : t('roadmap.step_bsn_desc'),
+      status: profile.bsn_appointment ? 'completed' : (profile.is_id_verified ? 'active' : 'pending'),
       icon: <FileText size={20} />,
       action: () => setShowBSNUpload(true)
     } : {
@@ -209,6 +209,37 @@ export default function UserDashboard() {
                              </div>
                           )}
                         </div>
+
+                        {/* BSN Appointment Details (Expanded View) */}
+                        {step.title === t('roadmap.step_bsn') && profile.bsn_appointment && (
+                          <div className="mt-6 p-6 bg-slate-50 border border-slate-200 rounded-3xl space-y-6">
+                            <div className="flex flex-col md:flex-row gap-8 items-start">
+                              <div className="w-full md:w-32 h-32 bg-white p-2 rounded-2xl border border-slate-200 flex items-center justify-center shrink-0 shadow-sm">
+                                <img src={profile.bsn_appointment.qrUrl} alt="QR Code" className="w-full h-full object-contain" />
+                              </div>
+                              <div className="flex-1 space-y-4">
+                                <div>
+                                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Datum a čas schůzky</p>
+                                  <p className="text-2xl font-black text-slate-900">{profile.bsn_appointment.date} v {profile.bsn_appointment.time}</p>
+                                </div>
+                                <div className="flex flex-wrap gap-4">
+                                  <div className="flex items-start gap-3 bg-white p-4 rounded-xl border border-slate-100 flex-1">
+                                    <AlertCircle size={18} className="text-orange-500 shrink-0 mt-0.5" />
+                                    <p className="text-sm font-bold text-slate-700 leading-snug">
+                                      Tento kód ukažte na úřadě. Nezapomeňte si vzít svůj pas nebo občanský průkaz.
+                                    </p>
+                                  </div>
+                                  <button 
+                                    onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profile.bsn_appointment.address)}`, '_blank')}
+                                    className="bg-slate-900 text-white px-6 py-4 rounded-2xl font-bold text-sm flex items-center gap-3 hover:bg-slate-800 transition-all shadow-lg shrink-0 h-max self-center"
+                                  >
+                                    <Navigation size={18} /> Open in Maps
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

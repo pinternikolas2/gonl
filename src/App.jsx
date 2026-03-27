@@ -10,6 +10,7 @@ import ProfilePage from './pages/ProfilePage';
 import GuidePage from './pages/GuidePage';
 import PartnersPage from './pages/PartnersPage';
 import AdminPage from './pages/AdminPage';
+import FAQPage from './pages/FAQPage';
 import BottomNav from './components/BottomNav';
 import { LanguageProvider } from './context/LanguageContext';
 
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/jobs" element={<JobsListPage />} />
           <Route path="/jobs/:id" element={<JobPage />} />
           <Route path="/partners" element={<PartnersPage />} />
+          <Route path="/faq" element={<FAQPage />} />
 
           {/* Candidate / Private */}
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
