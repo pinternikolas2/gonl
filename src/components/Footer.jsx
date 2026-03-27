@@ -61,7 +61,7 @@ export default function Footer() {
                 </button>
               </li>
               <li>
-                <button onClick={() => navigate('/partner-login')} className="hover:text-slate-900 transition-colors text-[10px] opacity-30 hover:opacity-100 mt-4 block">
+                <button onClick={() => navigate('/partner-login')} className="hover:text-slate-900 transition-colors text-[10px] text-slate-400 hover:text-slate-900 mt-6 block font-bold">
                   GoNL HQ
                 </button>
               </li>

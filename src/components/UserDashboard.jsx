@@ -53,15 +53,21 @@ export default function UserDashboard() {
   // Load applied job if any (from Value First flow)
   useEffect(() => {
     const appliedJob = sessionStorage.getItem('gonl_applied_job');
-    if (appliedJob && !profile.assigned_job) {
-      setProfile(prev => ({ ...prev, assigned_job: JSON.parse(appliedJob) }));
+    if (appliedJob) {
+      const parsedJob = JSON.parse(appliedJob);
+      setProfile(prev => {
+        if (!prev.assigned_job) {
+          return { ...prev, assigned_job: parsedJob };
+        }
+        return prev;
+      });
       sessionStorage.removeItem('gonl_applied_job');
-      // Auto-open next step (CV Choice)
+      // Auto-open next step (CV Choice) if not done
       if (!profile.is_cv_uploaded) {
         setShowCVChoice(true);
       }
     }
-  }, [profile.assigned_job]);
+  }, []); // Run on mount to catch any pending jobs from landing
 
   const handleScanComplete = () => {
     setProfile(prev => ({ ...prev, is_id_verified: true }));
@@ -184,8 +190,8 @@ export default function UserDashboard() {
                       <div className="flex-1 pb-2">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                           <div>
-                            <h3 className={`text-xl font-black tracking-tight ${isActive ? 'text-slate-900' : isCompleted ? 'text-slate-700' : 'text-slate-300'}`}>
-                              {step.title}
+                            <h3 className={`text-xl font-black tracking-tight ${isActive ? 'text-slate-900' : isCompleted ? 'text-slate-700' : 'text-slate-400'}`}>
+                              {step.title} {isPending && <span className="text-[10px] font-bold text-slate-300 ml-2 uppercase tracking-widest border border-slate-100 px-1.5 py-0.5 rounded">Zamčeno</span>}
                             </h3>
                             <p className={`text-sm mt-1 max-w-md ${isActive ? 'text-slate-600 font-medium' : 'text-slate-400 font-medium'}`}>
                               {step.description}
