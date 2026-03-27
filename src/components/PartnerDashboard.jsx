@@ -338,10 +338,12 @@ export default function PartnerDashboard() {
               ))}
             </div>
             
-              )}
-            </div>
+            {filteredCandidates.length === 0 && (
+              <div className="p-12 text-center text-slate-500">
+                {t('partner.dashboard.no_candidates')}
+              </div>
+            )}
           </div>
-        )}
         )}
       </main>
 
