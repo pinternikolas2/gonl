@@ -63,13 +63,16 @@ export default function UserDashboard() {
 
   // Cleanup applied job from session on mount if already processed
   useEffect(() => {
+    const wasJobJustApplied = !!sessionStorage.getItem('gonl_applied_job');
     sessionStorage.removeItem('gonl_applied_job');
+    
     // If we have a job but no CV, suggest CV next
     if (profile.assigned_job && !profile.is_cv_uploaded) {
-      // Small delay to ensure smooth transition
-      setTimeout(() => setShowCVChoice(true), 800);
+      // Show immediately if just applied, otherwise maybe a small delay
+      const delay = wasJobJustApplied ? 100 : 800;
+      setTimeout(() => setShowCVChoice(true), delay);
     }
-  }, []);
+  }, [profile.assigned_job, profile.is_cv_uploaded]);
 
   const handleScanComplete = () => {
     setProfile(prev => ({ ...prev, is_id_verified: true }));

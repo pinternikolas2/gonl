@@ -62,6 +62,7 @@ export default function Hero() {
     const profile = JSON.parse(sessionStorage.getItem('gonl_user_profile') || '{}');
     profile.assigned_job = job;
     sessionStorage.setItem('gonl_user_profile', JSON.stringify(profile));
+    sessionStorage.setItem('gonl_applied_job', JSON.stringify(job)); // Ensure consistency with JobPage
     
     setAppliedJobs(prev => [...prev, job.id]);
     navigate('/dashboard');
