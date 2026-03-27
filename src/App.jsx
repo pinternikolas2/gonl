@@ -9,6 +9,7 @@ import JobsListPage from './pages/JobsListPage';
 import ProfilePage from './pages/ProfilePage';
 import GuidePage from './pages/GuidePage';
 import PartnersPage from './pages/PartnersPage';
+import AdminPage from './pages/AdminPage';
 import BottomNav from './components/BottomNav';
 import { LanguageProvider } from './context/LanguageContext';
 
@@ -47,6 +48,9 @@ export default function App() {
           {/* Partner / Private */}
           <Route path="/partner" element={<ProtectedRoute requiredRole="partner"><PartnerPage /></ProtectedRoute>} />
           <Route path="/partner/settings" element={<ProtectedRoute requiredRole="partner"><PartnerPage /></ProtectedRoute>} />
+          
+          {/* Admin / Private */}
+          <Route path="/admin" element={<AdminPage />} />
 
           {/* Catch all */}
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -9,7 +9,7 @@ export default function BottomNav() {
   const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + '/');
 
   // Skrýt na landing a auth stránkách
-  if (!role || location.pathname === '/' || location.pathname === '/auth' || location.pathname === '/onboarding' || location.pathname === '/partner-login') {
+  if (!role || location.pathname === '/' || location.pathname === '/auth' || location.pathname === '/onboarding' || location.pathname === '/partner-login' || location.pathname.startsWith('/admin')) {
     return null;
   }
 
