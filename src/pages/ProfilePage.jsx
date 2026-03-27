@@ -143,19 +143,28 @@ export default function ProfilePage() {
         </div>
 
         {/* Status Timeline Card */}
-        <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white">
-          <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-3">Tvůj aktuální status</p>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center">
-              <ShieldCheck size={20} />
+        <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white overflow-hidden relative shadow-xl shadow-slate-200">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500 rounded-full -mr-16 -mt-16 blur-3xl opacity-20" />
+          <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-3 relative z-10">Tvůj aktuální status</p>
+          <div className="flex items-center gap-3 relative z-10">
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${profile.assigned_job ? 'bg-orange-600' : 'bg-slate-700'}`}>
+              {profile.assigned_job ? <Check size={20} /> : <ShieldCheck size={20} />}
             </div>
             <div>
-              <p className="font-black text-lg">Ověřen</p>
-              <p className="text-xs text-white/60 font-medium">Čeká se na výběr práce</p>
+              <p className="font-black text-lg">
+                {!profile.assigned_job ? 'Čeká se na výběr' : 
+                 !profile.is_cv_uploaded ? 'Nahrát CV' : 
+                 !profile.is_id_verified ? 'Ověřit identitu' : 'Ověřen (Příprava)'}
+              </p>
+              <p className="text-xs text-white/60 font-medium italic">
+                {!profile.assigned_job ? 'Vyber si svou první práci v NL' : 
+                 !profile.is_cv_uploaded ? 'Tvoje vysněná práce už čeká' : 
+                 !profile.is_id_verified ? 'Zbývá poslední krok - sken ID' : 'Jsi na cestě k novému začátku'}
+              </p>
             </div>
           </div>
-          <button onClick={() => navigate('/dashboard')} className="mt-4 w-full bg-white/10 hover:bg-white/20 transition-colors text-white py-3 rounded-xl text-sm font-bold">
-            Zobrazit celou Timeline →
+          <button onClick={() => navigate('/dashboard')} className="mt-5 w-full bg-white/10 hover:bg-white/20 transition-all text-white py-3 rounded-xl text-sm font-bold border border-white/5 active:scale-[0.98]">
+            {profile.assigned_job ? 'Pokračovat v Roadmapě →' : 'Zobrazit Timeline →'}
           </button>
         </div>
 

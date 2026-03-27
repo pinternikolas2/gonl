@@ -58,8 +58,12 @@ export default function Hero() {
       return;
     }
 
+    // If logged in, update profile and go to dashboard
+    const profile = JSON.parse(sessionStorage.getItem('gonl_user_profile') || '{}');
+    profile.assigned_job = job;
+    sessionStorage.setItem('gonl_user_profile', JSON.stringify(profile));
+    
     setAppliedJobs(prev => [...prev, job.id]);
-    // If already logged in, just go to dashboard or show success
     navigate('/dashboard');
   };
 
