@@ -253,15 +253,6 @@ export default function UserDashboard() {
               </button>
            </div>
 
-           <div className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm">
-             <div className="flex items-center gap-3 mb-4">
-               <AlertCircle className="text-blue-500" size={20} />
-               <h4 className="font-bold text-slate-900">{t('roadmap.info_title')}</h4>
-             </div>
-             <p className="text-sm text-slate-500 font-medium leading-relaxed">
-               {t('roadmap.info_desc')}
-             </p>
-           </div>
         </div>
 
       </div>
