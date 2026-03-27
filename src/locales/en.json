@@ -20,6 +20,12 @@
     "cta_feature3": "Overtime and shift bonuses",
     "cta_feature4": "Zorgtoeslag (government subsidy) +32€"
   },
+  "jobs": {
+    "search_placeholder": "Search position or city...",
+    "filter_all": "All cities",
+    "no_results": "No jobs found matching your search.",
+    "filter_city": "Filter by city"
+  },
   "roadmap": {
     "title": "Onboarding Roadmap",
     "step1": "Choose a Job",

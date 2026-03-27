@@ -4,31 +4,7 @@ import Header from '../components/Header';
 import JobDetail from '../components/JobDetail';
 import RoleSwitcher from '../components/RoleSwitcher';
 
-// Mock data for now - in production this comes from Supabase
-const mockJobs = [
-  {
-    id: '1',
-    title: 'Skladník - Order Picker',
-    company_name: 'Albert Heijn',
-    location_city: 'Zaandam',
-    hourly_brutto: 14.50,
-    housing_cost_weekly: 135,
-    shift_allowance: 1.0,
-    description: 'Příprava objednávek pro největší supermarket v NL.',
-    image_url: 'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80&w=800&h=400',
-  },
-  {
-    id: '2',
-    title: 'Operátor Výroby - Komponenty',
-    company_name: 'Philips',
-    location_city: 'Eindhoven',
-    hourly_brutto: 15.20,
-    housing_cost_weekly: 125,
-    shift_allowance: 1.15,
-    description: 'Asistence při montáži drobných elektronických součástek.',
-    image_url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800&h=400',
-  }
-];
+import { allJobs as mockJobs } from '../data/jobs';
 
 export default function JobPage() {
   const { id } = useParams();

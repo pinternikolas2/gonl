@@ -4,43 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import JobCard from './JobCard';
 import JobDetail from './JobDetail';
 import { useTranslation } from '../context/LanguageContext';
-
-// Aktuální nabídky (v produkci z Supabase)
-const featuredJobs = [
-  {
-    id: '1',
-    title: 'Skladník – Order Picker',
-    company_name: 'Albert Heijn',
-    location_city: 'Zaandam',
-    hourly_brutto: 14.50,
-    housing_cost_weekly: 135,
-    shift_allowance: 1.0,
-    description: 'Příprava objednávek pro největší supermarket v Holandsku. Ranní, odpolední i noční směny.',
-    image_url: 'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80&w=400&h=250',
-  },
-  {
-    id: '2',
-    title: 'Operátor Výroby',
-    company_name: 'Philips',
-    location_city: 'Eindhoven',
-    hourly_brutto: 15.20,
-    housing_cost_weekly: 125,
-    shift_allowance: 1.15,
-    description: 'Asistence při montáži elektronických součástek v moderní továrně. Příplatek za směny +15 %.',
-    image_url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=400&h=250',
-  },
-  {
-    id: '3',
-    title: 'Řidič vysokozdvižného vozíku',
-    company_name: 'DSV Logistics',
-    location_city: 'Rotterdam',
-    hourly_brutto: 16.00,
-    housing_cost_weekly: 140,
-    shift_allowance: 1.25,
-    description: 'Obsluha VZV v moderním logistickém centru. Vyžadován průkaz VZV (zprostředkujeme).',
-    image_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=400&h=250',
-  }
-];
+import { featuredJobs } from '../data/jobs';
 
 export default function Hero() {
   const navigate = useNavigate();

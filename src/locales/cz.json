@@ -20,6 +20,12 @@
     "cta_feature3": "Přesčasy i směnové příplatky",
     "cta_feature4": "Zorgtoeslag (příspěvek státu) +32€"
   },
+  "jobs": {
+    "search_placeholder": "Hledat pozici nebo město...",
+    "filter_all": "Všechna města",
+    "no_results": "Nenalezena žádná práce odpovídající vašemu hledání.",
+    "filter_city": "Filtrovat podle města"
+  },
   "roadmap": {
     "title": "Roadmapa k nástupu",
     "step1": "Vyber si práci",

@@ -20,6 +20,12 @@
     "cta_feature3": "Nadčasy aj smenové príplatky",
     "cta_feature4": "Zorgtoeslag (príspevok štátu) +32€"
   },
+  "jobs": {
+    "search_placeholder": "Hľadať pozíciu alebo mesto...",
+    "filter_all": "Všetky mestá",
+    "no_results": "Nenašla sa žiadna práca zodpovedajúca vášmu hľadaniu.",
+    "filter_city": "Filtrovať podľa mesta"
+  },
   "roadmap": {
     "title": "Roadmapa k nástupu",
     "step1": "Vyber si prácu",

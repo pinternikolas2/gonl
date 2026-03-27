@@ -1,0 +1,48 @@
+export const allJobs = [
+  {
+    id: '1', 
+    title: 'Skladník – Order Picker', 
+    company_name: 'Albert Heijn',
+    location_city: 'Zaandam', 
+    hourly_brutto: 14.50, 
+    housing_cost_weekly: 135, 
+    shift_allowance: 1.0,
+    description: 'Příprava objednávek pro největší supermarket v NL. Práce v moderním skladu s možností bonusů.',
+    image_url: 'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80&w=600&h=400',
+  },
+  {
+    id: '2', 
+    title: 'Operátor Výroby', 
+    company_name: 'Philips',
+    location_city: 'Eindhoven', 
+    hourly_brutto: 15.20, 
+    housing_cost_weekly: 125, 
+    shift_allowance: 1.15,
+    description: 'Montáž drobných elektronických součástek. Čisté prostředí, moderní technologie.',
+    image_url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=600&h=400',
+  },
+  {
+    id: '3', 
+    title: 'Řidič VZV', 
+    company_name: 'DSV Logistics',
+    location_city: 'Rotterdam', 
+    hourly_brutto: 16.00, 
+    housing_cost_weekly: 140, 
+    shift_allowance: 1.25,
+    description: 'Obsluha vysokozdvižného vozíku v logistickém centru. Nutný platný průkaz (pomůžeme vyřídit).',
+    image_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=600&h=400',
+  },
+  {
+      id: '4', 
+      title: 'Balení květin', 
+      company_name: 'FloraHolland',
+      location_city: 'Aalsmeer', 
+      hourly_brutto: 13.80, 
+      housing_cost_weekly: 115, 
+      shift_allowance: 1.0,
+      description: 'Příprava a balení květinových vazeb pro mezinárodní export. Krásné prostředí.',
+      image_url: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=600&h=400',
+    },
+];
+
+export const featuredJobs = allJobs.slice(0, 3);

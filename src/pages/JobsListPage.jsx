@@ -1,52 +1,137 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { Search, MapPin, X, Filter } from 'lucide-react';
 import JobCard from '../components/JobCard';
-
-const allJobs = [
-  {
-    id: '1', title: 'Skladník – Order Picker', company_name: 'Albert Heijn',
-    location_city: 'Zaandam', hourly_brutto: 14.50, housing_cost_weekly: 135, shift_allowance: 1.0,
-    image_url: 'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80&w=400&h=250',
-  },
-  {
-    id: '2', title: 'Operátor Výroby', company_name: 'Philips',
-    location_city: 'Eindhoven', hourly_brutto: 15.20, housing_cost_weekly: 125, shift_allowance: 1.15,
-    image_url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=400&h=250',
-  },
-  {
-    id: '3', title: 'Řidič VZV', company_name: 'DSV Logistics',
-    location_city: 'Rotterdam', hourly_brutto: 16.00, housing_cost_weekly: 140, shift_allowance: 1.25,
-    image_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=400&h=250',
-  },
-];
-
 import Header from '../components/Header';
+import { allJobs } from '../data/jobs';
+import { useTranslation } from '../context/LanguageContext';
 
 export default function JobsListPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCity, setSelectedCity] = useState(null);
+
+  // Získání unikátních měst pro filtry
+  const cities = useMemo(() => {
+    const uniqueCities = [...new Set(allJobs.map(job => job.location_city))];
+    return uniqueCities.sort();
+  }, []);
+
+  // Filtrování seznamu prací
+  const filteredJobs = useMemo(() => {
+    return allJobs.filter(job => {
+      const matchesSearch = 
+        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.location_city.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesCity = !selectedCity || job.location_city === selectedCity;
+      
+      return matchesSearch && matchesCity;
+    });
+  }, [searchTerm, selectedCity]);
 
   return (
     <div className="min-h-screen bg-slate-50 pb-28">
       <Header />
-      <div className="max-w-2xl mx-auto px-6 pt-28">
+      
+      <div className="max-w-4xl mx-auto px-6 pt-28">
         <div className="py-8">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Pracovní nabídky</p>
-          <h1 className="text-3xl font-black text-slate-900">Dostupné pozice</h1>
-          <p className="text-slate-500 mt-2 font-medium text-sm">{allJobs.length} aktivní nabídky v Holandsku</p>
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">{t('footer.jobs')}</p>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Dostupné pozice</h1>
+          <p className="text-slate-500 mt-2 font-medium text-sm">
+            {filteredJobs.length} {t('hero.jobs_active')} v Holandsku
+          </p>
         </div>
 
-        <div className="space-y-4">
-          {allJobs.map((job, i) => (
-            <motion.div
-              key={job.id}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
-            >
-              <JobCard job={job} onClick={(j) => navigate(`/jobs/${j.id}`)} />
-            </motion.div>
-          ))}
+        {/* Search and Filters UI */}
+        <div className="mb-10 space-y-6">
+          {/* Search Bar */}
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-orange-600 transition-colors">
+              <Search size={20} />
+            </div>
+            <input 
+              type="text"
+              placeholder={t('jobs.search_placeholder')}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-white border border-slate-200 rounded-[24px] py-4 pl-14 pr-12 text-slate-900 font-medium shadow-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all"
+            />
+            {searchTerm && (
+              <button 
+                onClick={() => setSearchTerm('')}
+                className="absolute inset-y-0 right-4 flex items-center text-slate-400 hover:text-slate-600"
+              >
+                <X size={20} />
+              </button>
+            )}
+          </div>
+
+          {/* City Filters */}
+          <div className="flex flex-col gap-3">
+             <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest px-1">
+               <Filter size={14} />
+               {t('jobs.filter_city')}
+             </div>
+             <div className="flex flex-wrap gap-2">
+               <button
+                 onClick={() => setSelectedCity(null)}
+                 className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all border ${!selectedCity ? 'bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-200' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'}`}
+               >
+                 {t('jobs.filter_all')}
+               </button>
+               {cities.map(city => (
+                 <button
+                   key={city}
+                   onClick={() => setSelectedCity(city)}
+                   className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all border ${selectedCity === city ? 'bg-orange-600 text-white border-orange-600 shadow-lg shadow-orange-100' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'}`}
+                 >
+                   {city}
+                 </button>
+               ))}
+             </div>
+          </div>
+        </div>
+
+        {/* Job Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <AnimatePresence mode="popLayout">
+            {filteredJobs.length > 0 ? (
+              filteredJobs.map((job, i) => (
+                <motion.div
+                  key={job.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.2, delay: i * 0.05 }}
+                >
+                  <JobCard job={job} onClick={(j) => navigate(`/jobs/${j.id}`)} />
+                </motion.div>
+              ))
+            ) : (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="col-span-full py-20 text-center bg-white rounded-[32px] border border-dashed border-slate-200"
+              >
+                <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-100">
+                  <Search className="text-slate-300" size={32} />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900">Žádné shody</h3>
+                <p className="text-slate-500 font-medium mt-1">{t('jobs.no_results')}</p>
+                <button 
+                  onClick={() => { setSearchTerm(''); setSelectedCity(null); }}
+                  className="mt-6 text-orange-600 font-bold hover:underline"
+                >
+                  Zrušit všechny filtry
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
