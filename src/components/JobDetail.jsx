@@ -35,7 +35,7 @@ export default function JobDetail({ job, onBack, onApply, isApplied }) {
            
            {job.shift_allowance > 1.0 && (
               <span className="bg-orange-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md w-max mb-2">
-                Příplatek {(job.shift_allowance - 1) * 100}%
+                Příplatek {parseFloat(((job.shift_allowance - 1) * 100).toFixed(1))}%
               </span>
            )}
            <h2 className="text-2xl font-black text-white leading-tight">{job.title}</h2>
