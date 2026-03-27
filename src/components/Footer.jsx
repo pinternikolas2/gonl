@@ -60,6 +60,11 @@ export default function Footer() {
                   {t('footer.portal')}
                 </button>
               </li>
+              <li>
+                <button onClick={() => navigate('/partner-login')} className="hover:text-slate-900 transition-colors text-[10px] opacity-30 hover:opacity-100 mt-4 block">
+                  GoNL HQ
+                </button>
+              </li>
             </ul>
           </div>
           

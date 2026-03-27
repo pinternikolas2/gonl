@@ -15,9 +15,16 @@ export default function PartnerLoginPage() {
     setLoading(true);
     await new Promise(r => setTimeout(r, 1200)); // Simulating API call
     
-    sessionStorage.setItem('gonl_role', 'partner');
-    sessionStorage.setItem('gonl_user', JSON.stringify({ email, name: 'Albert Heijn Zaandam' }));
-    navigate('/partner');
+    if (email.toLowerCase() === 'nikolas@gonl.app') {
+      sessionStorage.setItem('gonl_role', 'admin');
+      sessionStorage.setItem('gonl_user_email', 'nikolas@gonl.app');
+      sessionStorage.setItem('gonl_user', JSON.stringify({ email, name: 'Nikolas (HQ)' }));
+      navigate('/admin');
+    } else {
+      sessionStorage.setItem('gonl_role', 'partner');
+      sessionStorage.setItem('gonl_user', JSON.stringify({ email, name: 'Albert Heijn Zaandam' }));
+      navigate('/partner');
+    }
     setLoading(false);
   };
 
