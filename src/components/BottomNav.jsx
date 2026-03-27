@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, Briefcase, User, LayoutDashboard, Users, Navigation } from 'lucide-react';
+import { Home, Briefcase, User, LayoutDashboard, Users, Navigation, Settings } from 'lucide-react';
 
 export default function BottomNav() {
   const navigate = useNavigate();
@@ -22,8 +22,7 @@ export default function BottomNav() {
 
   const partnerNav = [
     { icon: <LayoutDashboard size={22}/>, label: 'Dashboard', path: '/partner' },
-    { icon: <Users size={22}/>, label: 'Kandidáti', path: '/partner' },
-    { icon: <User size={22}/>, label: 'Nastavení', path: '/partner/settings' },
+    { icon: <Settings size={22}/>, label: 'Nastavení', path: '/partner/settings' },
   ];
 
   const navItems = role === 'partner' ? partnerNav : candidateNav;

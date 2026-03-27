@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Users, FileCheck, Plane, Search, Download, X, Eye, CheckCircle2, FileText, Video, Building2, Plus, Settings } from 'lucide-react';
 import AddJobModal from './AddJobModal';
 import { useTranslation } from '../context/LanguageContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // Mock candidates
 const mockCandidates = [
@@ -63,6 +64,9 @@ export default function PartnerDashboard() {
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [isPhotoBlurred, setIsPhotoBlurred] = useState(true);
   const [showAddJob, setShowAddJob] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isSettings = location.pathname === '/partner/settings';
 
   // Stats
   const readyCount = candidates.filter(c => c.status === 'ready').length;
@@ -138,8 +142,8 @@ export default function PartnerDashboard() {
           
           <div className="flex items-center gap-2 md:gap-4">
             <button 
-              onClick={() => alert(t('partner.dashboard.settings_alert'))}
-              className="p-2 text-slate-400 hover:text-slate-900 transition-colors"
+              onClick={() => navigate('/partner/settings')}
+              className={`p-2 transition-colors ${isSettings ? 'text-orange-600' : 'text-slate-400 hover:text-slate-900'}`}
             >
               <Settings size={20} />
             </button>
@@ -188,7 +192,10 @@ export default function PartnerDashboard() {
         </div>
 
         {/* Pipeline Table Section */}
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col min-h-[500px] md:h-[600px]">
+        {isSettings ? (
+          <SettingsView />
+        ) : (
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col min-h-[500px] md:h-[600px]">
           
           <div className="p-4 border-b border-slate-200 bg-slate-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h2 className="text-lg font-bold text-slate-900">{t('partner.dashboard.pipeline_title')}</h2>
@@ -331,13 +338,12 @@ export default function PartnerDashboard() {
               ))}
             </div>
             
-            {filteredCandidates.length === 0 && (
-              <div className="p-12 text-center text-slate-500">
-                {t('partner.dashboard.no_candidates')}
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </main>
+        )}
+        )}
+      </main>
 
       {/* Candidate Detail Side-Panel (Drawer) */}
       <AnimatePresence>
@@ -498,6 +504,43 @@ export default function PartnerDashboard() {
         onSave={(newJob) => console.log('New job created:', newJob)}
       />
 
+    </div>
+  );
+}
+
+function SettingsView() {
+  const navigate = useNavigate();
+  return (
+    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-8 max-w-2xl mx-auto w-full">
+      <div className="mb-8">
+        <h2 className="text-2xl font-black text-slate-900 mb-2">Nastavení partnera</h2>
+        <p className="text-slate-500 font-medium">Správa profilu agentury a uživatelského účtu.</p>
+      </div>
+
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 gap-6">
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Název agentury</label>
+            <input type="text" readOnly value="Albert Heijn Zaandam" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-900" />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">E-mail pro notifikace</label>
+            <input type="email" readOnly value="contact@ah-zaandam.nl" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-900" />
+          </div>
+        </div>
+
+        <div className="pt-6 border-t border-slate-100">
+           <button 
+            onClick={() => {
+              sessionStorage.clear();
+              navigate('/');
+            }}
+            className="w-full py-4 bg-rose-50 text-rose-600 rounded-2xl font-bold hover:bg-rose-100 transition-colors border border-rose-100"
+          >
+            Odhlásit se z portálu
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
