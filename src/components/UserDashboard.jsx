@@ -28,7 +28,10 @@ export default function UserDashboard() {
   const { t } = useTranslation();
   const [profile, setProfile] = useState(() => {
     const saved = sessionStorage.getItem('gonl_user_profile');
-    return saved ? JSON.parse(saved) : {
+    const appliedJobStr = sessionStorage.getItem('gonl_applied_job');
+    const appliedJob = appliedJobStr ? JSON.parse(appliedJobStr) : null;
+    
+    let baseProfile = saved ? JSON.parse(saved) : {
       name: 'Uživatel',
       assigned_job: null,
       is_id_verified: false,
@@ -36,6 +39,14 @@ export default function UserDashboard() {
       cv_url: null,
       is_ticket_uploaded: false,
     };
+
+    // Merge applied job if it's in session but not in profile
+    if (appliedJob && !baseProfile.assigned_job) {
+      baseProfile.assigned_job = appliedJob;
+      // Note: we don't removeItem here as it's a side effect in initializer
+    }
+    
+    return baseProfile;
   });
 
   const [showScanner, setShowScanner] = useState(false);
@@ -50,24 +61,15 @@ export default function UserDashboard() {
     sessionStorage.setItem('gonl_user_profile', JSON.stringify(profile));
   }, [profile]);
 
-  // Load applied job if any (from Value First flow)
+  // Cleanup applied job from session on mount if already processed
   useEffect(() => {
-    const appliedJob = sessionStorage.getItem('gonl_applied_job');
-    if (appliedJob) {
-      const parsedJob = JSON.parse(appliedJob);
-      setProfile(prev => {
-        if (!prev.assigned_job) {
-          return { ...prev, assigned_job: parsedJob };
-        }
-        return prev;
-      });
-      sessionStorage.removeItem('gonl_applied_job');
-      // Auto-open next step (CV Choice) if not done
-      if (!profile.is_cv_uploaded) {
-        setShowCVChoice(true);
-      }
+    sessionStorage.removeItem('gonl_applied_job');
+    // If we have a job but no CV, suggest CV next
+    if (profile.assigned_job && !profile.is_cv_uploaded) {
+      // Small delay to ensure smooth transition
+      setTimeout(() => setShowCVChoice(true), 800);
     }
-  }, []); // Run on mount to catch any pending jobs from landing
+  }, []);
 
   const handleScanComplete = () => {
     setProfile(prev => ({ ...prev, is_id_verified: true }));
