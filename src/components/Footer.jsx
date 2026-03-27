@@ -18,7 +18,7 @@ export default function Footer() {
   return (
     <footer className="bg-white border-t border-slate-100 pt-16 pb-24">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 mb-16">
           
           {/* Column 1: Candidates */}
           <div>
@@ -44,36 +44,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 2: Pomoc & Rady */}
-          <div>
-            <h4 className="font-black text-slate-900 mb-6 uppercase text-xs tracking-[0.2em]">
-              {t('footer.help_title')}
-            </h4>
-            <ul className="space-y-4 text-sm font-bold text-slate-500">
-              <li>
-                <button onClick={() => navigate('/faq')} className="hover:text-orange-600 transition-colors">
-                  {t('footer.faq_bsn')}
-                </button>
-              </li>
-              <li>
-                <button onClick={() => navigate('/faq')} className="hover:text-orange-600 transition-colors">
-                  {t('footer.faq_tickets')}
-                </button>
-              </li>
-              <li>
-                <button onClick={() => navigate('/faq')} className="hover:text-orange-600 transition-colors">
-                  {t('footer.faq_wages')}
-                </button>
-              </li>
-              <li>
-                <button onClick={() => navigate('/faq')} className="hover:text-orange-600 transition-colors">
-                  {t('footer.faq_housing')}
-                </button>
-              </li>
-            </ul>
-          </div>
-          
-          {/* Column 3: For Agencies */}
+          {/* Column 2: For Agencies */}
           <div>
             <h4 className="font-black text-slate-900 mb-6 uppercase text-xs tracking-[0.2em]">
               {t('footer.agencies')}
@@ -97,7 +68,7 @@ export default function Footer() {
             </ul>
           </div>
           
-          {/* Column 4: Contact */}
+          {/* Column 3: Contact */}
           <div>
             <h4 className="font-black text-slate-900 mb-6 uppercase text-xs tracking-[0.2em]">
               {t('footer.contact')}
