@@ -46,6 +46,7 @@
     "my_nav": "Moja navigácia",
     "my_nav_sub": "Všetky dôležité adresy pre tvoj príchod.",
     "my_nav_btn": "Detailná mapa",
+    "final_btn": "Späť na hlavnú stránku",
     "help_title": "Potrebujete pomoc?",
     "help_desc": "Váš koordinátor je vám k dispozícii 24/7. Ak si neviete rady s dokladmi alebo cestou, zavolajte nám.",
     "help_btn": "Kontaktovať podporu",
@@ -94,7 +95,7 @@
       "rni": "Najbližší RNI Úrad",
       "nav_here": "Navigovať sem",
       "nav_work": "Trasa do práce",
-      "final_btn": "Späť na hlavnú stránku"
+      "nav_bsn": "Kde vybavím BSN"
     },
     "docs": {
       "title": "BSN Dokumentácia",

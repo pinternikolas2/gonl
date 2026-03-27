@@ -46,6 +46,7 @@
     "my_nav": "My Navigation",
     "my_nav_sub": "All important addresses for your arrival.",
     "my_nav_btn": "Detailed Map",
+    "final_btn": "Back to Home",
     "help_title": "Need Help?",
     "help_desc": "Your coordinator is available 24/7. If you're unsure about documents or travel, give us a call.",
     "help_btn": "Contact Support",
@@ -103,6 +104,7 @@
       "ready": "All documents are in order. You are ready for your journey.",
       "items": {
         "passport": { "title": "ID Card or Passport", "sub": "Must be valid and original" },
+        "birth": { "title": "Birth Certificate", "sub": "International format (if required)" },
         "housing": { "title": "Housing Contract", "sub": "Automatically generated for signature" }
       }
     },
