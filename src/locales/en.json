@@ -71,6 +71,12 @@
     "become_partner": "Become a Partner",
     "portal": "Agency Portal",
     "contact": "Contact",
+    "help_title": "Help & Advice",
+    "faq_bsn": "About BSN",
+    "faq_tickets": "Ticket Reimbursement",
+    "faq_wages": "Wages & Pay",
+    "faq_housing": "About Housing",
+    "privacy": "Privacy Policy",
     "tech": "Powered by GoNL technology. 🇳🇱 Based in Amsterdam.",
     "rights": "© 2026 GoNL Enterprise B.V. All rights reserved."
   },
@@ -217,5 +223,48 @@
     "loc_other": "Other / Abroad",
     "yes": "Yes",
     "no": "No"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about working in the Netherlands, the BSN process, and your arrival.",
+    "help_center": "Help Center",
+    "cta_title": "Didn't find your answer?",
+    "cta_desc": "Write to us at info@gonl.app and we'll reply within 24 hours.",
+    "cta_btn": "Send Inquiry",
+    "categories": {
+      "process": {
+        "title": "Registration and BSN (Digital Process)",
+        "q1": {
+          "q": "How does the BSN process work?",
+          "a": "In GoNL.app, it's fully digital and stress-free. Once the agency confirms your appointment, the Roadmap section will display a QR code and the exact meeting time at the NL office. Simply show this code from your mobile on-site. The app will also navigate you there."
+        },
+        "q2": {
+          "q": "Why do I need to upload my ID/passport?",
+          "a": "Dutch laws and agency security protocols require it. Your data is encrypted and used exclusively for identity verification and preparing your employment contract."
+        }
+      },
+      "money": {
+        "title": "Work and Money",
+        "q3": {
+          "q": "Do I pay for job placement?",
+          "a": "No. GoNL.app is 100% free for candidates. We do not charge any hidden fees or commissions from your wages."
+        },
+        "q4": {
+          "q": "When will I receive my first paycheck?",
+          "a": "Most our partner agencies pay wages weekly. Typically expect your first money after your second week of work."
+        }
+      },
+      "travel": {
+        "title": "Transport and Housing",
+        "q5": {
+          "q": "Who pays for the ticket to the Netherlands?",
+          "a": "You buy the ticket yourself initially and upload it to the app. Important: Most of our partners will reimburse your travel costs in your first or second paycheck. Keep your original ticket safe!"
+        },
+        "q6": {
+          "q": "Where will I live in the Netherlands?",
+          "a": "Agencies provide SNF-certified accommodation. Usually shared houses or apartments within reasonable distance from work."
+        }
+      }
+    }
   }
 }

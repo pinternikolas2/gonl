@@ -98,6 +98,12 @@
     "become_partner": "Become a Partner",
     "portal": "Agency Portal",
     "contact": "Kontakt",
+    "help_title": "Pomoc & Rady",
+    "faq_bsn": "O BSN",
+    "faq_tickets": "Proplácení jízdenek",
+    "faq_wages": "Mzda a výplaty",
+    "faq_housing": "O ubytování",
+    "privacy": "Zásady ochrany osobních údajů",
     "tech": "Powered by GoNL technology. 🇳🇱 Based in Amsterdam.",
     "rights": "© 2026 GoNL Enterprise B.V. Všechna práva vyhrazena."
   },
@@ -218,5 +224,48 @@
     "loc_other": "Ostatní / Zahraničí",
     "yes": "Ano",
     "no": "Ne"
+  },
+  "faq": {
+    "title": "Často kladené otázky",
+    "subtitle": "Vše, co potřebujete vědět o práci v Holandsku, procesu vyřízení BSN a vašem nástupu.",
+    "help_center": "Centrum nápovědy",
+    "cta_title": "Nenašli jste svou odpověď?",
+    "cta_desc": "Napište nám na info@gonl.app a my vám odpovíme do 24 hodin.",
+    "cta_btn": "Poslat dotaz",
+    "categories": {
+      "process": {
+        "title": "Registrace a BSN (Digitální proces)",
+        "q1": {
+          "q": "Jak probíhá vyřízení BSN (rodného čísla)?",
+          "a": "V GoNL.app je to plně digitální a bez stresu. Jakmile vám agentura potvrdí termín, v aplikaci se vám v sekci Roadmapa zobrazí QR kód a přesný čas schůzky na úřadě v NL. Tento kód stačí ukázat z mobilu přímo na místě. Aplikace vás tam navíc z vaší ubytovny i odnaviguje."
+        },
+        "q2": {
+          "q": "Proč musím nahrávat svou občanku/pas?",
+          "a": "Vyžadují to nizozemské zákony a bezpečnostní protokoly agentur. Vaše data jsou u nás šifrovaná a slouží výhradně pro ověření vaší identity a přípravu pracovní smlouvy před vaším nástupem."
+        }
+      },
+      "money": {
+        "title": "Práce a peníze",
+        "q3": {
+          "q": "Platím za zprostředkování práce?",
+          "a": "Ne. GoNL.app je pro kandidáty 100% zdarma. Žádné skryté poplatky ani provize z vaší mzdy si neúčtujeme."
+        },
+        "q4": {
+          "q": "Kdy dostanu svou první výplatu?",
+          "a": "Většina našich partnerských agentur vyplácí mzdu týdně. První peníze na účet obvykle očekávejte po druhém odpracovaném týdnu."
+        }
+      },
+      "travel": {
+        "title": "Doprava a ubytování",
+        "q5": {
+          "q": "Kdo platí jízdenku do Nizozemska?",
+          "a": "Jízdenku si v první fázi kupujete sami a nahráváte ji do aplikace jako potvrzení vašeho nástupu pro agenturu. Důležitá zpráva: Většina našich partnerů vám náklady na cestu (cenu jízdenky) proplatí zpětně v první nebo druhé výplatě (cca po 14 dnech v práci). Nezapomeňte si proto originál jízdenky pečlivě uschovat!"
+        },
+        "q6": {
+          "q": "Kde budu v Nizozemsku bydlet?",
+          "a": "Agentury zajišťují ubytování, které splňuje certifikaci SNF (standard pro agenturní pracovníky). Většinou jde o sdílené domy nebo byty v rozumné vzdálenosti od práce."
+        }
+      }
+    }
   }
 }

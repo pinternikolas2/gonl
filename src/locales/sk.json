@@ -71,6 +71,12 @@
     "become_partner": "Become a Partner",
     "portal": "Agency Portal",
     "contact": "Kontakt",
+    "help_title": "Pomoc & Rady",
+    "faq_bsn": "O BSN",
+    "faq_tickets": "Preplácanie lístkov",
+    "faq_wages": "Mzda a výplaty",
+    "faq_housing": "O ubytovaní",
+    "privacy": "Zásady ochrany osobných údajov",
     "tech": "Powered by GoNL technology. 🇳🇱 Based in Amsterdam.",
     "rights": "© 2026 GoNL Enterprise B.V. Všetky práva vyhradené."
   },
@@ -218,5 +224,48 @@
     "loc_other": "Ostatné / Zahraničie",
     "yes": "Áno",
     "no": "Nie"
+  },
+  "faq": {
+    "title": "Často kladené otázky",
+    "subtitle": "Všetko, čo potrebujete vedieť o práci v Holandsku, procese vybavenia BSN a vašom nástupe.",
+    "help_center": "Centrum nápovedy",
+    "cta_title": "Nenašli ste svoju odpoveď?",
+    "cta_desc": "Napíšte nám na info@gonl.app a my vám odpovieme do 24 hodín.",
+    "cta_btn": "Poslať dotaz",
+    "categories": {
+      "process": {
+        "title": "Registrácia a BSN (Digitálny proces)",
+        "q1": {
+          "q": "Ako prebieha vybavenie BSN (rodného čísla)?",
+          "a": "V GoNL.app je to plne digitálne a bez stresu. Akonáhle vám agentúra potvrdí termín, v aplikácii sa vám v sekcii Roadmapa zobrazí QR kód a presný čas schôdzky na úrade v NL. Tento kód stačí ukázať z mobilu priamo na mieste. Aplikácia vás tam navyše z vašej ubytovne aj odnaviguje."
+        },
+        "q2": {
+          "q": "Prečo musím nahrávať svoju občianku/pas?",
+          "a": "Vyžadujú to holandské zákony a bezpečnostné protokoly agentúr. Vaše dáta sú u nás šifrované a slúžia výhradne na overenie vašej identity a prípravu pracovnej zmluvy pred vaším nástupom."
+        }
+      },
+      "money": {
+        "title": "Práca a peniaze",
+        "q3": {
+          "q": "Platím za sprostredkovanie práce?",
+          "a": "Nie. GoNL.app je pre kandidátov 100% zadarmo. Žiadne skryté poplatky ani provízie z vašej mzdy si neúčtujeme."
+        },
+        "q4": {
+          "q": "Kedy dostanem svoju prvú výplatu?",
+          "a": "Väčšina našich partnerských agentúr vypláca mzdu týždenne. Prvé peniaze na účet obvykle očakávajte po druhom odpracovanom týždni."
+        }
+      },
+      "travel": {
+        "title": "Doprava a ubytovanie",
+        "q5": {
+          "q": "Kto platí lístok do Holandska?",
+          "a": "Lístok si v prvej fáze kupujete sami a nahrávate ho do aplikácie ako potvrdenie vášho nástupu pre agentúru. Dôležitá správa: Väčšina našich partnerov vám náklady na cestu (cenu lístka) preplatí spätne v prvej alebo druhej výplate (cca po 14 dňoch v práci). Nezabudnite si preto originál lístka starostlivo uschovať!"
+        },
+        "q6": {
+          "q": "Kde budem v Holandsku bývať?",
+          "a": "Agentúry zaisťujú ubytovanie, ktoré spĺňa certifikáciu SNF (štandard pre agentúrnych pracovníkov). Väčšinou ide o zdieľané domy alebo byty v rozumnej vzdialenosti od práce."
+        }
+      }
+    }
   }
 }

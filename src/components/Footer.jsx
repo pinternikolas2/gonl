@@ -37,14 +37,43 @@ export default function Footer() {
                 </button>
               </li>
               <li>
-                <button onClick={() => navigate('/guide')} className="hover:text-orange-600 transition-colors">
+                <button onClick={() => navigate('/faq')} className="hover:text-orange-600 transition-colors">
                   {t('footer.faq')}
                 </button>
               </li>
             </ul>
           </div>
+
+          {/* Column 2: Pomoc & Rady */}
+          <div>
+            <h4 className="font-black text-slate-900 mb-6 uppercase text-xs tracking-[0.2em]">
+              {t('footer.help_title')}
+            </h4>
+            <ul className="space-y-4 text-sm font-bold text-slate-500">
+              <li>
+                <button onClick={() => navigate('/faq')} className="hover:text-orange-600 transition-colors">
+                  {t('footer.faq_bsn')}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigate('/faq')} className="hover:text-orange-600 transition-colors">
+                  {t('footer.faq_tickets')}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigate('/faq')} className="hover:text-orange-600 transition-colors">
+                  {t('footer.faq_wages')}
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigate('/faq')} className="hover:text-orange-600 transition-colors">
+                  {t('footer.faq_housing')}
+                </button>
+              </li>
+            </ul>
+          </div>
           
-          {/* Column 2: For Agencies */}
+          {/* Column 3: For Agencies */}
           <div>
             <h4 className="font-black text-slate-900 mb-6 uppercase text-xs tracking-[0.2em]">
               {t('footer.agencies')}
@@ -68,7 +97,7 @@ export default function Footer() {
             </ul>
           </div>
           
-          {/* Column 3: Contact */}
+          {/* Column 4: Contact */}
           <div>
             <h4 className="font-black text-slate-900 mb-6 uppercase text-xs tracking-[0.2em]">
               {t('footer.contact')}
@@ -84,10 +113,10 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="pt-8 border-t border-slate-50 flex justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+        <div className="pt-8 border-t border-slate-50 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
           <p>{t('footer.rights')}</p>
           <div className="flex gap-8">
-            <button onClick={() => navigate('/faq')} className="hover:text-slate-600 transition-colors">Privacy Policy</button>
+            <button className="hover:text-slate-600 transition-colors">{t('footer.privacy')}</button>
             <button className="hover:text-slate-600 transition-colors">Terms</button>
           </div>
         </div>
