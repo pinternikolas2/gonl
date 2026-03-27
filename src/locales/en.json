@@ -77,49 +77,41 @@
   "guide": {
     "title": "Journey Guide",
     "subtitle": "Everything you need for a smooth arrival and start in the Netherlands.",
+    "prep_title": "Preparation for the Office",
+    "insurance_title": "Your Insurance",
+    "why_upload_title": "Why upload this?",
+    "why_upload_desc": "Once you upload your ticket, the agency automatically receives a notification and prepares your housing and employment contract. This step confirms your departure.",
     "travel": {
       "title": "Travel & Locations",
-      "rotterdam": {
-        "title": "Office Rotterdam (BSN)",
-        "sub": "BSN Appointment & Documents"
-      },
-      "zaandam": {
-        "title": "Accommodation Zaandam",
-        "sub": "Your new home",
-        "final_btn": "Back to Home"
-      },
-      "get_directions": "Get Directions"
+      "housing": "House (Accommodation)",
+      "work": "Work (Location)",
+      "rni": "Nearest RNI Office",
+      "nav_here": "Navigate here",
+      "nav_work": "Route to work",
+      "nav_bsn": "Where to get BSN"
     },
     "docs": {
       "title": "Document Checklist",
       "subtitle": "Ensure you have all physical documents for the BSN appointment.",
+      "not_ready": "You are not ready for the office visit! Check your documents.",
+      "ready": "All documents are in order. You are ready for your journey.",
       "items": {
-        "passport": {
-          "title": "ID Card or Passport",
-          "sub": "Must be valid and original"
-        },
-        "housing": {
-          "title": "Housing Contract",
-          "sub": "Automatically generated for signature"
-        }
-      },
-      "status": {
-        "uploaded": "Digital copy verified",
-        "missing": "Missing digital copy"
+        "passport": { "title": "ID Card or Passport", "sub": "Must be valid and original" },
+        "housing": { "title": "Housing Contract", "sub": "Automatically generated for signature" }
       }
     },
     "arrival": {
-      "title": "Confirm Arrival",
-      "success": "Arrival information received. Your coordinator will contact you shortly.",
-      "form": {
-        "date": "Projected Arrival Date",
-        "time": "Estimated Time",
-        "ticket": "Upload Ticket (PDF/Image)",
-        "ticket_placeholder": "Select file...",
-        "submit": "Confirm Arrival Details",
-        "bsn_document": "Upload BSN Document (PDF/Image)",
-        "bsn_placeholder": "Select BSN document..."
-      }
+      "title": "Travel Tracker",
+      "upload_label": "Upload Bus / Flight Ticket",
+      "upload_placeholder": "Drag and drop file or click to select",
+      "date_label": "Arrival Date",
+      "time_label": "Arrival Time",
+      "submit_btn": "Confirm Arrival in NL",
+      "loading": "Saving...",
+      "success_title": "Journey Confirmed!",
+      "success_desc": "The agency already knows about your arrival and is preparing the keys for your housing.",
+      "bsn_document": "Upload BSN Document (PDF/Image)",
+      "bsn_placeholder": "Select BSN document..."
     }
   },
   "cv_form": {
