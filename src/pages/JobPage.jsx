@@ -57,8 +57,15 @@ export default function JobPage() {
           onBack={() => navigate(-1)}
           onApply={() => {
             const isLoggedIn = !!sessionStorage.getItem('gonl_role');
+            sessionStorage.setItem('gonl_applied_job', JSON.stringify(job));
+            
+            if (isLoggedIn) {
+              const profile = JSON.parse(sessionStorage.getItem('gonl_user_profile') || '{}');
+              profile.assigned_job = job;
+              sessionStorage.setItem('gonl_user_profile', JSON.stringify(profile));
+            }
+
             if (!isLoggedIn) {
-              sessionStorage.setItem('gonl_applied_job', JSON.stringify(job));
               navigate('/auth');
               return;
             }
