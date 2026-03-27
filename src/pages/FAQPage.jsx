@@ -3,54 +3,21 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, MessageCircle, HelpCircle, ShieldCheck, CreditCard, Ship, Home, Mail } from 'lucide-react';
 import { useTranslation } from '../context/LanguageContext';
 
-const faqData = [
+const faqConfig = [
   {
-    category: 'Registrace a BSN (Digitální proces)',
+    key: 'process',
     icon: <ShieldCheck className="text-orange-600" size={24} />,
-    questions: [
-      {
-        id: 'q1',
-        question: 'Jak probíhá vyřízení BSN (rodného čísla)?',
-        answer: 'V GoNL.app je to plně digitální a bez stresu. Jakmile vám agentura potvrdí termín, v aplikaci se vám v sekci Roadmapa zobrazí QR kód a přesný čas schůzky na úřadě v NL. Tento kód stačí ukázat z mobilu přímo na místě. Aplikace vás tam navíc z vaší ubytovny i odnaviguje.'
-      },
-      {
-        id: 'q2',
-        question: 'Proč musím nahrávat svou občanku/pas?',
-        answer: 'Vyžadují to nizozemské zákony a bezpečnostní protokoly agentur. Vaše data jsou u nás šifrovaná a slouží výhradně pro ověření vaší identity a přípravu pracovní smlouvy před vaším nástupem.'
-      }
-    ]
+    questions: ['q1', 'q2']
   },
   {
-    category: 'Práce a peníze',
+    key: 'money',
     icon: <CreditCard className="text-emerald-600" size={24} />,
-    questions: [
-      {
-        id: 'q3',
-        question: 'Platím za zprostředkování práce?',
-        answer: 'Ne. GoNL.app je pro kandidáty 100% zdarma. Žádné skryté poplatky ani provize z vaší mzdy si neúčtujeme.'
-      },
-      {
-        id: 'q4',
-        question: 'Kdy dostanu svou první výplatu?',
-        answer: 'Většina našich partnerských agentur vyplácí mzdu týdně. První peníze na účet obvykle očekávejte po druhém odpracovaném týdnu.'
-      }
-    ]
+    questions: ['q3', 'q4']
   },
   {
-    category: 'Doprava a ubytování',
+    key: 'travel',
     icon: <Home className="text-blue-600" size={24} />,
-    questions: [
-      {
-        id: 'q5',
-        question: 'Kdo platí jízdenku do Nizozemska?',
-        answer: 'Jízdenku si v první fázi kupujete sami a nahráváte ji do aplikace jako potvrzení vašeho nástupu pro agenturu. Důležitá zpráva: Většina našich partnerů vám náklady na cestu (cenu jízdenky) proplatí zpětně v první nebo druhé výplatě (cca po 14 dnech v práci). Nezapomeňte si proto originál jízdenky pečlivě uschovat!'
-      },
-      {
-        id: 'q6',
-        question: 'Kde budu v Nizozemsku bydlet?',
-        answer: 'Agentury zajišťují ubytování, které splňuje certifikaci SNF (standard pro agenturní pracovníky). Většinou jde o sdílené domy nebo byty v rozumné vzdálenosti od práce.'
-      }
-    ]
+    questions: ['q5', 'q6']
   }
 ];
 
@@ -70,26 +37,32 @@ export default function FAQPage() {
           >
             <HelpCircle size={14} /> Centrum nápovědy
           </motion.div>
-          <h1 className="text-5xl font-black text-slate-900 tracking-tight mb-6">Často kladené otázky</h1>
+          <h1 className="text-5xl font-black text-slate-900 tracking-tight mb-6">{t('faq.title')}</h1>
           <p className="text-xl text-slate-500 font-medium max-w-2xl mx-auto">
-            Vše, co potřebujete vědět o práci v Holandsku, procesu vyřízení BSN a vašem nástupu.
+            {t('faq.subtitle')}
           </p>
         </div>
 
         {/* FAQ Sections */}
         <div className="space-y-12">
-          {faqData.map((section, sIdx) => (
-            <div key={sIdx} className="space-y-6">
+          {faqConfig.map((section, sIdx) => (
+            <div key={section.key} className="space-y-6">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-white rounded-xl shadow-sm border border-slate-100 italic">
                   {section.icon}
                 </div>
-                <h2 className="text-xl font-black text-slate-900 tracking-tight uppercase">{section.category}</h2>
+                <h2 className="text-xl font-black text-slate-900 tracking-tight uppercase">
+                  {t(`faq.categories.${section.key}.title`)}
+                </h2>
               </div>
               
               <div className="grid grid-cols-1 gap-4">
-                {section.questions.map((q) => (
-                  <FAQItem key={q.id} question={q.question} answer={q.answer} />
+                {section.questions.map((qId) => (
+                  <FAQItem 
+                    key={qId} 
+                    question={t(`faq.categories.${section.key}.${qId}.q`)} 
+                    answer={t(`faq.categories.${section.key}.${qId}.a`)} 
+                  />
                 ))}
               </div>
             </div>
@@ -107,15 +80,15 @@ export default function FAQPage() {
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-600 rounded-full -ml-32 -mb-32 blur-3xl opacity-10" />
           
           <div className="relative z-10">
-            <h3 className="text-3xl font-black mb-4 tracking-tight">Nenašli jste svou odpověď?</h3>
+            <h3 className="text-3xl font-black mb-4 tracking-tight">{t('faq.cta_title')}</h3>
             <p className="text-white/60 text-lg font-medium mb-10 max-w-xl mx-auto">
-              Napište nám na <span className="text-white font-bold">info@gonl.app</span> a my vám odpovíme do 24 hodin. Jsme tu pro vás na každém kroku vaší cesty.
+              {t('faq.cta_desc')}
             </p>
             <a 
               href="mailto:info@gonl.app"
               className="inline-flex items-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-orange-50 transition-all active:scale-95 shadow-xl shadow-orange-950/20"
             >
-              <Mail size={18} /> Poslat dotaz
+              <Mail size={18} /> {t('faq.cta_btn')}
             </a>
           </div>
         </motion.div>
