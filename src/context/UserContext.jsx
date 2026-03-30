@@ -1,3 +1,4 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase, getProfile, getUserApplications, applyForJob } from '../lib/supabase';
 
 const UserContext = createContext();
