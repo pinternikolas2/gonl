@@ -1,12 +1,6 @@
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Users, Briefcase, TrendingUp, Filter, Search, 
-  MoreVertical, CheckCircle, XCircle, Eye, 
-  ShieldCheck, ArrowUpRight, BarChart3, Building2,
-  Calendar, Check, UserPlus
-} from 'lucide-react';
 import { useTranslation } from '../context/LanguageContext';
+import { supabase } from '../lib/supabase';
+import AddJobModal from './AddJobModal';
 
 const mockPartners = [
   { id: 'P1', name: 'Albert Heijn Zaandam' },
@@ -55,12 +49,44 @@ const initialJobs = [
 
 export default function AdminDashboard() {
   const { t } = useTranslation();
-  const [candidates, setCandidates] = useState(initialCandidates);
-  const [jobs, setJobs] = useState(initialJobs);
-  const [activeTab, setActiveTab] = useState('crm'); // 'crm' or 'jobs'
+  const [candidates, setCandidates] = useState([]);
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('crm'); 
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedCandidate, setSelectedCandidate] = useState(null);
+  const [isAddJobOpen, setIsAddJobOpen] = useState(false);
+
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('role', 'candidate');
+      
+      const { data: jobsList } = await supabase
+        .from('jobs')
+        .select('*, applications(count)');
+      
+      setCandidates(profiles || []);
+      setJobs(jobsList?.map(j => ({
+        ...j,
+        company: j.company_name,
+        location: j.location_city,
+        candidates: j.applications?.[0]?.count || 0
+      })) || []);
+    } catch (err) {
+      console.error('Error fetching admin data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Stats
   const stats = useMemo(() => ({
@@ -75,15 +101,36 @@ export default function AdminDashboard() {
     (statusFilter === 'all' || c.status === statusFilter)
   );
 
-  const handleVerifyId = (id) => {
-    setCandidates(prev => prev.map(c => c.id === id ? { ...c, idVerified: true } : c));
-    if (selectedCandidate && selectedCandidate.id === id) {
-      setSelectedCandidate(prev => ({ ...prev, idVerified: true }));
+  const handleVerifyId = async (id) => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ is_id_verified: true })
+        .eq('id', id);
+      
+      if (error) throw error;
+      
+      setCandidates(prev => prev.map(c => c.id === id ? { ...c, is_id_verified: true } : c));
+      if (selectedCandidate && selectedCandidate.id === id) {
+        setSelectedCandidate(prev => ({ ...prev, is_id_verified: true }));
+      }
+    } catch (err) {
+      alert('Chyba při ověřování ID.');
     }
   };
 
-  const handleAssignPartner = (id, partnerId) => {
-    setCandidates(prev => prev.map(c => c.id === id ? { ...c, partnerId } : c));
+  const handleAssignPartner = async (id, partnerId) => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ assigned_partner_id: partnerId })
+        .eq('id', id);
+      
+      if (error) throw error;
+      setCandidates(prev => prev.map(c => c.id === id ? { ...c, assigned_partner_id: partnerId } : c));
+    } catch (err) {
+      alert('Chyba při přiřazování partnera.');
+    }
   };
 
   return (
@@ -151,8 +198,14 @@ export default function AdminDashboard() {
               setStatusFilter={setStatusFilter}
             />
           ) : (
-            <JobsTable jobs={jobs} />
+            <JobsTable jobs={jobs} onAdd={() => setIsAddJobOpen(true)} />
           )}
+
+          <AddJobModal 
+            isOpen={isAddJobOpen} 
+            onClose={() => setIsAddJobOpen(false)} 
+            onSave={fetchData} 
+          />
 
         </div>
       </div>
@@ -239,11 +292,13 @@ function CRMTable({ candidates, onView, onAssign, searchQuery, setSearchQuery, s
                 <td className="py-4 px-8">
                   <div className="flex items-center gap-4">
                     <div className="relative">
-                      <img src={c.photoUrl} alt={c.name} className="w-12 h-12 rounded-2xl object-cover bg-slate-800 border border-slate-700 shadow-lg" />
+                      <div className="w-12 h-12 bg-slate-800 rounded-2xl flex items-center justify-center font-bold text-slate-500 border border-slate-700 shadow-lg">
+                        {c.full_name?.[0]}
+                      </div>
                     </div>
                     <div>
-                      <span className="block font-black text-white text-base group-hover:text-orange-500 transition-colors tracking-tight">{c.name}</span>
-                      <span className="block text-xs text-slate-500 font-black tracking-widest uppercase mt-0.5">{c.id} · {c.location}</span>
+                      <span className="block font-black text-white text-base group-hover:text-orange-500 transition-colors tracking-tight">{c.full_name}</span>
+                      <span className="block text-xs text-slate-500 font-black tracking-widest uppercase mt-0.5">{c.id.slice(0,8)} · {c.current_location || 'N/A'}</span>
                     </div>
                   </div>
                 </td>
@@ -252,7 +307,7 @@ function CRMTable({ candidates, onView, onAssign, searchQuery, setSearchQuery, s
                 </td>
                 <td className="py-4 px-6">
                   <select 
-                    value={c.partnerId || ''}
+                    value={c.assigned_partner_id || ''}
                     onChange={(e) => onAssign(c.id, e.target.value)}
                     className="bg-slate-950/50 border border-slate-800 rounded-lg px-3 py-1.5 text-xs font-black text-slate-400 focus:outline-none focus:border-orange-500/50 transition-all uppercase tracking-tighter w-48"
                   >
@@ -262,10 +317,10 @@ function CRMTable({ candidates, onView, onAssign, searchQuery, setSearchQuery, s
                 </td>
                 <td className="py-4 px-6">
                    <div className="flex items-center gap-3">
-                      <div className={`p-1.5 rounded-lg ${c.idVerified ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-800 text-slate-600'}`} title="ID Card">
+                      <div className={`p-1.5 rounded-lg ${c.is_id_verified ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-800 text-slate-600'}`} title="ID Card">
                          <ShieldCheck size={18} />
                       </div>
-                      <div className={`p-1.5 rounded-lg ${c.ticketUploaded ? 'bg-blue-500/10 text-blue-500' : 'bg-slate-800 text-slate-600'}`} title="Ticket">
+                      <div className={`p-1.5 rounded-lg ${c.is_ticket_uploaded ? 'bg-blue-500/10 text-blue-500' : 'bg-slate-800 text-slate-600'}`} title="Ticket">
                          <Briefcase size={18} />
                       </div>
                    </div>
@@ -315,7 +370,10 @@ function JobsTable({ jobs }) {
         <h3 className="text-lg font-black tracking-tight flex items-center gap-2 text-white">
           <Building2 size={20} className="text-orange-500" /> Active Job Pools
         </h3>
-        <button className="bg-orange-600 hover:bg-orange-500 text-white px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-lg active:scale-95 flex items-center gap-2">
+        <button 
+          onClick={() => onAdd?.()}
+          className="bg-orange-600 hover:bg-orange-500 text-white px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-lg active:scale-95 flex items-center gap-2"
+        >
            <Plus size={18} /> New Posting
         </button>
       </div>
@@ -378,9 +436,9 @@ function CandidateModal({ candidate, onClose, onVerify }) {
                <img src={candidate.photoUrl} alt="" className="w-full h-full object-cover" />
             </div>
             <div>
-              <h2 className="text-2xl font-black tracking-tight text-white mb-1 group">{candidate.name} <span className="text-xs text-slate-500 font-bold ml-2">#{candidate.id}</span></h2>
+              <h2 className="text-2xl font-black tracking-tight text-white mb-1 group">{candidate.full_name} <span className="text-xs text-slate-500 font-bold ml-2">#{candidate.id.slice(0,8)}</span></h2>
               <div className="flex gap-4">
-                <span className="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-1"><MapPin size={10} className="text-orange-500"/> {candidate.location}</span>
+                <span className="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-1"><MapPin size={10} className="text-orange-500"/> {candidate.current_location || 'N/A'}</span>
                 <StatusBadge status={candidate.status} />
               </div>
             </div>
@@ -398,7 +456,7 @@ function CandidateModal({ candidate, onClose, onVerify }) {
                 <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                   <ShieldCheck size={16} className="text-blue-500" /> Identity Document (Scan)
                 </h3>
-                {candidate.idVerified ? (
+                {candidate.is_id_verified ? (
                   <span className="text-[10px] font-black text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20 uppercase tracking-widest flex items-center gap-1">
                     <Check size={10} /> Verified
                   </span>
@@ -431,7 +489,7 @@ function CandidateModal({ candidate, onClose, onVerify }) {
               <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                 <Briefcase size={16} className="text-blue-500" /> Arrival Ticket / Ticket
               </h3>
-              {candidate.ticketUploaded ? (
+              {candidate.is_ticket_uploaded ? (
                 <div className="aspect-[1.58/1] bg-slate-950 border border-slate-800 rounded-2xl flex flex-col items-center justify-center p-8 text-center gap-4 group cursor-pointer hover:border-slate-700 transition-all shadow-2xl">
                    <div className="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center text-blue-500 shadow-inner group-hover:scale-110 transition-transform">
                       <FileText size={32} />

@@ -4,15 +4,40 @@ import Header from '../components/Header';
 import JobDetail from '../components/JobDetail';
 import RoleSwitcher from '../components/RoleSwitcher';
 
-import { allJobs as mockJobs } from '../data/jobs';
-
 import { useUser } from '../context/UserContext';
+import { supabase } from '../lib/supabase';
 
 export default function JobPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { profile, applyToJob } = useUser();
-  const job = mockJobs.find(j => j.id === id);
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    async function fetchJob() {
+      try {
+        const { data, error } = await supabase
+          .from('jobs')
+          .select('*')
+          .eq('id', id)
+          .single();
+        if (error) throw error;
+        setJob(data);
+      } catch (err) {
+        console.error('Error fetching job:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchJob();
+  }, [id]);
+
+  if (loading) return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full" />
+    </div>
+  );
 
   if (!job) {
     return (

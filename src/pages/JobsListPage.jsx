@@ -4,20 +4,37 @@ import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, X, Filter } from 'lucide-react';
 import JobCard from '../components/JobCard';
 import Header from '../components/Header';
-import { allJobs } from '../data/jobs';
 import { useTranslation } from '../context/LanguageContext';
+import { supabase } from '../lib/supabase';
 
 export default function JobsListPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [allJobs, setAllJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCity, setSelectedCity] = useState(null);
+
+  React.useEffect(() => {
+    async function fetchJobs() {
+      try {
+        const { data, error } = await supabase.from('jobs').select('*');
+        if (error) throw error;
+        setAllJobs(data || []);
+      } catch (err) {
+        console.error('Error fetching jobs:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchJobs();
+  }, []);
 
   // Získání unikátních měst pro filtry
   const cities = useMemo(() => {
     const uniqueCities = [...new Set(allJobs.map(job => job.location_city))];
     return uniqueCities.sort();
-  }, []);
+  }, [allJobs]);
 
   // Filtrování seznamu prací
   const filteredJobs = useMemo(() => {
@@ -31,7 +48,7 @@ export default function JobsListPage() {
       
       return matchesSearch && matchesCity;
     });
-  }, [searchTerm, selectedCity]);
+  }, [allJobs, searchTerm, selectedCity]);
 
   return (
     <div className="min-h-screen bg-slate-50 pb-28">

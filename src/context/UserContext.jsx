@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { supabase, getProfile, getUserApplications } from '../lib/supabase';
+import { supabase, getProfile, getUserApplications, applyForJob } from '../lib/supabase';
 
 const UserContext = createContext();
 
@@ -11,20 +10,11 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     // Check active session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setUser(session.user);
-        fetchUserData(session.user.id);
-      } else {
-        setLoading(false);
-      }
-    });
-
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session) {
         setUser(session.user);
-        fetchUserData(session.user.id);
+        fetchUserData(session.user);
       } else {
         setUser(null);
         setProfile(null);
@@ -36,15 +26,45 @@ export function UserProvider({ children }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchUserData = async (userId) => {
+  const fetchUserData = async (currentUser) => {
     try {
       setLoading(true);
-      const [profileData, appsData] = await Promise.all([
-        getProfile(userId),
-        getUserApplications(userId)
-      ]);
+      let profileData;
+      try {
+        profileData = await getProfile(currentUser.id);
+      } catch (err) {
+        // Create profile if missing
+        const { data: newProfile, error: createError } = await supabase
+          .from('profiles')
+          .insert([{
+            id: currentUser.id,
+            full_name: currentUser.email.split('@')[0],
+            email: currentUser.email,
+            status: 'registered'
+          }])
+          .select()
+          .single();
+        
+        if (createError) throw createError;
+        profileData = newProfile;
+      }
+
+      const appsData = await getUserApplications(currentUser.id);
       setProfile(profileData);
       setApplications(appsData);
+
+      // Check for pending application
+      const pendingJobId = sessionStorage.getItem('gonl_applied_job_id');
+      if (pendingJobId) {
+        const alreadyApplied = appsData.some(a => a.job_id === pendingJobId);
+        if (!alreadyApplied) {
+           await applyForJob(currentUser.id, pendingJobId);
+           const updatedApps = await getUserApplications(currentUser.id);
+           setApplications(updatedApps);
+        }
+        sessionStorage.removeItem('gonl_applied_job_id');
+      }
+
     } catch (err) {
       console.error('Error fetching user data:', err);
     } finally {

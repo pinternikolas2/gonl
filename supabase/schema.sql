@@ -1,6 +1,6 @@
--- 0. RLS Enablers and Enum Types
 CREATE TYPE user_status AS ENUM ('registered', 'verified', 'bsn_ready', 'at_work');
 CREATE TYPE application_status AS ENUM ('pending', 'accepted', 'rejected', 'onboarding');
+CREATE TYPE user_role AS ENUM ('candidate', 'partner', 'admin');
 
 -- 1. Profiles Table (extends auth.users)
 CREATE TABLE public.profiles (
@@ -8,6 +8,7 @@ CREATE TABLE public.profiles (
   full_name TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
   phone TEXT,
+  role user_role DEFAULT 'candidate',
   status user_status DEFAULT 'registered',
   bsn_number TEXT,
   is_id_verified BOOLEAN DEFAULT FALSE,
@@ -19,6 +20,7 @@ CREATE TABLE public.profiles (
   arrival_time TIME,
   current_location TEXT,
   has_bsn BOOLEAN DEFAULT FALSE,
+  assigned_partner_id UUID, -- No reference yet to simplify, or could refer to another profile with role='partner'
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

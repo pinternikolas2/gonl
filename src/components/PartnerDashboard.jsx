@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Users, FileCheck, Plane, Search, Download, X, Eye, CheckCircle2, FileText, Video, Building2, Plus, Settings } from 'lucide-react';
 import AddJobModal from './AddJobModal';
 import { useTranslation } from '../context/LanguageContext';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
+import { useUser } from '../context/UserContext';
 
 // Mock candidates
 const mockCandidates = [
@@ -58,7 +57,9 @@ const mockCandidates = [
 
 export default function PartnerDashboard() {
   const { t } = useTranslation();
-  const [candidates, setCandidates] = useState(mockCandidates);
+  const { user, profile } = useUser();
+  const [candidates, setCandidates] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterNL, setFilterNL] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
@@ -66,6 +67,29 @@ export default function PartnerDashboard() {
   const [showAddJob, setShowAddJob] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
+  React.useEffect(() => {
+    if (user) {
+      fetchCandidates();
+    }
+  }, [user]);
+
+  const fetchCandidates = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('assigned_partner_id', user.id);
+      
+      if (error) throw error;
+      setCandidates(data || []);
+    } catch (err) {
+      console.error('Error fetching partner candidates:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
   const isSettings = location.pathname === '/partner/settings';
 
   // Stats
@@ -73,10 +97,21 @@ export default function PartnerDashboard() {
   const waitingBsnCount = candidates.filter(c => c.status === 'waiting_bsn').length;
   const activeCount = candidates.filter(c => c.status === 'active').length;
 
-  const handleApprove = (id) => {
-    setCandidates(prev => prev.map(c => c.id === id ? { ...c, status: 'active', departureDate: t('partner.detail.today') } : c));
-    if (selectedCandidate && selectedCandidate.id === id) {
-      setSelectedCandidate(prev => ({ ...prev, status: 'active', departureDate: t('partner.detail.today') }));
+  const handleApprove = async (id) => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ status: 'active', arrival_date: new Date().toISOString().split('T')[0] })
+        .eq('id', id);
+      
+      if (error) throw error;
+      
+      fetchCandidates();
+      if (selectedCandidate && selectedCandidate.id === id) {
+        setSelectedCandidate(prev => ({ ...prev, status: 'active' }));
+      }
+    } catch (err) {
+      alert('Chyba při schvalování.');
     }
   };
 
@@ -98,8 +133,8 @@ export default function PartnerDashboard() {
   };
 
   const filteredCandidates = candidates.filter(c => 
-    (c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    c.jobTarget.toLowerCase().includes(searchQuery.toLowerCase())) &&
+    ((c.full_name || '').toLowerCase().includes(searchQuery.toLowerCase()) || 
+    (c.current_location || '').toLowerCase().includes(searchQuery.toLowerCase())) &&
     (!filterNL || (c.current_location === 'Netherlands' && c.has_bsn))
   ).sort((a, b) => {
     const aFastTrack = a.current_location === 'Netherlands' && a.has_bsn;
@@ -245,8 +280,8 @@ export default function PartnerDashboard() {
                            <span className="block text-xs text-slate-500 font-medium">ID: {c.id}</span>
                          </div>
                       </td>
-                      <td className="py-4 px-6 text-sm font-medium text-slate-700">{c.jobTarget}</td>
-                      <td className="py-4 px-6 text-sm text-slate-600">{c.age} {t('partner.detail.years')} / <span className="font-semibold text-slate-900">{c.language}</span></td>
+                      <td className="py-4 px-6 text-sm font-medium text-slate-700">{c.current_location || 'Slovakia'}</td>
+                      <td className="py-4 px-6 text-sm text-slate-600">N/A / <span className="font-semibold text-slate-900">{c.phone}</span></td>
                       <td className="py-4 px-6 text-sm text-slate-600 font-medium">{c.bsnDate}</td>
                       <td className="py-4 px-6">{getStatusPill(c.status)}</td>
                       <td className="py-4 px-6 text-right">
@@ -286,15 +321,17 @@ export default function PartnerDashboard() {
                 <div key={c.id} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <img src={c.photoUrl} alt={c.name} className="w-12 h-12 rounded-full object-cover bg-slate-200" />
+                      <div className="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-500">
+                        {c.full_name?.[0]}
+                      </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="block font-bold text-slate-900">{c.name}</span>
+                          <span className="block font-bold text-slate-900">{c.full_name}</span>
                           {c.current_location === 'Netherlands' && c.has_bsn && (
                             <span className="bg-emerald-100 text-emerald-700 text-[10px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter border border-emerald-200">BSN</span>
                           )}
                         </div>
-                        <span className="block text-xs text-slate-500 font-medium">ID: {c.id}</span>
+                        <span className="block text-xs text-slate-500 font-medium">ID: {c.id.slice(0,8)}</span>
                       </div>
                     </div>
                     {getStatusPill(c.status)}
@@ -368,8 +405,8 @@ export default function PartnerDashboard() {
               {/* Drawer Header */}
               <div className="px-4 md:px-6 py-3 md:py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50 sticky top-0 z-20">
                 <h2 className="text-lg md:text-xl font-bold text-slate-900 flex items-center gap-2 truncate pr-2">
-                  <UserAvatar url={selectedCandidate.photoUrl} />
-                  <span className="truncate">{selectedCandidate.name}</span>
+                  <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-800 flex items-center justify-center text-white font-bold text-xs">{selectedCandidate.full_name?.[0]}</div>
+                  <span className="truncate">{selectedCandidate.full_name}</span>
                 </h2>
                 <button 
                   onClick={() => setSelectedCandidate(null)}
@@ -438,20 +475,20 @@ export default function PartnerDashboard() {
                 {/* Candidate Info */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                    <p className="text-xs font-semibold text-slate-500 uppercase mb-1">{t('partner.detail.age')}</p>
-                    <p className="font-bold text-slate-900">{selectedCandidate.age} {t('partner.detail.years')}</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase mb-1">TELEFON</p>
+                    <p className="font-bold text-slate-900">{selectedCandidate.phone}</p>
                   </div>
                   <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                    <p className="text-xs font-semibold text-slate-500 uppercase mb-1">{t('partner.detail.language')}</p>
-                    <p className="font-bold text-slate-900">{selectedCandidate.language}</p>
+                    <p className="text-xs font-semibold text-slate-500 uppercase mb-1">MÍSTO</p>
+                    <p className="font-bold text-slate-900">{selectedCandidate.current_location || 'Internationál'}</p>
                   </div>
                   <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
                     <p className="text-xs font-semibold text-slate-500 uppercase mb-1">{t('partner.table.bsn_date')}</p>
-                    <p className="font-bold text-slate-900">{selectedCandidate.bsnDate}</p>
+                    <p className="font-bold text-slate-900">{selectedCandidate.bsn_number || 'Čeká se'}</p>
                   </div>
                   <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
                     <p className="text-xs font-semibold text-slate-500 uppercase mb-1">{t('partner.detail.departure')}</p>
-                    <p className="font-bold text-slate-900">{selectedCandidate.departureDate}</p>
+                    <p className="font-bold text-slate-900">{selectedCandidate.arrival_date || '-'}</p>
                   </div>
                 </div>
 
@@ -523,11 +560,11 @@ function SettingsView() {
         <div className="grid grid-cols-1 gap-6">
           <div className="space-y-2">
             <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Název agentury</label>
-            <input type="text" readOnly value="Albert Heijn Zaandam" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-900" />
+            <input type="text" readOnly value={profile?.full_name || 'Partner'} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-900" />
           </div>
           <div className="space-y-2">
             <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">E-mail pro notifikace</label>
-            <input type="email" readOnly value="contact@ah-zaandam.nl" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-900" />
+            <input type="email" readOnly value={profile?.email || ''} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-900" />
           </div>
         </div>
 

@@ -1,75 +1,40 @@
-import { supabase, updateProfile, applyForJob, getProfile } from '../lib/supabase';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronRight, CheckCircle2 } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 export default function AuthPage() {
   const navigate = useNavigate();
-  const [step, setStep] = useState('phone'); // 'phone' | 'otp'
-  const [phone, setPhone] = useState('');
-  const [otp, setOtp] = useState('');
+  const [step, setStep] = useState('email'); // 'email' | 'check_inbox'
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handlePhoneSubmit = async (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     try {
       const { error } = await supabase.auth.signInWithOtp({
-        phone: `+420${phone}`
+        email: email,
+        options: {
+          emailRedirectTo: window.location.origin + '/dashboard'
+        }
       });
       if (error) throw error;
-      setStep('otp');
+      setStep('check_inbox');
     } catch (err) {
       console.error(err);
-      setError('Chyba při odesílání kódu. Ověřte, zda máte v Supabase nastaven SMS provider.');
+      setError('Chyba při odesílání e-mailu. Zkontrolujte připojení.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleOtpSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    try {
-      const { data: { session }, error: verifyError } = await supabase.auth.verifyOtp({
-        phone: `+420${phone}`,
-        token: otp,
-        type: 'sms'
-      });
-
-      if (verifyError) throw verifyError;
-
-      const userId = session.user.id;
-      
-      // Check if profile exists, if not create one
-      try {
-        await getProfile(userId);
-      } catch (err) {
-        // Profile doesn't exist, create it
-        await supabase.from('profiles').insert([{
-          id: userId,
-          full_name: 'Uživatel ' + phone.slice(-3),
-          email: `${userId}@placeholder.gonl`, // Supabase uses fake email for phone-only auth usually or we can leave empty if schema allows
-          phone: `+420${phone}`,
-          status: 'registered'
-        }]);
-      }
-
-      // Check if we have a pending job from landing
-      const pendingJobId = sessionStorage.getItem('gonl_applied_job_id');
-      if (pendingJobId) {
-        await applyForJob(userId, pendingJobId);
-        sessionStorage.removeItem('gonl_applied_job_id');
-      }
-
-      navigate('/dashboard');
-    } catch (err) {
-      console.error(err);
-      setError('Neplatný nebo vypršelý kód.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Profile creation is typically handled via a trigger in DB or in a landing component 
+  // but we can also use a useEffect on the Dashboard to ensure it exists.
+  // For simplicity here, we assume Supabase triggers or a separate confirm step.
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-12">
@@ -91,27 +56,26 @@ export default function AuthPage() {
 
         <div className="bg-white rounded-[28px] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden p-8">
           <AnimatePresence mode="wait">
-            {step === 'phone' ? (
+            {step === 'email' ? (
               <motion.div
-                key="phone-step"
+                key="email-step"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
               >
                 <h2 className="text-2xl font-black text-slate-900 mb-1">Přihlášení</h2>
-                <p className="text-slate-500 text-sm mb-8">Zadejte své číslo, pošleme vám kód.</p>
+                <p className="text-slate-500 text-sm mb-8">Zadejte svůj e-mail, pošleme vám odkaz pro vstup.</p>
 
-                <form onSubmit={handlePhoneSubmit} className="space-y-4">
+                <form onSubmit={handleEmailSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Telefonní číslo</label>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">E-mailová adresa</label>
                     <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium text-sm">+420</span>
                       <input
-                        type="tel"
-                        value={phone}
-                        onChange={e => setPhone(e.target.value.replace(/\D/g, ''))}
-                        placeholder="777 123 456"
-                        className="w-full pl-16 pr-4 py-4 bg-slate-50 rounded-2xl border border-slate-200 text-base font-medium focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all"
+                        type="email"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        placeholder="vas@email.cz"
+                        className="w-full px-4 py-4 bg-slate-50 rounded-2xl border border-slate-200 text-base font-medium focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all"
                         required
                         autoFocus
                       />
@@ -120,65 +84,39 @@ export default function AuthPage() {
 
                   <button
                     type="submit"
-                    disabled={loading || phone.length < 9}
+                    disabled={loading || !email.includes('@')}
                     className="w-full bg-orange-600 text-white py-4 rounded-2xl font-bold text-base shadow-[0_8px_24px_rgba(234,88,12,0.28)] hover:bg-orange-500 transition-all disabled:opacity-40 flex items-center justify-center gap-2"
                   >
                     {loading ? (
                       <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} className="w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
                     ) : (
-                      <>Odeslat kód <ChevronRight size={18}/></>
+                      <>Poslat odkaz <ChevronRight size={18}/></>
                     )}
                   </button>
                 </form>
               </motion.div>
             ) : (
               <motion.div
-                key="otp-step"
+                key="check-step"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
+                className="text-center py-4"
               >
-                <button 
-                  onClick={() => setStep('phone')}
-                  className="flex items-center gap-1 text-slate-400 hover:text-slate-600 mb-6 font-medium text-xs uppercase tracking-widest"
-                >
-                  <ArrowLeft size={14} /> Změnit číslo
-                </button>
+                <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle2 size={32} />
+                </div>
+                <h2 className="text-2xl font-black text-slate-900 mb-2">E-mail odeslán</h2>
+                <p className="text-slate-500 text-sm mb-8">
+                  Odeslali jsme přihlašovací odkaz na <strong>{email}</strong>. Klikněte na něj a budete přihlášeni.
+                </p>
                 
-                <h2 className="text-2xl font-black text-slate-900 mb-1">Ověření</h2>
-                <p className="text-slate-500 text-sm mb-8">Zadejte kód, který jsme vám poslali na +420 {phone}.</p>
-
-                <form onSubmit={handleOtpSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">SMS Kód</label>
-                    <input
-                      type="text"
-                      maxLength={6}
-                      value={otp}
-                      onChange={e => setOtp(e.target.value.replace(/\D/g, ''))}
-                      placeholder="· · · · · ·"
-                      className="w-full px-4 py-4 bg-slate-50 rounded-2xl border border-slate-200 text-center text-2xl font-black tracking-[0.5em] focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all"
-                      required
-                      autoFocus
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={loading || otp.length < 4}
-                    className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-base transition-all hover:bg-slate-800 disabled:opacity-40 flex items-center justify-center gap-2"
-                  >
-                    {loading ? (
-                      <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} className="w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
-                    ) : (
-                      <>Potvrdit a vstoupit <ChevronRight size={18}/></>
-                    )}
-                  </button>
-                  
-                  <button type="button" className="w-full text-xs text-slate-400 font-medium py-2 hover:text-orange-600 transition-colors">
-                    Nepřišel kód? Poslat znovu
-                  </button>
-                </form>
+                <button 
+                  onClick={() => setStep('email')}
+                  className="text-orange-600 font-bold text-sm hover:underline"
+                >
+                  Zkusit jiný e-mail
+                </button>
               </motion.div>
             )}
           </AnimatePresence>
