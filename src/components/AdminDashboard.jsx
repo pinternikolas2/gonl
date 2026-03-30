@@ -1,6 +1,16 @@
+import React, { useState, useMemo } from 'react';
 import { useTranslation } from '../context/LanguageContext';
 import { supabase } from '../lib/supabase';
 import AddJobModal from './AddJobModal';
+import { DashboardSkeleton } from './Skeleton';
+import toast from 'react-hot-toast';
+import { 
+  Users, CheckCircle, ArrowUpRight, TrendingUp, Search, Filter, Eye, ListFilter, 
+  ChevronDown, BarChart3, Calendar, MoreVertical, Plus, ShieldCheck, Briefcase, 
+  Building2, GraduationCap, Globe, Language, Clock, MapPin, XCircle, FileText,
+  UserPlus, UserSquare, Check
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const mockPartners = [
   { id: 'P1', name: 'Albert Heijn Zaandam' },
@@ -83,12 +93,12 @@ export default function AdminDashboard() {
       })) || []);
     } catch (err) {
       console.error('Error fetching admin data:', err);
+      toast.error('Nepodařilo se načíst data.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Stats
   const stats = useMemo(() => ({
     totalCandidates: candidates.length,
     readyCount: candidates.filter(c => c.status === 'ready').length,
@@ -97,7 +107,7 @@ export default function AdminDashboard() {
   }), [candidates]);
 
   const filteredCandidates = candidates.filter(c => 
-    c.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    (c.full_name || '').toLowerCase().includes((searchQuery || '').toLowerCase()) &&
     (statusFilter === 'all' || c.status === statusFilter)
   );
 
@@ -114,8 +124,9 @@ export default function AdminDashboard() {
       if (selectedCandidate && selectedCandidate.id === id) {
         setSelectedCandidate(prev => ({ ...prev, is_id_verified: true }));
       }
+      toast.success('ID úspěšně ověřeno');
     } catch (err) {
-      alert('Chyba při ověřování ID.');
+      toast.error('Chyba při ověřování ID.');
     }
   };
 
@@ -128,10 +139,17 @@ export default function AdminDashboard() {
       
       if (error) throw error;
       setCandidates(prev => prev.map(c => c.id === id ? { ...c, assigned_partner_id: partnerId } : c));
+      toast.success('Partner přiřazen');
     } catch (err) {
-      alert('Chyba při přiřazování partnera.');
+      toast.error('Chyba při přiřazování partnera.');
     }
   };
+
+  if (loading) return (
+    <div className="flex-1 bg-slate-950 p-8">
+      <DashboardSkeleton />
+    </div>
+  );
 
   return (
     <div className="flex-1 flex flex-col min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-orange-500/30">

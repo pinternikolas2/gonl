@@ -1,8 +1,22 @@
-import AddJobModal from './AddJobModal';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from '../context/LanguageContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useUser } from '../context/UserContext';
+import { DashboardSkeleton } from './Skeleton';
+import toast from 'react-hot-toast';
+import { 
+  Users, CheckCircle, ArrowUpRight, TrendingUp, Search, Download, Settings, 
+  MapPin, Clock, Calendar, CheckSquare, ClipboardList, Briefcase, ShieldCheck, 
+  Video, FileText, ChevronRight, Filter, MoreHorizontal, UserCheck, X, Eye, 
+  Zap, DownloadCloud, AlertCircle, Plus
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+function UserAvatar({ url }) {
+  if (!url) return <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400"><Users size={16}/></div>;
+  return <img src={url} alt="" className="w-8 h-8 rounded-full object-cover border border-slate-200" />;
+}
 
 // Mock candidates
 const mockCandidates = [
@@ -86,10 +100,32 @@ export default function PartnerDashboard() {
       setCandidates(data || []);
     } catch (err) {
       console.error('Error fetching partner candidates:', err);
+      toast.error('Nepodařilo se načíst kandidáty.');
     } finally {
       setLoading(false);
     }
   };
+
+  const handleApprove = async (id) => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ status: 'approved' })
+        .eq('id', id);
+      
+      if (error) throw error;
+      setCandidates(prev => prev.map(c => c.id === id ? { ...c, status: 'approved' } : c));
+      toast.success('Kandidát schválen k nástupu!');
+    } catch (err) {
+      toast.error('Chyba při schvalování.');
+    }
+  };
+
+  if (loading) return (
+    <div className="flex-1 bg-white p-8">
+      <DashboardSkeleton />
+    </div>
+  );
   const isSettings = location.pathname === '/partner/settings';
 
   // Stats

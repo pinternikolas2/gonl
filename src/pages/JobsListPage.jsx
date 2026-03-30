@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, X, Filter } from 'lucide-react';
@@ -6,6 +6,7 @@ import JobCard from '../components/JobCard';
 import Header from '../components/Header';
 import { useTranslation } from '../context/LanguageContext';
 import { supabase } from '../lib/supabase';
+import { Skeleton } from '../components/Skeleton';
 
 export default function JobsListPage() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function JobsListPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCity, setSelectedCity] = useState(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function fetchJobs() {
       try {
         const { data, error } = await supabase.from('jobs').select('*');
@@ -47,8 +48,14 @@ export default function JobsListPage() {
       const matchesCity = !selectedCity || job.location_city === selectedCity;
       
       return matchesSearch && matchesCity;
-    });
-  }, [allJobs, searchTerm, selectedCity]);
+  if (loading) return (
+    <div className="min-h-screen bg-slate-50 pt-28 space-y-6 max-w-4xl mx-auto px-6">
+      <Skeleton variant="title" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-48 rounded-[32px]" />)}
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-slate-50 pb-28">

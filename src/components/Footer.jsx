@@ -87,8 +87,8 @@ export default function Footer() {
         <div className="pt-8 border-t border-slate-50 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
           <p>{t('footer.rights')}</p>
           <div className="flex gap-8">
-            <button className="hover:text-slate-600 transition-colors">{t('footer.privacy')}</button>
-            <button className="hover:text-slate-600 transition-colors">Terms</button>
+            <button onClick={() => navigate('/privacy')} className="hover:text-slate-600 transition-colors">{t('footer.privacy')}</button>
+            <button onClick={() => navigate('/terms')} className="hover:text-slate-600 transition-colors">Terms</button>
           </div>
         </div>
       </div>

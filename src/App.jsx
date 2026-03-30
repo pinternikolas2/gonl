@@ -11,7 +11,10 @@ import GuidePage from './pages/GuidePage';
 import PartnersPage from './pages/PartnersPage';
 import AdminPage from './pages/AdminPage';
 import FAQPage from './pages/FAQPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsPage from './pages/TermsPage';
 import BottomNav from './components/BottomNav';
+import { Toaster } from 'react-hot-toast';
 import { LanguageProvider } from './context/LanguageContext';
 import { UserProvider, useUser } from './context/UserContext';
 
@@ -44,6 +47,8 @@ export default function App() {
             <Route path="/jobs/:id" element={<JobPage />} />
             <Route path="/partners" element={<PartnersPage />} />
             <Route path="/faq" element={<FAQPage />} />
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
 
             {/* Candidate / Private */}
             <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
@@ -63,6 +68,19 @@ export default function App() {
 
           {/* Global UI */}
           <BottomNav />
+          <Toaster 
+            position="top-center"
+            toastOptions={{
+              style: {
+                borderRadius: '16px',
+                background: '#0f172a',
+                color: '#fff',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                padding: '12px 24px',
+              },
+            }}
+          />
         </LanguageProvider>
       </UserProvider>
     </BrowserRouter>
