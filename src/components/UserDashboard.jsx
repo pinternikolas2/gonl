@@ -21,33 +21,13 @@ import DocumentScanner from './DocumentScanner';
 import CVForm from './CVForm';
 import BSNUpload from './BSNUpload';
 import { useTranslation } from '../context/LanguageContext';
-import { uploadResume } from '../lib/supabase';
+import { useUser } from '../context/UserContext';
+import { uploadResume, updateProfile } from '../lib/supabase';
 
 export default function UserDashboard() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [profile, setProfile] = useState(() => {
-    const saved = sessionStorage.getItem('gonl_user_profile');
-    const appliedJobStr = sessionStorage.getItem('gonl_applied_job');
-    const appliedJob = appliedJobStr ? JSON.parse(appliedJobStr) : null;
-    
-    let baseProfile = saved ? JSON.parse(saved) : {
-      name: 'Uživatel',
-      assigned_job: null,
-      is_id_verified: false,
-      is_cv_uploaded: false,
-      cv_url: null,
-      is_ticket_uploaded: false,
-    };
-
-    // Merge applied job if it's in session but not in profile
-    if (appliedJob && !baseProfile.assigned_job) {
-      baseProfile.assigned_job = appliedJob;
-      // Note: we don't removeItem here as it's a side effect in initializer
-    }
-    
-    return baseProfile;
-  });
+  const { profile, applications, refreshProfile, loading: userLoading } = useUser();
 
   const [showScanner, setShowScanner] = useState(false);
   const [showCVChoice, setShowCVChoice] = useState(false);
@@ -56,10 +36,8 @@ export default function UserDashboard() {
   const [showBSNUpload, setShowBSNUpload] = useState(false);
   const [cvLoading, setCvLoading] = useState(false);
 
-  // Sync profile to session for demo persistence
-  useEffect(() => {
-    sessionStorage.setItem('gonl_user_profile', JSON.stringify(profile));
-  }, [profile]);
+  // Get assigned job from applications
+  const assignedJob = applications.find(app => app.contract_status !== 'rejected')?.job || null;
 
   // Cleanup applied job from session on mount if already processed
   useEffect(() => {
@@ -67,36 +45,55 @@ export default function UserDashboard() {
     sessionStorage.removeItem('gonl_applied_job');
     
     // If we have a job but no CV, suggest CV next
-    if (profile.assigned_job && !profile.is_cv_uploaded) {
-      // Show immediately if just applied, otherwise maybe a small delay
+    if (assignedJob && profile && !profile.is_cv_uploaded) {
       const delay = wasJobJustApplied ? 100 : 800;
       setTimeout(() => setShowCVChoice(true), delay);
     }
-  }, [profile.assigned_job, profile.is_cv_uploaded]);
+  }, [assignedJob, profile?.is_cv_uploaded]);
 
-  const handleScanComplete = () => {
-    setProfile(prev => ({ ...prev, is_id_verified: true }));
-    setShowScanner(false);
-    // Auto-open next step
-    setTimeout(() => {
-      if (profile.current_location === 'Netherlands' && profile.has_bsn) {
-        setShowBSNUpload(true);
-      } else {
-        navigate('/guide');
-      }
-    }, 500);
+  if (userLoading || !profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  const handleScanComplete = async () => {
+    try {
+      await updateProfile(profile.id, { is_id_verified: true });
+      await refreshProfile();
+      setShowScanner(false);
+      
+      // Auto-open next step
+      setTimeout(() => {
+        if (profile.current_location === 'Netherlands' && profile.has_bsn) {
+          setShowBSNUpload(true);
+        } else {
+          navigate('/guide');
+        }
+      }, 500);
+    } catch (err) {
+      console.error(err);
+      alert('Chyba při ukládání ověření');
+    }
   };
 
-  const handleBSNComplete = () => {
-    setProfile(prev => ({ ...prev, is_bsn_uploaded: true }));
+  const handleBSNComplete = async () => {
+    try {
+      await updateProfile(profile.id, { is_bsn_uploaded: true });
+      await refreshProfile();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const steps = [
     {
       id: 1,
       title: t('roadmap.step1'),
-      description: profile.assigned_job ? `${t('roadmap.step1_desc')}: ${profile.assigned_job.title}` : t('roadmap.step1_desc'),
-      status: profile.assigned_job ? 'completed' : 'active',
+      description: assignedJob ? `${t('roadmap.step1_desc')}: ${assignedJob.title}` : t('roadmap.step1_desc'),
+      status: assignedJob ? 'completed' : 'active',
       icon: <Briefcase size={20} />,
       action: () => navigate('/')
     },
@@ -104,7 +101,7 @@ export default function UserDashboard() {
       id: 2,
       title: t('roadmap.step_cv'),
       description: profile.is_cv_uploaded ? t('roadmap.step_cv_desc') : t('roadmap.step_cv_desc'),
-      status: profile.is_cv_uploaded ? 'completed' : (profile.assigned_job ? 'active' : 'pending'),
+      status: profile.is_cv_uploaded ? 'completed' : (assignedJob ? 'active' : 'pending'),
       icon: <FileText size={20} />,
       action: () => setShowCVChoice(true)
     },
@@ -139,8 +136,9 @@ export default function UserDashboard() {
 
     try {
       setCvLoading(true);
-      const publicUrl = await uploadResume(file, 'user_preview');
-      setProfile(prev => ({ ...prev, is_cv_uploaded: true, cv_url: publicUrl }));
+      const publicUrl = await uploadResume(file, profile.id);
+      await updateProfile(profile.id, { is_cv_uploaded: true, cv_url: publicUrl });
+      await refreshProfile();
       setShowCVUpload(false);
       // Auto-open next step (Scanner)
       setTimeout(() => setShowScanner(true), 500);
@@ -216,7 +214,7 @@ export default function UserDashboard() {
                           {isCompleted && step.id === 1 && (
                              <div className="bg-slate-50 px-4 py-2 rounded-xl border border-slate-100 flex items-center gap-2">
                                <MapPin size={14} className="text-orange-500" />
-                               <span className="text-xs font-bold text-slate-700">{profile.assigned_job.location_city}</span>
+                               <span className="text-xs font-bold text-slate-700">{assignedJob.location_city}</span>
                              </div>
                           )}
                         </div>

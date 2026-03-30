@@ -13,54 +13,58 @@ import AdminPage from './pages/AdminPage';
 import FAQPage from './pages/FAQPage';
 import BottomNav from './components/BottomNav';
 import { LanguageProvider } from './context/LanguageContext';
+import { UserProvider, useUser } from './context/UserContext';
 
 import PartnerLoginPage from './pages/PartnerLoginPage';
 
-function useAuth() {
-  const role = sessionStorage.getItem('gonl_role');
-  return { loggedIn: !!role, role };
-}
-
 function ProtectedRoute({ children, requiredRole }) {
-  const { loggedIn, role } = useAuth();
-  if (!loggedIn) return <Navigate to="/auth" replace />;
-  if (requiredRole && role !== requiredRole) return <Navigate to="/dashboard" replace />;
+  const { profile, loading } = useUser();
+  
+  if (loading) return <div>Loading...</div>;
+  if (!profile) return <Navigate to="/auth" replace />;
+  
+  if (requiredRole && profile.role !== requiredRole) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  
   return children;
 }
 
 export default function App() {
   return (
     <BrowserRouter>
-      <LanguageProvider>
-        <Routes>
-          {/* Public */}
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/auth" element={<AuthPage />} />
-          <Route path="/partner-login" element={<PartnerLoginPage />} />
-          <Route path="/jobs" element={<JobsListPage />} />
-          <Route path="/jobs/:id" element={<JobPage />} />
-          <Route path="/partners" element={<PartnersPage />} />
-          <Route path="/faq" element={<FAQPage />} />
+      <UserProvider>
+        <LanguageProvider>
+          <Routes>
+            {/* Public */}
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/partner-login" element={<PartnerLoginPage />} />
+            <Route path="/jobs" element={<JobsListPage />} />
+            <Route path="/jobs/:id" element={<JobPage />} />
+            <Route path="/partners" element={<PartnersPage />} />
+            <Route path="/faq" element={<FAQPage />} />
 
-          {/* Candidate / Private */}
-          <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-          <Route path="/guide" element={<ProtectedRoute><GuidePage /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+            {/* Candidate / Private */}
+            <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+            <Route path="/guide" element={<ProtectedRoute><GuidePage /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
-          {/* Partner / Private */}
-          <Route path="/partner" element={<ProtectedRoute requiredRole="partner"><PartnerPage /></ProtectedRoute>} />
-          <Route path="/partner/settings" element={<ProtectedRoute requiredRole="partner"><PartnerPage /></ProtectedRoute>} />
-          
-          {/* Admin / Private */}
-          <Route path="/admin" element={<AdminPage />} />
+            {/* Partner / Private */}
+            <Route path="/partner" element={<ProtectedRoute requiredRole="partner"><PartnerPage /></ProtectedRoute>} />
+            <Route path="/partner/settings" element={<ProtectedRoute requiredRole="partner"><PartnerPage /></ProtectedRoute>} />
+            
+            {/* Admin / Private */}
+            <Route path="/admin" element={<AdminPage />} />
 
-          {/* Catch all */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            {/* Catch all */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
 
-        {/* Global UI */}
-        <BottomNav />
-      </LanguageProvider>
+          {/* Global UI */}
+          <BottomNav />
+        </LanguageProvider>
+      </UserProvider>
     </BrowserRouter>
   );
 }

@@ -1,7 +1,4 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, User, ChevronRight } from 'lucide-react';
+import { supabase, updateProfile, applyForJob, getProfile } from '../lib/supabase';
 
 export default function AuthPage() {
   const navigate = useNavigate();
@@ -9,46 +6,69 @@ export default function AuthPage() {
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handlePhoneSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1000)); // Simulating OTP send
-    setStep('otp');
-    setLoading(false);
+    setError(null);
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        phone: `+420${phone}`
+      });
+      if (error) throw error;
+      setStep('otp');
+    } catch (err) {
+      console.error(err);
+      setError('Chyba při odesílání kódu. Ověřte, zda máte v Supabase nastaven SMS provider.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1200)); // Simulating verification
-    
-    // Silent Registration Logic
-    sessionStorage.setItem('gonl_role', 'candidate');
-    
-    const userProfile = {
-      name: 'Uživatel ' + phone.slice(-3),
-      phone,
-      is_id_verified: false,
-      is_ticket_uploaded: false,
-      is_bsn_uploaded: false,
-      current_location: 'Other',
-      has_bsn: false,
-      assigned_job: null,
-    };
-    
-    // Check if we have a pending job from landing
-    const pendingJob = sessionStorage.getItem('gonl_applied_job');
-    if (pendingJob) {
-      userProfile.assigned_job = JSON.parse(pendingJob);
-      sessionStorage.removeItem('gonl_applied_job');
-    }
+    setError(null);
+    try {
+      const { data: { session }, error: verifyError } = await supabase.auth.verifyOtp({
+        phone: `+420${phone}`,
+        token: otp,
+        type: 'sms'
+      });
 
-    sessionStorage.setItem('gonl_user_profile', JSON.stringify(userProfile));
-    sessionStorage.setItem('gonl_user', JSON.stringify({ phone, name: userProfile.name }));
-    
-    navigate('/dashboard');
-    setLoading(false);
+      if (verifyError) throw verifyError;
+
+      const userId = session.user.id;
+      
+      // Check if profile exists, if not create one
+      try {
+        await getProfile(userId);
+      } catch (err) {
+        // Profile doesn't exist, create it
+        await supabase.from('profiles').insert([{
+          id: userId,
+          full_name: 'Uživatel ' + phone.slice(-3),
+          email: `${userId}@placeholder.gonl`, // Supabase uses fake email for phone-only auth usually or we can leave empty if schema allows
+          phone: `+420${phone}`,
+          status: 'registered'
+        }]);
+      }
+
+      // Check if we have a pending job from landing
+      const pendingJobId = sessionStorage.getItem('gonl_applied_job_id');
+      if (pendingJobId) {
+        await applyForJob(userId, pendingJobId);
+        sessionStorage.removeItem('gonl_applied_job_id');
+      }
+
+      navigate('/dashboard');
+    } catch (err) {
+      console.error(err);
+      setError('Neplatný nebo vypršelý kód.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,6 +82,12 @@ export default function AuthPage() {
           </button>
           <p className="text-sm text-slate-500 mt-2 font-medium">Tvá cesta do Nizozemska začíná zde</p>
         </div>
+
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-sm font-medium animate-shake">
+            {error}
+          </div>
+        )}
 
         <div className="bg-white rounded-[28px] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden p-8">
           <AnimatePresence mode="wait">

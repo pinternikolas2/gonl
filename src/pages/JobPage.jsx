@@ -6,9 +6,12 @@ import RoleSwitcher from '../components/RoleSwitcher';
 
 import { allJobs as mockJobs } from '../data/jobs';
 
+import { useUser } from '../context/UserContext';
+
 export default function JobPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { profile, applyToJob } = useUser();
   const job = mockJobs.find(j => j.id === id);
 
   if (!job) {
@@ -24,6 +27,23 @@ export default function JobPage() {
     );
   }
 
+  const handleApply = async () => {
+    if (!profile) {
+      // Not logged in, save and redirect
+      sessionStorage.setItem('gonl_applied_job_id', job.id);
+      navigate('/auth');
+      return;
+    }
+
+    const success = await applyToJob(job.id);
+    if (success) {
+      sessionStorage.setItem('gonl_applied_job', 'true'); // For dashboard welcome msg
+      navigate('/dashboard');
+    } else {
+      alert('Chyba při odesílání přihlášky.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50">
       <Header />
@@ -31,22 +51,7 @@ export default function JobPage() {
         <JobDetail 
           job={job}
           onBack={() => navigate(-1)}
-          onApply={() => {
-            const isLoggedIn = !!sessionStorage.getItem('gonl_role');
-            sessionStorage.setItem('gonl_applied_job', JSON.stringify(job));
-            
-            if (isLoggedIn) {
-              const profile = JSON.parse(sessionStorage.getItem('gonl_user_profile') || '{}');
-              profile.assigned_job = job;
-              sessionStorage.setItem('gonl_user_profile', JSON.stringify(profile));
-            }
-
-            if (!isLoggedIn) {
-              navigate('/auth');
-              return;
-            }
-            navigate('/dashboard');
-          }}
+          onApply={handleApply}
           isApplied={false}
         />
       </main>

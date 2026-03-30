@@ -10,6 +10,15 @@ CREATE TABLE public.profiles (
   phone TEXT,
   status user_status DEFAULT 'registered',
   bsn_number TEXT,
+  is_id_verified BOOLEAN DEFAULT FALSE,
+  is_cv_uploaded BOOLEAN DEFAULT FALSE,
+  cv_url TEXT,
+  is_ticket_uploaded BOOLEAN DEFAULT FALSE,
+  ticket_url TEXT,
+  arrival_date DATE,
+  arrival_time TIME,
+  current_location TEXT,
+  has_bsn BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

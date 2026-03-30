@@ -3,25 +3,28 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { User, Phone, ShieldCheck, MapPin, FileText, LogOut, ChevronRight, CheckCircle2, Globe, Check } from 'lucide-react';
 import { useTranslation } from '../context/LanguageContext';
+import { useUser } from '../context/UserContext';
+import { updateProfile } from '../lib/supabase';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const user = JSON.parse(sessionStorage.getItem('gonl_user') || '{}');
-  const role = sessionStorage.getItem('gonl_role');
-  const [profile, setProfile] = React.useState(() => 
-    JSON.parse(sessionStorage.getItem('gonl_user_profile') || '{}')
-  );
+  const { user, profile, refreshProfile, loading } = useUser();
 
-  const updateProfile = (updates) => {
-    const newProfile = { ...profile, ...updates };
-    setProfile(newProfile);
-    sessionStorage.setItem('gonl_user_profile', JSON.stringify(newProfile));
+  const handleUpdateProfile = async (updates) => {
+    try {
+      await updateProfile(profile.id, updates);
+      await refreshProfile();
+    } catch (err) {
+      console.error(err);
+      alert('Chyba při ukládání profilu');
+    }
   };
 
-  const handleLogout = () => {
-    sessionStorage.clear();
-    navigate('/');
+  const handleLogout = async () => {
+    // sessionStorage.clear(); // Keep for now or remove if strictly following Supabase
+    const { error } = await import('../lib/supabase').then(m => m.supabase.auth.signOut());
+    if (!error) navigate('/');
   };
 
   const MenuItem = ({ icon, label, sublabel, onClick, danger }) => (
@@ -90,13 +93,13 @@ export default function ProfilePage() {
               </div>
               <div className="flex gap-2 pl-14">
                 <button 
-                  onClick={() => updateProfile({ current_location: 'Netherlands' })}
+                  onClick={() => handleUpdateProfile({ current_location: 'Netherlands' })}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${profile.current_location === 'Netherlands' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200'}`}
                 >
                   {t('profile.loc_nl')}
                 </button>
                 <button 
-                  onClick={() => updateProfile({ current_location: 'Other' })}
+                  onClick={() => handleUpdateProfile({ current_location: 'Other' })}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${profile.current_location !== 'Netherlands' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200'}`}
                 >
                    {t('profile.loc_other')}
@@ -117,13 +120,13 @@ export default function ProfilePage() {
               </div>
               <div className="flex gap-2 pl-14">
                 <button 
-                  onClick={() => updateProfile({ has_bsn: true })}
+                  onClick={() => handleUpdateProfile({ has_bsn: true })}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${profile.has_bsn ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-600 border-slate-200'}`}
                 >
                   {t('profile.yes')}
                 </button>
                 <button 
-                  onClick={() => updateProfile({ has_bsn: false })}
+                  onClick={() => handleUpdateProfile({ has_bsn: false })}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${!profile.has_bsn ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200'}`}
                 >
                    {t('profile.no')}
@@ -148,23 +151,21 @@ export default function ProfilePage() {
           <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-3 relative z-10">Tvůj aktuální status</p>
           <div className="flex items-center gap-3 relative z-10">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${profile.assigned_job ? 'bg-orange-600' : 'bg-slate-700'}`}>
-              {profile.assigned_job ? <Check size={20} /> : <ShieldCheck size={20} />}
+              <ShieldCheck size={20} />
             </div>
             <div>
               <p className="font-black text-lg">
-                {!profile.assigned_job ? 'Čeká se na výběr' : 
-                 !profile.is_cv_uploaded ? 'Nahrát CV' : 
+                {!profile.is_cv_uploaded ? 'Nahrát CV' : 
                  !profile.is_id_verified ? 'Ověřit identitu' : 'Ověřen (Příprava)'}
               </p>
               <p className="text-xs text-white/60 font-medium italic">
-                {!profile.assigned_job ? 'Vyber si svou první práci v NL' : 
-                 !profile.is_cv_uploaded ? 'Tvoje vysněná práce už čeká' : 
+                {!profile.is_cv_uploaded ? 'Tvoje vysněná práce už čeká' : 
                  !profile.is_id_verified ? 'Zbývá poslední krok - sken ID' : 'Jsi na cestě k novému začátku'}
               </p>
             </div>
           </div>
           <button onClick={() => navigate('/dashboard')} className="mt-5 w-full bg-white/10 hover:bg-white/20 transition-all text-white py-3 rounded-xl text-sm font-bold border border-white/5 active:scale-[0.98]">
-            {profile.assigned_job ? 'Pokračovat v Roadmapě →' : 'Zobrazit Timeline →'}
+            Zobrazit Timeline →
           </button>
         </div>
 
